@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2e3034</color>
+    <color name="colorPrimaryDark">#131315</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#ffffffff</color>
+    <color name="black">#ff000000</color>
+
+    <color name="background_color">#25252a</color>
+
+    <color name="blue_light">#1786B4</color>
+
+    <color name="blue_for_keyboard_blur">#80BDD0</color>
+
+    <color name="blue_for_keyboard_blur_2">#60B4CE</color>
+
+
+    <color name="blue">#061CE8</color>
+
+    <color name="yellow_dark">#ECB444</color>
+
+    <color name="blue_dark">#0A222A</color>
+
+    <color name="jet">#222222</color>
+    <color name="oil">#333333</color>
+    <color name="monsoon">#777777</color>
+    <color name="jumbo">#888888</color>
+    <color name="aluminum">#999999</color>
+    <color name="base">#AAAAAA</color>
+    <color name="iron">#CCCCCC</color>
+    <color name="green">#15F42F</color>
+    <color name="green_2">#f61f9b0c</color>
+    <color name="green_light">#67efb5</color>
+
+
+
+    <color name="dark">#8E8787</color>
+
+
+</resources>

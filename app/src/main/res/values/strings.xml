@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">RoboticCameraApp</string>
+    <string name="label_mainactivity">Robotic Camera App</string>
+    <string name="setting">Settings</string>
+    <string name="CameraProfileList">Cameras</string>
+    <string name="CameraAddProfile">Add New Camera</string>
+</resources>
