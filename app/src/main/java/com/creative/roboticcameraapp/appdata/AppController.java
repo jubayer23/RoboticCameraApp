@@ -7,6 +7,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.creative.roboticcameraapp.database.SqliteDb;
 import com.creative.roboticcameraapp.sharedprefs.PrefManager;
 
 
@@ -18,9 +19,12 @@ public class AppController extends Application {
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private static AppController mInstance;
+    private static SqliteDb sqliteDbInstance;
 
     private PrefManager pref;
 
+
+    private float scale;
 
     @Override
     public void onCreate() {
@@ -29,12 +33,21 @@ public class AppController extends Application {
 
         pref = new PrefManager(this);
 
+        sqliteDbInstance = new SqliteDb(this);
+        sqliteDbInstance.open();
+
+        this.scale = getResources().getDisplayMetrics().density;
+
         // FacebookSdk.sdkInitialize(getApplicationContext());
 
     }
 
     public static synchronized AppController getInstance() {
         return mInstance;
+    }
+
+    public static synchronized SqliteDb getsqliteDbInstance() {
+        return sqliteDbInstance;
     }
 
     public PrefManager getPrefManger() {
@@ -69,6 +82,12 @@ public class AppController extends Application {
             mRequestQueue.cancelAll(tag);
         }
     }
+
+    public int getPixelValue(int dps) {
+        int pixels = (int) (dps * scale + 0.5f);
+        return pixels;
+    }
+
 
 
 }

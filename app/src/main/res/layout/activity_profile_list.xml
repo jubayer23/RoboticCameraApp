@@ -5,14 +5,14 @@
     android:background="@color/background_color">
 
     <ListView
-        android:id="@+id/list_camera"
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@null"
         android:dividerHeight="3.0sp"></ListView>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_camera_profile"
+        android:id="@+id/add_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

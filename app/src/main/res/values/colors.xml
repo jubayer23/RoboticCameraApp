@@ -17,6 +17,8 @@
 
     <color name="blue">#061CE8</color>
 
+    <color name="white_dark">#bfc0ce</color>
+
     <color name="yellow_dark">#ECB444</color>
 
     <color name="blue_dark">#0A222A</color>
@@ -29,12 +31,21 @@
     <color name="base">#AAAAAA</color>
     <color name="iron">#CCCCCC</color>
     <color name="green">#15F42F</color>
-    <color name="green_2">#f61f9b0c</color>
+    <color name="green_2">#66cc66</color>
+    <color name="green_2_selected">#00ff33</color>
     <color name="green_light">#67efb5</color>
 
 
 
     <color name="dark">#8E8787</color>
+
+    <color name="edittext_background">#404449</color>
+
+    <color name="red">#c92727</color>
+    <color name="red_selected">#eee92d8e</color>
+
+    <color name="cancel_color_2">#565b63</color>
+    <color name="cancel_color_2_selected">#404349</color>
 
 
 </resources>

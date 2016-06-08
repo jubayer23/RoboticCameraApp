@@ -1,5 +1,6 @@
 package com.creative.roboticcameraapp;
 
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,8 +9,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.creative.roboticcameraapp.database.DbConfig;
 import com.creative.roboticcameraapp.fragment.Home;
 import com.creative.roboticcameraapp.fragment.Setting;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -36,6 +43,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .beginTransaction();
         transaction.add(R.id.container, fragment_1, "first");
         transaction.commit();
+
+
+        export();
+    }
+
+    private void export() {
+
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+
+            if (sd.canWrite()) {
+                String currentDBPath = "//data//"+ this.getPackageName() +"//databases//"+ DbConfig.DB_NAME;
+                String backupDBPath = DbConfig.DB_NAME;
+                File currentDB = new File(data, currentDBPath);
+                File backupDB = new File(sd, backupDBPath);
+
+                if (currentDB.exists()) {
+                    FileChannel src = new FileInputStream(currentDB).getChannel();
+                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
+                    dst.transferFrom(src, 0, src.size());
+                    src.close();
+                    dst.close();
+                }
+            }
+        } catch (Exception e) {
+        }
     }
 
     private void init() {

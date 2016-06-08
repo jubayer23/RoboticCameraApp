@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.creative.roboticcameraapp">
 
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
+        android:name=".appdata.AppController"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,6 +23,9 @@
             </intent-filter>
         </activity>
 
+
+        /***************************************CAMERA ROW 360**************************************/
+
         <activity
             android:name=".CameraProfileList"
             android:label="@string/CameraProfileList"
@@ -28,16 +35,120 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-
         <activity
-            android:name=".CameraAddProfile"
+            android:name=".CameraAddUpdateProfile"
             android:label="@string/CameraAddProfile"
             android:parentActivityName=".CameraProfileList"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme2">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CameraProfileList" />
         </activity>
+
+
+        /***************************************LENS PROFILE**************************************/
+
+
+        <activity
+            android:name=".LensProfileList"
+            android:label="@string/LensProfileList"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".LensAddUpdateProfile"
+            android:label="@string/LensAddProfile"
+            android:parentActivityName=".CameraProfileList"
+            android:theme="@style/AppTheme2">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".CameraProfileList" />
+        </activity>
+
+
+        /***************************************SHOOTING PROFILE**************************************/
+
+        <activity
+            android:name=".ShootingProfile"
+            android:label="@string/ShootingProfile"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme2">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
+
+
+        /***************************************SINGLE ROW 360**************************************/
+
+        <activity
+            android:name=".SingleRowProfileList"
+            android:label="@string/SingleRow"
+            android:parentActivityName=".ShootingProfile"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ShootingProfile" />
+        </activity>
+        <activity
+            android:name=".SingleRowAddUpdateProfile"
+            android:label="@string/SingleRowAddProfile"
+            android:parentActivityName=".SingleRowProfileList"
+            android:theme="@style/AppTheme2">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SingleRowProfileList" />
+        </activity>
+
+
+        /***************************************MULTI ROW 360**************************************/
+
+        <activity
+            android:name=".MultiRowProfileList"
+            android:label="@string/MultiRow"
+            android:parentActivityName=".ShootingProfile"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ShootingProfile" />
+        </activity>
+        <activity
+            android:name=".MultiRowAddUpdateProfile"
+            android:label="@string/MultiRowAddProfile"
+            android:parentActivityName=".MultiRowProfileList"
+            android:theme="@style/AppTheme2">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MultiRowProfileList" />
+        </activity>
+
+
+        /***************************************PARTIAL/GIGAPIXEL**************************************/
+
+        <activity
+            android:name=".PartialGigapixelProfileList"
+            android:label="@string/PartialGigapixel"
+            android:parentActivityName=".ShootingProfile"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ShootingProfile" />
+        </activity>
+        <activity
+            android:name=".PartialGigapixelAddUpdateProfile"
+            android:label="@string/partialGigapixelAddProfile"
+            android:parentActivityName=".PartialGigapixelProfileList"
+            android:theme="@style/AppTheme2">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".PartialGigapixelProfileList" />
+        </activity>
+
+
     </application>
 
 </manifest>

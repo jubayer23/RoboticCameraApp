@@ -9,18 +9,19 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.creative.roboticcameraapp.adapter.CameraListAdapter;
+import com.creative.roboticcameraapp.adapter.LensListAdapter;
 import com.creative.roboticcameraapp.appdata.AppController;
 
 /**
  * Created by comsol on 02-Jun-16.
  */
-public class CameraProfileList extends AppCompatActivity implements CameraListAdapter.OnEditActionListener {
+public class LensProfileList extends AppCompatActivity implements LensListAdapter.OnEditActionListener {
 
-    private FloatingActionButton addCameraProfile;
+    private FloatingActionButton addLensProfile;
 
-    private ListView list_camera;
+    private ListView list_lens;
 
-    private CameraListAdapter cameraListAdapter;
+    private LensListAdapter lensListAdapter;
 
     public static final String KEY_SHOULD_UPDATE = "shouldUpdate";
     public static final String KEY_UPDATE_ID = "updateId";
@@ -33,33 +34,32 @@ public class CameraProfileList extends AppCompatActivity implements CameraListAd
 
         init();
 
-        cameraListAdapter = new CameraListAdapter(this, AppController.getInstance().getsqliteDbInstance().getAllCamera());
-        cameraListAdapter.setListener(this);
+        lensListAdapter = new LensListAdapter(this, AppController.getInstance().getsqliteDbInstance().getAllLenses());
+        lensListAdapter.setListener(this);
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        list_camera.setAdapter(cameraListAdapter);
+        list_lens.setAdapter(lensListAdapter);
     }
 
     private void init() {
 
-        list_camera = (ListView) findViewById(R.id.list);
+        list_lens = (ListView) findViewById(R.id.list);
 
 
-        addCameraProfile = (FloatingActionButton) findViewById(R.id.add_profile);
-        addCameraProfile.setOnClickListener(new View.OnClickListener() {
+        addLensProfile = (FloatingActionButton) findViewById(R.id.add_profile);
+        addLensProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CameraProfileList.this, CameraAddUpdateProfile.class);
+                Intent intent = new Intent(LensProfileList.this, LensAddUpdateProfile.class);
                 startActivityForResult(intent, 0);
             }
         });
     }
 
 
-
     @Override
     public void onEdit(int id, int position) {
 
-        Intent intent = new Intent(CameraProfileList.this, CameraAddUpdateProfile.class);
+        Intent intent = new Intent(LensProfileList.this, LensAddUpdateProfile.class);
         intent.putExtra(KEY_SHOULD_UPDATE, true);
         intent.putExtra(KEY_UPDATE_ID, id);
         intent.putExtra(KEY_UPDATE_POSITION, position);
@@ -67,18 +67,18 @@ public class CameraProfileList extends AppCompatActivity implements CameraListAd
 
     }
 
-    private void updateData(){
-        cameraListAdapter = new CameraListAdapter(this, AppController.getInstance().getsqliteDbInstance().getAllCamera());
-        cameraListAdapter.setListener(this);
+    private void updateData() {
+        lensListAdapter = new LensListAdapter(this, AppController.getInstance().getsqliteDbInstance().getAllLenses());
+        lensListAdapter.setListener(this);
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        list_camera.setAdapter(cameraListAdapter);
+        list_lens.setAdapter(lensListAdapter);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==0 || requestCode==1){
-            if(resultCode==RESULT_OK){
+        if (requestCode == 0 || requestCode == 1) {
+            if (resultCode == RESULT_OK) {
                 updateData();
             }
         }

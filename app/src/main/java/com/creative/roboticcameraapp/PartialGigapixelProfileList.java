@@ -8,19 +8,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 
-import com.creative.roboticcameraapp.adapter.CameraListAdapter;
+import com.creative.roboticcameraapp.adapter.PartialGigapixelAdapter;
+import com.creative.roboticcameraapp.adapter.SingleRowAdapter;
 import com.creative.roboticcameraapp.appdata.AppController;
 
 /**
  * Created by comsol on 02-Jun-16.
  */
-public class CameraProfileList extends AppCompatActivity implements CameraListAdapter.OnEditActionListener {
+public class PartialGigapixelProfileList extends AppCompatActivity implements PartialGigapixelAdapter.OnEditActionListener {
 
-    private FloatingActionButton addCameraProfile;
+    private FloatingActionButton addPartialGigapixel;
 
-    private ListView list_camera;
+    private ListView list_partial_gigapixel;
 
-    private CameraListAdapter cameraListAdapter;
+    private PartialGigapixelAdapter partialGigapixelAdapter;
 
     public static final String KEY_SHOULD_UPDATE = "shouldUpdate";
     public static final String KEY_UPDATE_ID = "updateId";
@@ -33,33 +34,30 @@ public class CameraProfileList extends AppCompatActivity implements CameraListAd
 
         init();
 
-        cameraListAdapter = new CameraListAdapter(this, AppController.getInstance().getsqliteDbInstance().getAllCamera());
-        cameraListAdapter.setListener(this);
+        partialGigapixelAdapter = new PartialGigapixelAdapter(this, AppController.getInstance().getsqliteDbInstance().getAllPartialGigapixel());
+        partialGigapixelAdapter.setListener(this);
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        list_camera.setAdapter(cameraListAdapter);
+        list_partial_gigapixel.setAdapter(partialGigapixelAdapter);
     }
 
     private void init() {
 
-        list_camera = (ListView) findViewById(R.id.list);
-
-
-        addCameraProfile = (FloatingActionButton) findViewById(R.id.add_profile);
-        addCameraProfile.setOnClickListener(new View.OnClickListener() {
+        list_partial_gigapixel = (ListView) findViewById(R.id.list);
+        addPartialGigapixel = (FloatingActionButton) findViewById(R.id.add_profile);
+        addPartialGigapixel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CameraProfileList.this, CameraAddUpdateProfile.class);
+                Intent intent = new Intent(PartialGigapixelProfileList.this, PartialGigapixelAddUpdateProfile.class);
                 startActivityForResult(intent, 0);
             }
         });
     }
 
 
-
     @Override
     public void onEdit(int id, int position) {
 
-        Intent intent = new Intent(CameraProfileList.this, CameraAddUpdateProfile.class);
+        Intent intent = new Intent(PartialGigapixelProfileList.this, PartialGigapixelAddUpdateProfile.class);
         intent.putExtra(KEY_SHOULD_UPDATE, true);
         intent.putExtra(KEY_UPDATE_ID, id);
         intent.putExtra(KEY_UPDATE_POSITION, position);
@@ -67,18 +65,18 @@ public class CameraProfileList extends AppCompatActivity implements CameraListAd
 
     }
 
-    private void updateData(){
-        cameraListAdapter = new CameraListAdapter(this, AppController.getInstance().getsqliteDbInstance().getAllCamera());
-        cameraListAdapter.setListener(this);
+    private void updateData() {
+        partialGigapixelAdapter = new PartialGigapixelAdapter(this, AppController.getInstance().getsqliteDbInstance().getAllPartialGigapixel());
+        partialGigapixelAdapter.setListener(this);
         // recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        list_camera.setAdapter(cameraListAdapter);
+        list_partial_gigapixel.setAdapter(partialGigapixelAdapter);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==0 || requestCode==1){
-            if(resultCode==RESULT_OK){
+        if (requestCode == 0 || requestCode == 1) {
+            if (resultCode == RESULT_OK) {
                 updateData();
             }
         }
