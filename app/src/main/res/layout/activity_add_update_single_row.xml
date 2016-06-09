@@ -80,6 +80,21 @@
         </android.support.design.widget.TextInputLayout>
 
 
+        <Switch
+            android:id="@+id/sw_continious_rotation"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_edittext"
+            android:layout_height="50dp"
+            android:text="Continious Rotation"
+            android:paddingLeft="10dp"
+            android:textOff="No"
+            android:textOn="Yes"
+            android:textSize="20sp" />
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -105,6 +120,8 @@
                 android:padding="5dp"
                 android:src="@drawable/spinner_arrow" />
         </RelativeLayout>
+
+
     </LinearLayout>
 
     <LinearLayout
