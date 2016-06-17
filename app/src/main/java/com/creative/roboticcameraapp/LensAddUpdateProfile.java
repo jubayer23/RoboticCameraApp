@@ -16,7 +16,7 @@ import com.creative.roboticcameraapp.model.Lens;
 /**
  * Created by comsol on 02-Jun-16.
  */
-public class LensAddUpdateProfile extends AppCompatActivity {
+public class LensAddUpdateProfile extends AppCompatActivity implements View.OnFocusChangeListener {
 
     private EditText ed_lens_name, ed_focus_length;
     private Button btn_save, btn_cancel;
@@ -87,6 +87,7 @@ public class LensAddUpdateProfile extends AppCompatActivity {
 
         ed_lens_name = (EditText) findViewById(R.id.ed_lens_name);
         ed_focus_length = (EditText) findViewById(R.id.ed_focus_length);
+        ed_focus_length.setOnFocusChangeListener(this);
         switch_fisheye = (Switch) findViewById(R.id.switch_fisheye);
 
         btn_save = (Button) findViewById(R.id.btn_save);
@@ -98,12 +99,19 @@ public class LensAddUpdateProfile extends AppCompatActivity {
 
         boolean valid = true;
 
-        if (ed_focus_length.getText().toString().isEmpty()) {
+        if (!ed_focus_length.getText().toString().isEmpty()) {
+            long value = Long.parseLong(ed_focus_length.getText().toString());
+            if (value < 1 || value > 10000) {
+                ed_focus_length.setError("Invalid input");
+                ed_focus_length.requestFocus();
+                valid = false;
+            } else {
+                ed_focus_length.setError(null);
+            }
+        } else {
             ed_focus_length.setError("Focus length is required");
             ed_focus_length.requestFocus();
             valid = false;
-        } else {
-            ed_focus_length.setError(null);
         }
 
         if (ed_lens_name.getText().toString().isEmpty()) {
@@ -115,8 +123,27 @@ public class LensAddUpdateProfile extends AppCompatActivity {
         }
 
 
-
-
         return valid;
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean b) {
+
+        if (!b) {
+            int id = view.getId();
+            switch (id) {
+                case R.id.ed_focus_length:
+                    if (!ed_focus_length.getText().toString().isEmpty()) {
+                        long value = Long.parseLong(ed_focus_length.getText().toString());
+                        if (value < 1 || value > 10000) {
+                            ed_focus_length.setError("Invalid input");
+                        } else {
+                            ed_focus_length.setError(null);
+                        }
+                    }
+                    break;
+            }
+        }
+
     }
 }

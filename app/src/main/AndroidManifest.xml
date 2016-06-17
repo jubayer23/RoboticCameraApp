@@ -30,6 +30,7 @@
             android:name=".CameraProfileList"
             android:label="@string/CameraProfileList"
             android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -39,6 +40,7 @@
             android:name=".CameraAddUpdateProfile"
             android:label="@string/CameraAddProfile"
             android:parentActivityName=".CameraProfileList"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme2">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -53,6 +55,7 @@
             android:name=".LensProfileList"
             android:label="@string/LensProfileList"
             android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -62,6 +65,7 @@
             android:name=".LensAddUpdateProfile"
             android:label="@string/LensAddProfile"
             android:parentActivityName=".CameraProfileList"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme2">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -75,6 +79,7 @@
             android:name=".ShootingProfile"
             android:label="@string/ShootingProfile"
             android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme2">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -89,6 +94,7 @@
             android:name=".SingleRowProfileList"
             android:label="@string/SingleRow"
             android:parentActivityName=".ShootingProfile"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -98,6 +104,7 @@
             android:name=".SingleRowAddUpdateProfile"
             android:label="@string/SingleRowAddProfile"
             android:parentActivityName=".SingleRowProfileList"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme2">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -111,6 +118,7 @@
             android:name=".MultiRowProfileList"
             android:label="@string/MultiRow"
             android:parentActivityName=".ShootingProfile"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -120,6 +128,7 @@
             android:name=".MultiRowAddUpdateProfile"
             android:label="@string/MultiRowAddProfile"
             android:parentActivityName=".MultiRowProfileList"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme2">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -133,6 +142,7 @@
             android:name=".PartialGigapixelProfileList"
             android:label="@string/PartialGigapixel"
             android:parentActivityName=".ShootingProfile"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -142,6 +152,7 @@
             android:name=".PartialGigapixelAddUpdateProfile"
             android:label="@string/partialGigapixelAddProfile"
             android:parentActivityName=".PartialGigapixelProfileList"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme2">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

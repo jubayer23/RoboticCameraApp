@@ -20,7 +20,7 @@ import com.creative.roboticcameraapp.model.MultiRow;
 /**
  * Created by comsol on 06-Jun-16.
  */
-public class MRStepOne extends Fragment implements View.OnClickListener {
+public class MRStepOne extends Fragment implements View.OnClickListener, View.OnFocusChangeListener {
 
     private EditText ed_profile_name, ed_num_of_rows;
 
@@ -56,7 +56,7 @@ public class MRStepOne extends Fragment implements View.OnClickListener {
         if (SavedInstanceState == null) {
             init();
 
-            if(shouldUpdate){
+            if (shouldUpdate) {
 
                 int id = getActivity().getIntent().getIntExtra(MultiRowProfileList.KEY_UPDATE_ID, 0);
                 multiRow = AppController.getInstance().getsqliteDbInstance().getMultiRow(id);
@@ -64,7 +64,7 @@ public class MRStepOne extends Fragment implements View.OnClickListener {
                 ed_profile_name.setText(multiRow.getMultiRowName());
                 ed_num_of_rows.setText(String.valueOf(multiRow.getNum_of_rows()));
 
-            }else{
+            } else {
 
             }
 
@@ -79,6 +79,7 @@ public class MRStepOne extends Fragment implements View.OnClickListener {
 
         ed_profile_name = (EditText) getActivity().findViewById(R.id.ed_multirow_name);
         ed_num_of_rows = (EditText) getActivity().findViewById(R.id.ed_num_of_rows);
+        ed_num_of_rows.setOnFocusChangeListener(this);
 
 
         btn_next = (Button) getActivity().findViewById(R.id.btn_next);
@@ -126,15 +127,20 @@ public class MRStepOne extends Fragment implements View.OnClickListener {
     public boolean showWarningDialog() {
 
         boolean valid = true;
-
-        if (ed_num_of_rows.getText().toString().isEmpty()) {
+        if (!ed_num_of_rows.getText().toString().isEmpty()) {
+            long value = Long.parseLong(ed_num_of_rows.getText().toString());
+            if (value < 2 || value > 20) {
+                ed_num_of_rows.setError("Invalid input");
+                ed_num_of_rows.requestFocus();
+                valid = false;
+            } else {
+                ed_num_of_rows.setError(null);
+            }
+        } else {
             ed_num_of_rows.setError("Required");
             ed_num_of_rows.requestFocus();
             valid = false;
-        } else {
-            ed_num_of_rows.setError(null);
         }
-
         if (ed_profile_name.getText().toString().isEmpty()) {
             ed_profile_name.setError("Required");
             ed_profile_name.requestFocus();
@@ -146,8 +152,33 @@ public class MRStepOne extends Fragment implements View.OnClickListener {
         return valid;
     }
 
+    @Override
+    public void onFocusChange(View view, boolean b) {
+
+        if (!b) {
+            int id = view.getId();
+
+            switch (id) {
+                case R.id.ed_num_of_rows:
+                    if (!ed_num_of_rows.getText().toString().isEmpty()) {
+                        long value = Long.parseLong(ed_num_of_rows.getText().toString());
+                        if (value < 2 || value > 20) {
+                            ed_num_of_rows.setError("Invalid input");
+                            //  ed_num_of_rows.requestFocus();
+                        } else {
+                            ed_num_of_rows.setError(null);
+                        }
+                    }
+
+                    break;
+            }
+        }
+
+    }
+
     public interface OnDataPass {
         public void onDataPass(String profileName, int numOfRows);
+
         public void onBackPressedAtStepOne();
     }
 }

@@ -15,7 +15,7 @@ import com.creative.roboticcameraapp.model.Camera;
 /**
  * Created by comsol on 02-Jun-16.
  */
-public class CameraAddUpdateProfile extends AppCompatActivity {
+public class CameraAddUpdateProfile extends AppCompatActivity implements View.OnFocusChangeListener {
 
     private EditText ed_camera_name, ed_sensor_width, ed_sensor_height;
     private Button btn_save, btn_cancel;
@@ -84,7 +84,9 @@ public class CameraAddUpdateProfile extends AppCompatActivity {
 
         ed_camera_name = (EditText) findViewById(R.id.ed_camera_name);
         ed_sensor_width = (EditText) findViewById(R.id.ed_sensor_width);
+        ed_sensor_width.setOnFocusChangeListener(this);
         ed_sensor_height = (EditText) findViewById(R.id.ed_sensor_height);
+        ed_sensor_height.setOnFocusChangeListener(this);
 
         btn_save = (Button) findViewById(R.id.btn_save);
         btn_cancel = (Button) findViewById(R.id.btn_cancel);
@@ -94,21 +96,34 @@ public class CameraAddUpdateProfile extends AppCompatActivity {
     public boolean showWarningDialog() {
 
         boolean valid = true;
-        if (ed_sensor_height.getText().toString().isEmpty()) {
+        if (!ed_sensor_height.getText().toString().isEmpty()) {
+            long value = Long.parseLong(ed_sensor_height.getText().toString());
+            if (value < 0 || value > 100) {
+                ed_sensor_height.setError("Invalid input");
+                ed_sensor_height.requestFocus();
+                valid = false;
+            } else {
+                ed_sensor_height.setError(null);
+            }
+        } else {
             ed_sensor_height.setError("Sensor Height is required");
             ed_sensor_height.requestFocus();
             valid = false;
-        } else {
-            ed_sensor_height.setError(null);
         }
-        if (ed_sensor_width.getText().toString().isEmpty()) {
+        if (!ed_sensor_width.getText().toString().isEmpty()) {
+            long value = Long.parseLong(ed_sensor_width.getText().toString());
+            if (value < 0 || value > 100) {
+                ed_sensor_width.setError("Invalid input");
+                ed_sensor_width.requestFocus();
+                valid = false;
+            } else {
+                ed_sensor_width.setError(null);
+            }
+        } else {
             ed_sensor_width.setError("Sensor Width is required");
             ed_sensor_width.requestFocus();
             valid = false;
-        } else {
-            ed_sensor_width.setError(null);
         }
-
 
         if (ed_camera_name.getText().toString().isEmpty()) {
             ed_camera_name.setError("Camera Name is required");
@@ -120,5 +135,36 @@ public class CameraAddUpdateProfile extends AppCompatActivity {
 
 
         return valid;
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean b) {
+
+        if (!b) {
+            int id = view.getId();
+            switch (id) {
+                case R.id.ed_sensor_width:
+                    if (!ed_sensor_width.getText().toString().isEmpty()) {
+                        long value = Long.parseLong(ed_sensor_width.getText().toString());
+                        if (value < 0 || value > 100) {
+                            ed_sensor_width.setError("Invalid input");
+                        } else {
+                            ed_sensor_width.setError(null);
+                        }
+                    }
+                    break;
+                case R.id.ed_sensor_height:
+                    if (!ed_sensor_height.getText().toString().isEmpty()) {
+                        long value = Long.parseLong(ed_sensor_height.getText().toString());
+                        if (value < 0 || value > 100) {
+                            ed_sensor_height.setError("Invalid input");
+                        } else {
+                            ed_sensor_height.setError(null);
+                        }
+                    }
+                    break;
+            }
+        }
+
     }
 }

@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * Created by comsol on 06-Jun-16.
  */
-public class MRStepTwo extends Fragment implements View.OnClickListener {
+public class MRStepTwo extends Fragment implements View.OnClickListener, View.OnFocusChangeListener {
 
 
     private Button btn_next, btn_cancel;
@@ -103,8 +103,7 @@ public class MRStepTwo extends Fragment implements View.OnClickListener {
                 String directionArray[] = multiRow.getDirection().split(" ");
 
 
-                for(int i = 0; ((i < elevationArray.length) && (i < ed_list_elevation.size())) ; i++)
-                {
+                for (int i = 0; ((i < elevationArray.length) && (i < ed_list_elevation.size())); i++) {
                     ed_list_elevation.get(i).setText(elevationArray[i]);
                     ed_list_position.get(i).setText(positionArray[i]);
 
@@ -118,7 +117,7 @@ public class MRStepTwo extends Fragment implements View.OnClickListener {
                         list.add(AppConstant.direction[j]);
 
                     }
-                    ArrayAdapter  dataAdapter_2 = new ArrayAdapter<String>
+                    ArrayAdapter dataAdapter_2 = new ArrayAdapter<String>
                             (getActivity(), R.layout.spinner_item, list);
                     sp_list_direction.get(i).setAdapter(dataAdapter_2);
                 }
@@ -131,7 +130,6 @@ public class MRStepTwo extends Fragment implements View.OnClickListener {
 
 
     }
-
 
 
     private void init() {
@@ -205,19 +203,49 @@ public class MRStepTwo extends Fragment implements View.OnClickListener {
 
             EditText ed = new EditText(getActivity());
             ed.setLayoutParams(EDParams);
-            ed.setPadding(margin,0,0,0);
+            ed.setPadding(margin, 0, 0, 0);
             ed.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
-            ed.setInputType(InputType.TYPE_CLASS_NUMBER);
+            ed.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
             ed.setBackgroundResource(R.drawable.rounded_edittext);
+            ed.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean b) {
+                    if (!b) {
+                        if (!((EditText) view).getText().toString().isEmpty()) {
+                            long value = Long.parseLong(((EditText) view).getText().toString());
+                            if (value < -90 || value > 90) {
+                                Toast.makeText(getActivity(), "Invalid input", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                }
+            });
 
             ed_list_elevation.add(ed);
 
             EditText ed_2 = new EditText(getActivity());
-            ed_2.setPadding(margin,0,0,0);
+            ed_2.setPadding(margin, 0, 0, 0);
             ed_2.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
             ed_2.setLayoutParams(EDParams);
-            ed_2.setInputType(InputType.TYPE_CLASS_NUMBER);
+            ed_2.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
             ed_2.setBackgroundResource(R.drawable.rounded_edittext);
+            ed_2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean b) {
+                    if (!b) {
+
+
+                        if (!((EditText) view).getText().toString().isEmpty()) {
+                            long value = Long.parseLong(((EditText) view).getText().toString());
+                            if (value < 1 || value > 4000) {
+                                Toast.makeText(getActivity(), "Invalid input", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+
+                    }
+                }
+            });
 
             ed_list_position.add(ed_2);
 
@@ -263,7 +291,7 @@ public class MRStepTwo extends Fragment implements View.OnClickListener {
         int id = view.getId();
 
         if (id == R.id.btn_next_2) {
-           // Log.d("DEBUG", "YES");
+            // Log.d("DEBUG", "YES");
 
             if (showWarningDialog()) {
 
@@ -285,17 +313,17 @@ public class MRStepTwo extends Fragment implements View.OnClickListener {
                     direction = direction + " " + sp_list_direction.get(i).getSelectedItem().toString();
                 }
 
-                dataPasser.onDataPassStepTow(profile_name,num_of_rows,elevation,position,direction);
+                dataPasser.onDataPassStepTow(profile_name, num_of_rows, elevation, position, direction);
 
 
             } else {
-                Toast.makeText(getActivity(), "Please fill all field", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Please fill all field OR give valid input", Toast.LENGTH_LONG).show();
             }
 
         }
 
         if (id == R.id.btn_cancel_2) {
-                dataPasser.onBackPressedAtStepTwo();
+            dataPasser.onBackPressedAtStepTwo();
         }
 
     }
@@ -304,15 +332,30 @@ public class MRStepTwo extends Fragment implements View.OnClickListener {
 
         for (int i = 0; i < ed_list_elevation.size(); i++) {
             if (ed_list_elevation.get(i).getText().toString().isEmpty()) return false;
+            else {
+                long value = Long.parseLong(ed_list_elevation.get(i).getText().toString());
+                if (value < -90 || value > 90) return false;
+            }
         }
         for (int i = 0; i < ed_list_position.size(); i++) {
             if (ed_list_position.get(i).getText().toString().isEmpty()) return false;
+            else {
+                long value = Long.parseLong(ed_list_position.get(i).getText().toString());
+                if (value < 1 || value > 4000) return false;
+            }
         }
         return true;
 
     }
+
+    @Override
+    public void onFocusChange(View view, boolean b) {
+
+    }
+
     public interface OnDataPassStepTow {
         public void onDataPassStepTow(String profileName, int numOfRows, String elevation, String position, String direction);
+
         public void onBackPressedAtStepTwo();
 
     }

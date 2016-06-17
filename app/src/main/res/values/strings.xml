@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">RoboticCameraApp</string>
-    <string name="label_mainactivity">Robotic Camera App</string>
+    <string name="app_name">PanoCatcher Maestro</string>
+    <string name="label_mainactivity">PanoCatcher Maestro</string>
     <string name="setting">Settings</string>
     <string name="CameraProfileList">Cameras</string>
     <string name="CameraAddProfile">Add New Camera</string>
@@ -8,14 +8,14 @@
     <string name="LensProfileList">Lens</string>
     <string name="LensAddProfile">Add New Lens</string>
     <string name="LensAddProfile_update">Edit Lens</string>
-    <string name="ShootingProfile">Shooting Profile</string>
-    <string name="SingleRow">Single Row 360</string>
-    <string name="SingleRowAddProfile">Add - Single Row 360</string>
-    <string name="SingleRowAddProfile_update">Edit - Single Row 360</string>
-    <string name="MultiRow">Multi Row 360</string>
-    <string name="MultiRowAddProfile">Add - Multi Row 360</string>
-    <string name="multiRowUpdate">Edit - Multi Row 360</string>
-    <string name="PartialGigapixelUpdateProfile">Edit - Partial/Gigapixel</string>
-    <string name="PartialGigapixel">Partial/Gigapixel profile</string>
-    <string name="partialGigapixelAddProfile">Add - Partial/Gigapixel</string>
+    <string name="ShootingProfile">Shooting Profiles</string>
+    <string name="SingleRow">Single Row 360° profiles</string>
+    <string name="SingleRowAddProfile">Add profile - Single Row 360°</string>
+    <string name="SingleRowAddProfile_update">Edit profile - Single Row 360°</string>
+    <string name="MultiRow">Multi Row 360° profiles</string>
+    <string name="MultiRowAddProfile">Add profile - Multi Row 360°</string>
+    <string name="multiRowUpdate">Edit profile - Multi Row 360</string>
+    <string name="PartialGigapixelUpdateProfile">Edit profile - Partial/Gigapixel</string>
+    <string name="PartialGigapixel">Partial/Gigapixel profiles</string>
+    <string name="partialGigapixelAddProfile">Add profile - Partial/Gigapixel</string>
 </resources>

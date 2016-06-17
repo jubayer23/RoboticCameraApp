@@ -143,7 +143,7 @@ public class SingleRowAdapter extends BaseAdapter {
         dialog.setContentView(R.layout.dialog_setting);
 
         TextView tv_warning = (TextView)dialog.findViewById(R.id.tv_warning);
-        tv_warning.setText("Are you sure to delete this Single Row 360 Profile?");
+        tv_warning.setText("Are you sure you want to delete this profile?");
 
         Button btn_delete = (Button)dialog.findViewById(R.id.btn_delete);
 

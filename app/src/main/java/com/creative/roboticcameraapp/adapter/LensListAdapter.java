@@ -141,7 +141,7 @@ public class LensListAdapter extends BaseAdapter {
         dialog.setContentView(R.layout.dialog_setting);
 
         TextView tv_warning = (TextView)dialog.findViewById(R.id.tv_warning);
-        tv_warning.setText("Are you sure to delete this Lens Profile?");
+        tv_warning.setText("Are you sure you want to delete this lens?");
 
         Button btn_delete = (Button)dialog.findViewById(R.id.btn_delete);
 

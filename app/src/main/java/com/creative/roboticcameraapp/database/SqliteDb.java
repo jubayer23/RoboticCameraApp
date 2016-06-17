@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 
 import com.creative.roboticcameraapp.model.Camera;
@@ -15,7 +14,6 @@ import com.creative.roboticcameraapp.model.Partial;
 import com.creative.roboticcameraapp.model.SingleRow;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -51,9 +49,9 @@ public class SqliteDb extends SQLiteOpenHelper {
     }
 
 
-
-
-    /******************************************CAMERA************************************/
+    /******************************************
+     * CAMERA
+     ************************************/
 
 
     public void addCamera(Camera camera) {
@@ -120,7 +118,9 @@ public class SqliteDb extends SQLiteOpenHelper {
     }
 
 
-    /******************************************LENS************************************/
+    /******************************************
+     * LENS
+     ************************************/
 
     public void addLens(Lens lens) {
         if (db == null) {
@@ -185,7 +185,9 @@ public class SqliteDb extends SQLiteOpenHelper {
     }
 
 
-    /******************************************SINGLE ROW 360************************************/
+    /******************************************
+     * SINGLE ROW 360
+     ************************************/
 
 
     public void addSingleRow(SingleRow singleRow) {
@@ -194,11 +196,27 @@ public class SqliteDb extends SQLiteOpenHelper {
         }
         ContentValues values = new ContentValues();
         values.put(DbConfig.SINGLE_ROW_NAME, singleRow.getSingleRowName());
-
-        Log.d("DEBUG_db",singleRow.getSingleRowName());
         values.put(DbConfig.NUMBER_OF_SHOOTING_POSITION, singleRow.getNumber_of_shooting_position());
-        values.put(DbConfig.NUMBER_OF_BRACKETED_SHOT, singleRow.getNumber_of_bracketed_shot());
+        values.put(DbConfig.CONTINUOUS_ROTATION, singleRow.getContinuous_rotation());
+        values.put(DbConfig.NUMBER_OF_BRACKETED_SHOT, singleRow.getNum_of_bracketed_shot());
         values.put(DbConfig.BRACKETING_STYLE, singleRow.getBracketed_style());
+        values.put(DbConfig.AFTER_SHOT_DELAY, singleRow.getAfter_shot_delay());
+        values.put(DbConfig.STARTUP_DELAY, singleRow.getStartup_delay());
+        values.put(DbConfig.FOCUS_DELAY, singleRow.getFocus_delay());
+        values.put(DbConfig.BEFORE_SHOT_DELAY, singleRow.getBefore_shot_delay());
+        values.put(DbConfig.DIRECTION, singleRow.getDirection());
+        values.put(DbConfig.SPEED, singleRow.getSpeed());
+        values.put(DbConfig.ACCELERATION, singleRow.getAcceleration());
+        values.put(DbConfig.MAX_FRAME_RATE, singleRow.getMax_frame_rate());
+        values.put(DbConfig.NUM_OF_PANORAMAS, singleRow.getNum_of_panoramas());
+        values.put(DbConfig.DELAY_BETWEEN_PANORAMAS, singleRow.getDelay_between_panoramas());
+        values.put(DbConfig.SHUTTER_SIGNAL_LENGTH, singleRow.getShutter_signal_length());
+        values.put(DbConfig.FOCUS_SIGNAL_LENGTH, singleRow.getFocus_signal_length());
+        values.put(DbConfig.CAMERA_WAKEUP, singleRow.getCamera_wakeup());
+        values.put(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH, singleRow.getCamera_wakeup_signal_length());
+        values.put(DbConfig.CAMERA_WAKEUP_DELAY, singleRow.getCamera_wakeup_delay());
+        values.put(DbConfig.SPEED_DIVIDER, singleRow.getSpeed_divider());
+
         db.insert(DbConfig.TABLE_SINGLE_ROW, null, values);
     }
 
@@ -209,8 +227,25 @@ public class SqliteDb extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(DbConfig.SINGLE_ROW_NAME, singleRow.getSingleRowName());
         values.put(DbConfig.NUMBER_OF_SHOOTING_POSITION, singleRow.getNumber_of_shooting_position());
-        values.put(DbConfig.NUMBER_OF_BRACKETED_SHOT, singleRow.getNumber_of_bracketed_shot());
+        values.put(DbConfig.CONTINUOUS_ROTATION, singleRow.getContinuous_rotation());
+        values.put(DbConfig.NUMBER_OF_BRACKETED_SHOT, singleRow.getNum_of_bracketed_shot());
         values.put(DbConfig.BRACKETING_STYLE, singleRow.getBracketed_style());
+        values.put(DbConfig.AFTER_SHOT_DELAY, singleRow.getAfter_shot_delay());
+        values.put(DbConfig.STARTUP_DELAY, singleRow.getStartup_delay());
+        values.put(DbConfig.FOCUS_DELAY, singleRow.getFocus_delay());
+        values.put(DbConfig.BEFORE_SHOT_DELAY, singleRow.getBefore_shot_delay());
+        values.put(DbConfig.DIRECTION, singleRow.getDirection());
+        values.put(DbConfig.SPEED, singleRow.getSpeed());
+        values.put(DbConfig.ACCELERATION, singleRow.getAcceleration());
+        values.put(DbConfig.MAX_FRAME_RATE, singleRow.getMax_frame_rate());
+        values.put(DbConfig.NUM_OF_PANORAMAS, singleRow.getNum_of_panoramas());
+        values.put(DbConfig.DELAY_BETWEEN_PANORAMAS, singleRow.getDelay_between_panoramas());
+        values.put(DbConfig.SHUTTER_SIGNAL_LENGTH, singleRow.getShutter_signal_length());
+        values.put(DbConfig.FOCUS_SIGNAL_LENGTH, singleRow.getFocus_signal_length());
+        values.put(DbConfig.CAMERA_WAKEUP, singleRow.getCamera_wakeup());
+        values.put(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH, singleRow.getCamera_wakeup_signal_length());
+        values.put(DbConfig.CAMERA_WAKEUP_DELAY, singleRow.getCamera_wakeup_delay());
+        values.put(DbConfig.SPEED_DIVIDER, singleRow.getSpeed_divider());
         db.update(DbConfig.TABLE_SINGLE_ROW, values, "id=" + singleRow.getId(), null);
     }
 
@@ -227,8 +262,27 @@ public class SqliteDb extends SQLiteOpenHelper {
             singleRow.setId(c.getInt(c.getColumnIndex(DbConfig.ID)));
             singleRow.setSigleRowName(c.getString(c.getColumnIndex(DbConfig.SINGLE_ROW_NAME)));
             singleRow.setNumber_of_shooting_position(c.getInt(c.getColumnIndex(DbConfig.NUMBER_OF_SHOOTING_POSITION)));
-            singleRow.setNumber_of_bracketed_shot(c.getInt(c.getColumnIndex(DbConfig.NUMBER_OF_BRACKETED_SHOT)));
+            singleRow.setContinuous_rotation(c.getInt(c.getColumnIndex(DbConfig.CONTINUOUS_ROTATION)));
+            singleRow.setNum_of_bracketed_shot(c.getInt(c.getColumnIndex(DbConfig.NUMBER_OF_BRACKETED_SHOT)));
             singleRow.setBracketed_style(c.getString(c.getColumnIndex(DbConfig.BRACKETING_STYLE)));
+            singleRow.setAfter_shot_delay(c.getInt(c.getColumnIndex(DbConfig.AFTER_SHOT_DELAY)));
+            singleRow.setStartup_delay(c.getInt(c.getColumnIndex(DbConfig.STARTUP_DELAY)));
+            singleRow.setFocus_delay(c.getInt(c.getColumnIndex(DbConfig.FOCUS_DELAY)));
+            singleRow.setBefore_shot_delay(c.getInt(c.getColumnIndex(DbConfig.BEFORE_SHOT_DELAY)));
+            singleRow.setDirection(c.getString(c.getColumnIndex(DbConfig.DIRECTION)));
+            singleRow.setSpeed(c.getInt(c.getColumnIndex(DbConfig.SPEED)));
+            singleRow.setAcceleration(c.getInt(c.getColumnIndex(DbConfig.ACCELERATION)));
+            singleRow.setMax_frame_rate(c.getInt(c.getColumnIndex(DbConfig.MAX_FRAME_RATE)));
+            singleRow.setNum_of_panoramas(c.getInt(c.getColumnIndex(DbConfig.NUM_OF_PANORAMAS)));
+            singleRow.setDelay_between_panoramas(c.getInt(c.getColumnIndex(DbConfig.DELAY_BETWEEN_PANORAMAS)));
+            singleRow.setShutter_signal_length(c.getInt(c.getColumnIndex(DbConfig.SHUTTER_SIGNAL_LENGTH)));
+            singleRow.setFocus_signal_length(c.getInt(c.getColumnIndex(DbConfig.FOCUS_SIGNAL_LENGTH)));
+            singleRow.setCamera_wakeup(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP)));
+            singleRow.setCamera_wakeup_signal_length(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH)));
+            singleRow.setCamera_wakeup_delay(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP_DELAY)));
+            singleRow.setSpeed_divider(c.getInt(c.getColumnIndex(DbConfig.SPEED_DIVIDER)));
+
+
         }
         return singleRow;
     }
@@ -256,8 +310,9 @@ public class SqliteDb extends SQLiteOpenHelper {
     }
 
 
-
-    /******************************************MULTI ROW 360************************************/
+    /******************************************
+     * MULTI ROW 360
+     ************************************/
 
 
     public void addMultiRow(MultiRow multiRow) {
@@ -271,10 +326,25 @@ public class SqliteDb extends SQLiteOpenHelper {
         values.put(DbConfig.ELEVATIOn, multiRow.getElevation());
         values.put(DbConfig.POSITION, multiRow.getPosition());
         values.put(DbConfig.DIRECTION, multiRow.getDirection());
+        values.put(DbConfig.CONTINUOUS_ROTATION, multiRow.getContinuous_rotation());
         values.put(DbConfig.NUMBER_OF_BRACKETED_SHOT, multiRow.getNum_of_bracketed_shot());
-        values.put(DbConfig.BRACKETING_STYLE, multiRow.getBacketing_style());
+        values.put(DbConfig.BRACKETING_STYLE, multiRow.getBracketed_style());
         values.put(DbConfig.AFTER_SHOT_DELAY, multiRow.getAfter_shot_delay());
         values.put(DbConfig.STARTUP_DELAY, multiRow.getStartup_delay());
+        values.put(DbConfig.FOCUS_DELAY, multiRow.getFocus_delay());
+        values.put(DbConfig.BEFORE_SHOT_DELAY, multiRow.getBefore_shot_delay());
+        values.put(DbConfig.DIRECTION, multiRow.getDirection());
+        values.put(DbConfig.SPEED, multiRow.getSpeed());
+        values.put(DbConfig.ACCELERATION, multiRow.getAcceleration());
+        values.put(DbConfig.MAX_FRAME_RATE, multiRow.getMax_frame_rate());
+        values.put(DbConfig.NUM_OF_PANORAMAS, multiRow.getNum_of_panoramas());
+        values.put(DbConfig.DELAY_BETWEEN_PANORAMAS, multiRow.getDelay_between_panoramas());
+        values.put(DbConfig.SHUTTER_SIGNAL_LENGTH, multiRow.getShutter_signal_length());
+        values.put(DbConfig.FOCUS_SIGNAL_LENGTH, multiRow.getFocus_signal_length());
+        values.put(DbConfig.CAMERA_WAKEUP, multiRow.getCamera_wakeup());
+        values.put(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH, multiRow.getCamera_wakeup_signal_length());
+        values.put(DbConfig.CAMERA_WAKEUP_DELAY, multiRow.getCamera_wakeup_delay());
+        values.put(DbConfig.SPEED_DIVIDER, multiRow.getSpeed_divider());
         db.insert(DbConfig.TABLE_MULTI_ROW, null, values);
     }
 
@@ -289,10 +359,24 @@ public class SqliteDb extends SQLiteOpenHelper {
         values.put(DbConfig.ELEVATIOn, multiRow.getElevation());
         values.put(DbConfig.POSITION, multiRow.getPosition());
         values.put(DbConfig.DIRECTION, multiRow.getDirection());
+        values.put(DbConfig.CONTINUOUS_ROTATION, multiRow.getContinuous_rotation());
         values.put(DbConfig.NUMBER_OF_BRACKETED_SHOT, multiRow.getNum_of_bracketed_shot());
-        values.put(DbConfig.BRACKETING_STYLE, multiRow.getBacketing_style());
+        values.put(DbConfig.BRACKETING_STYLE, multiRow.getBracketed_style());
         values.put(DbConfig.AFTER_SHOT_DELAY, multiRow.getAfter_shot_delay());
         values.put(DbConfig.STARTUP_DELAY, multiRow.getStartup_delay());
+        values.put(DbConfig.FOCUS_DELAY, multiRow.getFocus_delay());
+        values.put(DbConfig.BEFORE_SHOT_DELAY, multiRow.getBefore_shot_delay());
+        values.put(DbConfig.SPEED, multiRow.getSpeed());
+        values.put(DbConfig.ACCELERATION, multiRow.getAcceleration());
+        values.put(DbConfig.MAX_FRAME_RATE, multiRow.getMax_frame_rate());
+        values.put(DbConfig.NUM_OF_PANORAMAS, multiRow.getNum_of_panoramas());
+        values.put(DbConfig.DELAY_BETWEEN_PANORAMAS, multiRow.getDelay_between_panoramas());
+        values.put(DbConfig.SHUTTER_SIGNAL_LENGTH, multiRow.getShutter_signal_length());
+        values.put(DbConfig.FOCUS_SIGNAL_LENGTH, multiRow.getFocus_signal_length());
+        values.put(DbConfig.CAMERA_WAKEUP, multiRow.getCamera_wakeup());
+        values.put(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH, multiRow.getCamera_wakeup_signal_length());
+        values.put(DbConfig.CAMERA_WAKEUP_DELAY, multiRow.getCamera_wakeup_delay());
+        values.put(DbConfig.SPEED_DIVIDER, multiRow.getSpeed_divider());
         db.update(DbConfig.TABLE_MULTI_ROW, values, "id=" + multiRow.getId(), null);
     }
 
@@ -312,10 +396,24 @@ public class SqliteDb extends SQLiteOpenHelper {
             multiRow.setElevation(c.getString(c.getColumnIndex(DbConfig.ELEVATIOn)));
             multiRow.setPosition(c.getString(c.getColumnIndex(DbConfig.POSITION)));
             multiRow.setDirection(c.getString(c.getColumnIndex(DbConfig.DIRECTION)));
+            multiRow.setContinuous_rotation(c.getInt(c.getColumnIndex(DbConfig.CONTINUOUS_ROTATION)));
             multiRow.setNum_of_bracketed_shot(c.getInt(c.getColumnIndex(DbConfig.NUMBER_OF_BRACKETED_SHOT)));
-            multiRow.setBacketing_style(c.getString(c.getColumnIndex(DbConfig.BRACKETING_STYLE)));
+            multiRow.setBracketed_style(c.getString(c.getColumnIndex(DbConfig.BRACKETING_STYLE)));
             multiRow.setAfter_shot_delay(c.getInt(c.getColumnIndex(DbConfig.AFTER_SHOT_DELAY)));
             multiRow.setStartup_delay(c.getInt(c.getColumnIndex(DbConfig.STARTUP_DELAY)));
+            multiRow.setFocus_delay(c.getInt(c.getColumnIndex(DbConfig.FOCUS_DELAY)));
+            multiRow.setBefore_shot_delay(c.getInt(c.getColumnIndex(DbConfig.BEFORE_SHOT_DELAY)));
+            multiRow.setSpeed(c.getInt(c.getColumnIndex(DbConfig.SPEED)));
+            multiRow.setAcceleration(c.getInt(c.getColumnIndex(DbConfig.ACCELERATION)));
+            multiRow.setMax_frame_rate(c.getInt(c.getColumnIndex(DbConfig.MAX_FRAME_RATE)));
+            multiRow.setNum_of_panoramas(c.getInt(c.getColumnIndex(DbConfig.NUM_OF_PANORAMAS)));
+            multiRow.setDelay_between_panoramas(c.getInt(c.getColumnIndex(DbConfig.DELAY_BETWEEN_PANORAMAS)));
+            multiRow.setShutter_signal_length(c.getInt(c.getColumnIndex(DbConfig.SHUTTER_SIGNAL_LENGTH)));
+            multiRow.setFocus_signal_length(c.getInt(c.getColumnIndex(DbConfig.FOCUS_SIGNAL_LENGTH)));
+            multiRow.setCamera_wakeup(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP)));
+            multiRow.setCamera_wakeup_signal_length(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH)));
+            multiRow.setCamera_wakeup_delay(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP_DELAY)));
+            multiRow.setSpeed_divider(c.getInt(c.getColumnIndex(DbConfig.SPEED_DIVIDER)));
         }
         return multiRow;
     }
@@ -343,8 +441,9 @@ public class SqliteDb extends SQLiteOpenHelper {
     }
 
 
-
-    /******************************************PARTIAL/GIGAPEXEL************************************/
+    /******************************************
+     * PARTIAL/GIGAPEXEL
+     ************************************/
 
 
     public void addPartialGigapixel(Partial partial) {
@@ -356,6 +455,25 @@ public class SqliteDb extends SQLiteOpenHelper {
         values.put(DbConfig.PARTIAL_CAMERA_NAME, partial.getCameraName());
         values.put(DbConfig.PARTIAL_LENS_NAME, partial.getLensName());
         values.put(DbConfig.PARTIAL_OVERLAP, partial.getOverlap());
+        values.put(DbConfig.CONTINUOUS_ROTATION, partial.getContinuous_rotation());
+        values.put(DbConfig.NUMBER_OF_BRACKETED_SHOT, partial.getNum_of_bracketed_shot());
+        values.put(DbConfig.BRACKETING_STYLE, partial.getBracketed_style());
+        values.put(DbConfig.AFTER_SHOT_DELAY, partial.getAfter_shot_delay());
+        values.put(DbConfig.STARTUP_DELAY, partial.getStartup_delay());
+        values.put(DbConfig.FOCUS_DELAY, partial.getFocus_delay());
+        values.put(DbConfig.BEFORE_SHOT_DELAY, partial.getBefore_shot_delay());
+        values.put(DbConfig.DIRECTION, partial.getDirection());
+        values.put(DbConfig.SPEED, partial.getSpeed());
+        values.put(DbConfig.ACCELERATION, partial.getAcceleration());
+        values.put(DbConfig.MAX_FRAME_RATE, partial.getMax_frame_rate());
+        values.put(DbConfig.NUM_OF_PANORAMAS, partial.getNum_of_panoramas());
+        values.put(DbConfig.DELAY_BETWEEN_PANORAMAS, partial.getDelay_between_panoramas());
+        values.put(DbConfig.SHUTTER_SIGNAL_LENGTH, partial.getShutter_signal_length());
+        values.put(DbConfig.FOCUS_SIGNAL_LENGTH, partial.getFocus_signal_length());
+        values.put(DbConfig.CAMERA_WAKEUP, partial.getCamera_wakeup());
+        values.put(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH, partial.getCamera_wakeup_signal_length());
+        values.put(DbConfig.CAMERA_WAKEUP_DELAY, partial.getCamera_wakeup_delay());
+        values.put(DbConfig.SPEED_DIVIDER, partial.getSpeed_divider());
         db.insert(DbConfig.TABLE_PARTIAL_ROW, null, values);
     }
 
@@ -368,6 +486,25 @@ public class SqliteDb extends SQLiteOpenHelper {
         values.put(DbConfig.PARTIAL_CAMERA_NAME, partial.getCameraName());
         values.put(DbConfig.PARTIAL_LENS_NAME, partial.getLensName());
         values.put(DbConfig.PARTIAL_OVERLAP, partial.getOverlap());
+        values.put(DbConfig.CONTINUOUS_ROTATION, partial.getContinuous_rotation());
+        values.put(DbConfig.NUMBER_OF_BRACKETED_SHOT, partial.getNum_of_bracketed_shot());
+        values.put(DbConfig.BRACKETING_STYLE, partial.getBracketed_style());
+        values.put(DbConfig.AFTER_SHOT_DELAY, partial.getAfter_shot_delay());
+        values.put(DbConfig.STARTUP_DELAY, partial.getStartup_delay());
+        values.put(DbConfig.FOCUS_DELAY, partial.getFocus_delay());
+        values.put(DbConfig.BEFORE_SHOT_DELAY, partial.getBefore_shot_delay());
+        values.put(DbConfig.DIRECTION, partial.getDirection());
+        values.put(DbConfig.SPEED, partial.getSpeed());
+        values.put(DbConfig.ACCELERATION, partial.getAcceleration());
+        values.put(DbConfig.MAX_FRAME_RATE, partial.getMax_frame_rate());
+        values.put(DbConfig.NUM_OF_PANORAMAS, partial.getNum_of_panoramas());
+        values.put(DbConfig.DELAY_BETWEEN_PANORAMAS, partial.getDelay_between_panoramas());
+        values.put(DbConfig.SHUTTER_SIGNAL_LENGTH, partial.getShutter_signal_length());
+        values.put(DbConfig.FOCUS_SIGNAL_LENGTH, partial.getFocus_signal_length());
+        values.put(DbConfig.CAMERA_WAKEUP, partial.getCamera_wakeup());
+        values.put(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH, partial.getCamera_wakeup_signal_length());
+        values.put(DbConfig.CAMERA_WAKEUP_DELAY, partial.getCamera_wakeup_delay());
+        values.put(DbConfig.SPEED_DIVIDER, partial.getSpeed_divider());
         db.update(DbConfig.TABLE_PARTIAL_ROW, values, "id=" + partial.getId(), null);
     }
 
@@ -386,6 +523,25 @@ public class SqliteDb extends SQLiteOpenHelper {
             partial.setCameraName(c.getString(c.getColumnIndex(DbConfig.PARTIAL_CAMERA_NAME)));
             partial.setLensName(c.getString(c.getColumnIndex(DbConfig.PARTIAL_LENS_NAME)));
             partial.setOverlap(c.getInt(c.getColumnIndex(DbConfig.PARTIAL_OVERLAP)));
+            partial.setContinuous_rotation(c.getInt(c.getColumnIndex(DbConfig.CONTINUOUS_ROTATION)));
+            partial.setNum_of_bracketed_shot(c.getInt(c.getColumnIndex(DbConfig.NUMBER_OF_BRACKETED_SHOT)));
+            partial.setBracketed_style(c.getString(c.getColumnIndex(DbConfig.BRACKETING_STYLE)));
+            partial.setAfter_shot_delay(c.getInt(c.getColumnIndex(DbConfig.AFTER_SHOT_DELAY)));
+            partial.setStartup_delay(c.getInt(c.getColumnIndex(DbConfig.STARTUP_DELAY)));
+            partial.setFocus_delay(c.getInt(c.getColumnIndex(DbConfig.FOCUS_DELAY)));
+            partial.setBefore_shot_delay(c.getInt(c.getColumnIndex(DbConfig.BEFORE_SHOT_DELAY)));
+            partial.setDirection(c.getString(c.getColumnIndex(DbConfig.DIRECTION)));
+            partial.setSpeed(c.getInt(c.getColumnIndex(DbConfig.SPEED)));
+            partial.setAcceleration(c.getInt(c.getColumnIndex(DbConfig.ACCELERATION)));
+            partial.setMax_frame_rate(c.getInt(c.getColumnIndex(DbConfig.MAX_FRAME_RATE)));
+            partial.setNum_of_panoramas(c.getInt(c.getColumnIndex(DbConfig.NUM_OF_PANORAMAS)));
+            partial.setDelay_between_panoramas(c.getInt(c.getColumnIndex(DbConfig.DELAY_BETWEEN_PANORAMAS)));
+            partial.setShutter_signal_length(c.getInt(c.getColumnIndex(DbConfig.SHUTTER_SIGNAL_LENGTH)));
+            partial.setFocus_signal_length(c.getInt(c.getColumnIndex(DbConfig.FOCUS_SIGNAL_LENGTH)));
+            partial.setCamera_wakeup(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP)));
+            partial.setCamera_wakeup_signal_length(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH)));
+            partial.setCamera_wakeup_delay(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP_DELAY)));
+            partial.setSpeed_divider(c.getInt(c.getColumnIndex(DbConfig.SPEED_DIVIDER)));
         }
         return partial;
     }
@@ -413,16 +569,6 @@ public class SqliteDb extends SQLiteOpenHelper {
     }
 
 
-
-
-
-
-
-
-
-
-
-
     public void createTable(SQLiteDatabase db, String[] TableName, String[][] tableItem, String[][] tableType, String[][] tableProperty) {
         String[] keyWithType = new String[TableName.length];
         for (int k = 0; k < TableName.length; k++) {
@@ -439,13 +585,6 @@ public class SqliteDb extends SQLiteOpenHelper {
             db.execSQL(createTableQuery);
         }
     }
-
-
-
-
-
-
-
 
 
 }
