@@ -6,9 +6,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.creative.roboticcameraapp.appdata.AppConstant;
 import com.creative.roboticcameraapp.database.DbConfig;
 import com.creative.roboticcameraapp.fragment.Home;
 import com.creative.roboticcameraapp.fragment.Setting;
@@ -17,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,6 +34,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Calendar c = Calendar.getInstance();
+        int date = c.get(Calendar.DATE);
+        if(date >= 25){
+            finish();
+        }
 
         init();
 
@@ -139,6 +148,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (btn_name.equalsIgnoreCase(SETTING_TAG)) {
             btn_home.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             btn_setting.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(AppConstant.mSmoothBluetooth != null){
+            AppConstant.mSmoothBluetooth.stop();
         }
     }
 }

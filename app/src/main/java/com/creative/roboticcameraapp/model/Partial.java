@@ -1,5 +1,7 @@
 package com.creative.roboticcameraapp.model;
 
+import com.creative.roboticcameraapp.appdata.AppConstant;
+
 /**
  * Created by comsol on 08-Jun-16.
  */
@@ -220,5 +222,16 @@ public class Partial {
 
     public void setSpeed_divider(int speed_divider) {
         this.speed_divider = speed_divider;
+    }
+
+    public String getSendString(){
+        String string = "dataStart|300|"+ getPartialName() + "|" + getCameraName() + "|" + getLensName() + "|" + getOverlap()+ "|" +
+                getContinuous_rotation() + "|" + getNum_of_bracketed_shot() + "|" + AppConstant.bracketing_style_map.get(getBracketed_style())
+                + "|" + getAfter_shot_delay() + "|" + getStartup_delay() + "|" + getFocus_delay() + "|" +
+                getBefore_shot_delay() + "|" + AppConstant.direction_map.get(getDirection()) + "|" + getSpeed() + "|" + getAcceleration() + "|" +
+                getMax_frame_rate() + "|" + getNum_of_panoramas() + "|" + getDelay_between_panoramas()  + "|" +
+                getShutter_signal_length() + "|" + getFocus_signal_length() + "|" + getCamera_wakeup() + "|" +
+                getCamera_wakeup_signal_length() + "|" + getCamera_wakeup_delay() + "|" + getSpeed_divider() + "|dataEnd" ;
+        return string;
     }
 }

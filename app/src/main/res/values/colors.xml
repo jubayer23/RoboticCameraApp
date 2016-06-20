@@ -47,5 +47,9 @@
     <color name="cancel_color_2">#565b63</color>
     <color name="cancel_color_2_selected">#404349</color>
 
+    <color name="circle_ash">#383a3d</color>
+
+
+
 
 </resources>

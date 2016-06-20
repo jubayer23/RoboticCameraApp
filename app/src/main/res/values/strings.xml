@@ -18,4 +18,6 @@
     <string name="PartialGigapixelUpdateProfile">Edit profile - Partial/Gigapixel</string>
     <string name="PartialGigapixel">Partial/Gigapixel profiles</string>
     <string name="partialGigapixelAddProfile">Add profile - Partial/Gigapixel</string>
+    <string name="PartialGigapixelSteps">Partial / Gigapixel</string>
+    <string name="adhocinitialize"><![CDATA[Initialize & Adhoc Move & Shoot]]></string>
 </resources>

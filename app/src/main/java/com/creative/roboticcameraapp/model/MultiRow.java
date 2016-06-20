@@ -1,5 +1,7 @@
 package com.creative.roboticcameraapp.model;
 
+import com.creative.roboticcameraapp.appdata.AppConstant;
+
 /**
  * Created by comsol on 06-Jun-16.
  */
@@ -230,5 +232,27 @@ public class MultiRow {
 
     public void setSpeed_divider(int speed_divider) {
         this.speed_divider = speed_divider;
+    }
+
+    public String getSendString(){
+
+        String elevationArray[] = getElevation().split(" ");
+        String positionArray[] = getPosition().split(" ");
+        String directionArray[] = getDirection().split(" ");
+        String row_profile = "";
+
+        for(int i=0;i<elevationArray.length;i++){
+
+            row_profile = row_profile + elevationArray[i] + "|" + positionArray[i] + "|" + AppConstant.direction_map.get(directionArray[i]);
+        }
+
+        String string = "dataStart|200|"+ getMultiRowName() + "|" + getNum_of_rows() + "|" + row_profile + "|" +
+                getContinuous_rotation() + "|" + getNum_of_bracketed_shot() + "|" + AppConstant.bracketing_style_map.get(getBracketed_style())
+                + "|" + getAfter_shot_delay() + "|" + getStartup_delay() + "|" + getFocus_delay() + "|" +
+                getBefore_shot_delay() + "|"  + getSpeed() + "|" + getAcceleration() + "|" +
+                getMax_frame_rate() + "|" + getNum_of_panoramas() + "|" + getDelay_between_panoramas()  + "|" +
+                getShutter_signal_length() + "|" + getFocus_signal_length() + "|" + getCamera_wakeup() + "|" +
+                getCamera_wakeup_signal_length() + "|" + getCamera_wakeup_delay() + "|" + getSpeed_divider() + "|dataEnd" ;
+        return string;
     }
 }

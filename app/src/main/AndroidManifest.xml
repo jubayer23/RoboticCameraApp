@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.creative.roboticcameraapp">
 
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application
         android:name=".appdata.AppController"
@@ -24,7 +26,8 @@
         </activity>
 
 
-        /***************************************CAMERA ROW 360**************************************/
+        /***************************************CAMERA ROW
+        360**************************************/
 
         <activity
             android:name=".CameraProfileList"
@@ -73,7 +76,8 @@
         </activity>
 
 
-        /***************************************SHOOTING PROFILE**************************************/
+        /***************************************SHOOTING
+        PROFILE**************************************/
 
         <activity
             android:name=".ShootingProfile"
@@ -87,8 +91,8 @@
         </activity>
 
 
-
-        /***************************************SINGLE ROW 360**************************************/
+        /***************************************SINGLE ROW
+        360**************************************/
 
         <activity
             android:name=".SingleRowProfileList"
@@ -159,7 +163,30 @@
                 android:value=".PartialGigapixelProfileList" />
         </activity>
 
+        /***************************************PARTIAL/GIGAPIXEL[ STEPS}**************************************/
 
+        <activity
+            android:name=".PartialGigapixelSteps"
+            android:label="@string/PartialGigapixelSteps"
+            android:parentActivityName=".PartialGigapixelProfileList"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".PartialGigapixelProfileList" />
+        </activity>
+
+        /***************************************AD-HOC**************************************/
+
+        <activity
+            android:name=".AdhocInitialize"
+            android:label="@string/adhocinitialize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
     </application>
 
 </manifest>

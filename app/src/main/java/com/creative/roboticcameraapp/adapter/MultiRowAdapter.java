@@ -30,11 +30,13 @@ public class MultiRowAdapter extends BaseAdapter {
 
     private OnEditActionListener listener;
 
+    private boolean is_from_home;
 
-    public MultiRowAdapter(Activity activity, List<MultiRow> histories) {
+    public MultiRowAdapter(Activity activity, List<MultiRow> histories, boolean IS_FROM_HOME) {
         this.activity = activity;
         this.Displayedplaces = histories;
         this.Originalplaces = histories;
+        this.is_from_home = IS_FROM_HOME;
 
 
         inflater = (LayoutInflater) activity
@@ -87,24 +89,28 @@ public class MultiRowAdapter extends BaseAdapter {
 
         viewHolder.multi_row_name.setText(multiRow.getMultiRowName());
 
+        if (!is_from_home) {
+            viewHolder.btn_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-        viewHolder.btn_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                    dialogShowWarning(multiRow.getId(), position);
 
-                dialogShowWarning(multiRow.getId(),position);
-
-            }
-        });
-
-        viewHolder.btn_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(listener!=null){
-                    listener.onEdit(multiRow.getId(),position);
                 }
-            }
-        });
+            });
+
+            viewHolder.btn_edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        listener.onEdit(multiRow.getId(), position);
+                    }
+                }
+            });
+        } else {
+            viewHolder.btn_delete.setVisibility(View.GONE);
+            viewHolder.btn_edit.setVisibility(View.GONE);
+        }
 
 
         return convertView;
@@ -131,9 +137,10 @@ public class MultiRowAdapter extends BaseAdapter {
         this.listener = listener;
     }
 
-    public interface OnEditActionListener{
+    public interface OnEditActionListener {
         void onEdit(int id, int position);
     }
+
     private void dialogShowWarning(final int id, final int position) {
 
         final Dialog dialog = new Dialog(activity,
@@ -141,12 +148,12 @@ public class MultiRowAdapter extends BaseAdapter {
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.dialog_setting);
 
-        TextView tv_warning = (TextView)dialog.findViewById(R.id.tv_warning);
+        TextView tv_warning = (TextView) dialog.findViewById(R.id.tv_warning);
         tv_warning.setText("Are you sure you want to delete this profile?");
 
-        Button btn_delete = (Button)dialog.findViewById(R.id.btn_delete);
+        Button btn_delete = (Button) dialog.findViewById(R.id.btn_delete);
 
-        Button btn_cancel = (Button)dialog.findViewById(R.id.btn_cancel);
+        Button btn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
 
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override

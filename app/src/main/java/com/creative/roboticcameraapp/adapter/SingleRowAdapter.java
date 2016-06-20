@@ -32,11 +32,13 @@ public class SingleRowAdapter extends BaseAdapter {
     private OnEditActionListener listener;
 
 
-    public SingleRowAdapter(Activity activity, List<SingleRow> histories) {
+    private boolean is_from_home;
+
+    public SingleRowAdapter(Activity activity, List<SingleRow> histories, boolean IS_FROM_HOME) {
         this.activity = activity;
         this.Displayedplaces = histories;
         this.Originalplaces = histories;
-
+        this.is_from_home = IS_FROM_HOME;
 
         inflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -88,24 +90,28 @@ public class SingleRowAdapter extends BaseAdapter {
 
         viewHolder.single_row_name.setText(singleRow.getSingleRowName());
 
+        if (!is_from_home) {
+            viewHolder.btn_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-        viewHolder.btn_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                    dialogShowWarning(singleRow.getId(), position);
 
-                dialogShowWarning(singleRow.getId(),position);
-
-            }
-        });
-
-        viewHolder.btn_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(listener!=null){
-                    listener.onEdit(singleRow.getId(),position);
                 }
-            }
-        });
+            });
+
+            viewHolder.btn_edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        listener.onEdit(singleRow.getId(), position);
+                    }
+                }
+            });
+        }else{
+            viewHolder.btn_delete.setVisibility(View.GONE);
+            viewHolder.btn_edit.setVisibility(View.GONE);
+        }
 
 
         return convertView;
@@ -132,9 +138,10 @@ public class SingleRowAdapter extends BaseAdapter {
         this.listener = listener;
     }
 
-    public interface OnEditActionListener{
+    public interface OnEditActionListener {
         void onEdit(int id, int position);
     }
+
     private void dialogShowWarning(final int id, final int position) {
 
         final Dialog dialog = new Dialog(activity,
@@ -142,12 +149,12 @@ public class SingleRowAdapter extends BaseAdapter {
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.dialog_setting);
 
-        TextView tv_warning = (TextView)dialog.findViewById(R.id.tv_warning);
+        TextView tv_warning = (TextView) dialog.findViewById(R.id.tv_warning);
         tv_warning.setText("Are you sure you want to delete this profile?");
 
-        Button btn_delete = (Button)dialog.findViewById(R.id.btn_delete);
+        Button btn_delete = (Button) dialog.findViewById(R.id.btn_delete);
 
-        Button btn_cancel = (Button)dialog.findViewById(R.id.btn_cancel);
+        Button btn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
 
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override

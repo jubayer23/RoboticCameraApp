@@ -38,6 +38,17 @@ public class AppController extends Application {
 
         this.scale = getResources().getDisplayMetrics().density;
 
+
+        for(int i =0;i< AppConstant.bracketing_style.length;i++)
+        {
+            AppConstant.bracketing_style_map.put(AppConstant.bracketing_style[i],i+1);
+        }
+
+        for(int i =0;i< AppConstant.direction.length;i++)
+        {
+            AppConstant.direction_map.put(AppConstant.direction[i],i+1);
+        }
+
         // FacebookSdk.sdkInitialize(getApplicationContext());
 
     }
