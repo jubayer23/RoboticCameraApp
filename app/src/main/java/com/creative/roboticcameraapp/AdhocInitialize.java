@@ -82,7 +82,7 @@ public class AdhocInitialize extends AppCompatActivity implements View.OnClickLi
 
                 AppConstant.mSmoothBluetooth.send(getShootButtonString());
 
-                showDialogWarning(SUCCESS_SHOOT);
+               // showDialogWarning(SUCCESS_SHOOT);
 
             } else {
                 showDialogWarning(ERROR_BLUETOOTH);
@@ -131,7 +131,7 @@ public class AdhocInitialize extends AppCompatActivity implements View.OnClickLi
 
                     }
                 } else {
-                    showDialogWarning(ERROR_BLUETOOTH);
+                    //showDialogWarning(ERROR_BLUETOOTH);
                 }
 
 

@@ -9,11 +9,11 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textColor="@color/white"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:text="Step 1 of 2 : set upper left corner of frame."/>
+        android:text="Step 1 of 2 : set upper left corner of frame."
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
 
     <RelativeLayout
@@ -45,12 +45,12 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_above="@+id/btn_set"
-            android:gravity="center"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/background_square"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:background="@drawable/background_square">
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -62,10 +62,13 @@
             android:id="@+id/btn_right"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_toRightOf="@+id/btn_set"
-            android:gravity="center"
             android:layout_centerVertical="true"
-            android:background="@drawable/background_square">
+            android:layout_toRightOf="@+id/btn_set"
+            android:background="@drawable/background_square"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -78,9 +81,12 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_below="@+id/btn_set"
-            android:gravity="center"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/background_square">
+            android:background="@drawable/background_square"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -93,10 +99,13 @@
             android:id="@+id/btn_left"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_toLeftOf="@+id/btn_set"
-            android:gravity="center"
             android:layout_centerVertical="true"
-            android:background="@drawable/background_square">
+            android:layout_toLeftOf="@+id/btn_set"
+            android:background="@drawable/background_square"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="wrap_content"

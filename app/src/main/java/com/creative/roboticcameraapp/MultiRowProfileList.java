@@ -3,6 +3,7 @@ package com.creative.roboticcameraapp;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -152,6 +153,15 @@ public class MultiRowProfileList extends AppCompatActivity implements MultiRowAd
                 //singleRow.getSendString();
 
                 AppConstant.mSmoothBluetooth.send(multiRow.getSendString());
+
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        AppConstant.mSmoothBluetooth.send(multiRow.getSendStringRowInformation());
+                    }
+                }, 1000);
 
                 //TODO
                 dialog.dismiss();

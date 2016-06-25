@@ -18,7 +18,7 @@
             android:layout_height="80dp"
             android:layout_centerInParent="true"
             android:layout_margin="10dp"
-            android:background="@drawable/btn_set_selector"
+            android:background="@drawable/btn_shoot_selector"
             android:gravity="center">
 
             <TextView
@@ -55,6 +55,9 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/btn_shoot"
             android:background="@drawable/background_square"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:gravity="center">
 
             <ImageView
@@ -70,6 +73,9 @@
             android:layout_below="@+id/btn_shoot"
             android:layout_centerHorizontal="true"
             android:background="@drawable/background_square"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:gravity="center">
 
             <ImageView
@@ -86,6 +92,9 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/btn_shoot"
             android:background="@drawable/background_square"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:gravity="center">
 
             <ImageView

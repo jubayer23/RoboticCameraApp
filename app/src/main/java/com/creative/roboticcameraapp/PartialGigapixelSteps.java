@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -94,6 +95,7 @@ public class PartialGigapixelSteps extends AppCompatActivity implements View.OnC
             if (isSet) {
 
                 if (isStepOne) {
+                    isStepOne = false;
                     isSet = false;
                     tv_title.setText("Step 2 of 2 : set lower right corner of frame.");
                     btn_submit.setText("Start");
@@ -159,7 +161,7 @@ public class PartialGigapixelSteps extends AppCompatActivity implements View.OnC
 
                     }
                 } else {
-                    showDialogWarning(ERROR_BLUETOOTH);
+                    //showDialogWarning(ERROR_BLUETOOTH);
                 }
 
 
@@ -214,6 +216,7 @@ public class PartialGigapixelSteps extends AppCompatActivity implements View.OnC
             } else {
                 tv_warning.setText("Lower right corner has been set");
             }
+            btn_cancel.setText("OK");
             btn_cancel.setBackgroundResource(R.drawable.btn_save_selector);
 
         } else if (warning_for.equalsIgnoreCase(ERROR_SET)) {
@@ -286,5 +289,20 @@ public class PartialGigapixelSteps extends AppCompatActivity implements View.OnC
     private String getStartButtonString() {
 
         return "dataStart|350|panoStart|dataEnd";
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int itemId = item.getItemId();
+        switch (itemId) {
+            case android.R.id.home:
+
+                onBackPressed();
+                break;
+
+        }
+
+        return true;
     }
 }

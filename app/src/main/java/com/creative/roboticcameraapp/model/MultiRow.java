@@ -236,6 +236,19 @@ public class MultiRow {
 
     public String getSendString(){
 
+
+        String string = "dataStart|200|"+ getMultiRowName() +
+                "|" + getContinuous_rotation() + "|" + getNum_of_bracketed_shot() +
+                "|" + AppConstant.bracketing_style_map.get(getBracketed_style())
+                + "|" + getAfter_shot_delay() + "|" + getStartup_delay() + "|" + getFocus_delay() + "|" +
+                getBefore_shot_delay() + "|"  + getSpeed() + "|" + getAcceleration() + "|" +
+                getMax_frame_rate() + "|" + getNum_of_panoramas() + "|" + getDelay_between_panoramas()  + "|" +
+                getShutter_signal_length() + "|" + getFocus_signal_length() + "|" + getCamera_wakeup() + "|" +
+                getCamera_wakeup_signal_length() + "|" + getCamera_wakeup_delay() + "|" + getSpeed_divider() + "|dataEnd" ;
+        return string.replaceAll("\\s+","");
+    }
+
+    public String getSendStringRowInformation(){
         String elevationArray[] = getElevation().split(" ");
         String positionArray[] = getPosition().split(" ");
         String directionArray[] = getDirection().split(" ");
@@ -246,13 +259,7 @@ public class MultiRow {
             row_profile = row_profile + elevationArray[i] + "|" + positionArray[i] + "|" + AppConstant.direction_map.get(directionArray[i]);
         }
 
-        String string = "dataStart|200|"+ getMultiRowName() + "|" + getNum_of_rows() + "|" + row_profile + "|" +
-                getContinuous_rotation() + "|" + getNum_of_bracketed_shot() + "|" + AppConstant.bracketing_style_map.get(getBracketed_style())
-                + "|" + getAfter_shot_delay() + "|" + getStartup_delay() + "|" + getFocus_delay() + "|" +
-                getBefore_shot_delay() + "|"  + getSpeed() + "|" + getAcceleration() + "|" +
-                getMax_frame_rate() + "|" + getNum_of_panoramas() + "|" + getDelay_between_panoramas()  + "|" +
-                getShutter_signal_length() + "|" + getFocus_signal_length() + "|" + getCamera_wakeup() + "|" +
-                getCamera_wakeup_signal_length() + "|" + getCamera_wakeup_delay() + "|" + getSpeed_divider() + "|dataEnd" ;
-        return string;
+        String string = "dataStart|201|"+  getNum_of_rows() + "|" + row_profile +  "|dataEnd" ;
+        return string.replaceAll("\\s+","");
     }
 }

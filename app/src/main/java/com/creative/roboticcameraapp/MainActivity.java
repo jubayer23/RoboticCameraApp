@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Calendar c = Calendar.getInstance();
         int date = c.get(Calendar.DATE);
-        if(date >= 25){
+        if(date >= 30){
             finish();
         }
 
