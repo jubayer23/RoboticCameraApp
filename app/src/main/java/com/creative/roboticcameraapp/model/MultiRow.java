@@ -256,10 +256,10 @@ public class MultiRow {
 
         for(int i=0;i<elevationArray.length;i++){
 
-            row_profile = row_profile + elevationArray[i] + "|" + positionArray[i] + "|" + AppConstant.direction_map.get(directionArray[i]);
+            row_profile = row_profile + elevationArray[i] + "|" + positionArray[i] + "|" + AppConstant.direction_map.get(directionArray[i]) + "|";
         }
 
-        String string = "dataStart|201|"+  getNum_of_rows() + "|" + row_profile +  "|dataEnd" ;
+        String string = "dataStart|201|"+  getNum_of_rows() + "|" + row_profile +  "dataEnd" ;
         return string.replaceAll("\\s+","");
     }
 }

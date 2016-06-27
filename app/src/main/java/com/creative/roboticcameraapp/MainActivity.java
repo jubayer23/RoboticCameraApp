@@ -35,11 +35,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Calendar c = Calendar.getInstance();
-        int date = c.get(Calendar.DATE);
-        if(date >= 30){
-            finish();
-        }
+       // Calendar c = Calendar.getInstance();
+       // int date = c.get(Calendar.DATE);
+       // if(date >= 30){
+        //    finish();
+        //}
 
         init();
 

@@ -9,9 +9,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.creative.roboticcameraapp.MultiRowAddUpdateProfile;
@@ -201,7 +204,7 @@ public class MRStepTwo extends Fragment implements View.OnClickListener, View.On
             layout.setLayoutParams(LLParams);
 
 
-            EditText ed = new EditText(getActivity());
+            final EditText ed = new EditText(getActivity());
             ed.setLayoutParams(EDParams);
             ed.setPadding(margin, 0, 0, 0);
             ed.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
@@ -221,9 +224,22 @@ public class MRStepTwo extends Fragment implements View.OnClickListener, View.On
                 }
             });
 
+            ed.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                    if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                       // performSearch();
+                        int position = ed_list_elevation.indexOf(ed);
+                        ed_list_position.get(position).requestFocus();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
             ed_list_elevation.add(ed);
 
-            EditText ed_2 = new EditText(getActivity());
+            final EditText ed_2 = new EditText(getActivity());
             ed_2.setPadding(margin, 0, 0, 0);
             ed_2.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
             ed_2.setLayoutParams(EDParams);
@@ -244,6 +260,19 @@ public class MRStepTwo extends Fragment implements View.OnClickListener, View.On
 
 
                     }
+                }
+            });
+
+            ed_2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                    if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                        // performSearch();
+                        int position = ed_list_position.indexOf(ed_2);
+                        ed_list_elevation.get(position+1).requestFocus();
+                        return true;
+                    }
+                    return false;
                 }
             });
 

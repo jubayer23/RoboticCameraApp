@@ -42,99 +42,107 @@
     </LinearLayout>
 
     <ScrollView
+        android:id="@+id/sv_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ll_heading"
-        android:layout_marginBottom="60dp"
         android:layout_marginTop="10dp">
 
-        <LinearLayout
-            android:id="@+id/ll_container"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/ll_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_edittext" />
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_edittext" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_edittext">
+
+                        <Spinner
+                            android:id="@+id/spinner_bracketing_style"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:background="@null"
+                            android:popupBackground="@color/colorPrimary" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:padding="5dp"
+                            android:src="@drawable/spinner_arrow" />
+                    </RelativeLayout>
 
 
-            android:orientation="vertical">
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3">
+                android:layout_below="@+id/ll_container"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
-                <EditText
+                <Button
+                    android:id="@+id/btn_next_2"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="5dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/rounded_edittext" />
+                    android:background="@drawable/btn_save_selector"
+                    android:text="NEXT"
+                    android:textColor="@color/white"
+                    android:textSize="25sp" />
 
-                <EditText
+                <Button
+                    android:id="@+id/btn_cancel_2"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="5dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/rounded_edittext" />
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/rounded_edittext">
-
-                    <Spinner
-                        android:id="@+id/spinner_bracketing_style"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:background="@null"
-                        android:popupBackground="@color/colorPrimary" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:padding="5dp"
-                        android:src="@drawable/spinner_arrow" />
-                </RelativeLayout>
-
-
+                    android:background="@drawable/btn_cancel_selector"
+                    android:text="BACK"
+                    android:textColor="@color/white"
+                    android:textSize="25sp" />
             </LinearLayout>
-        </LinearLayout>
+
+
+        </RelativeLayout>
+
 
     </ScrollView>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_next_2"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_save_selector"
-            android:text="NEXT"
-            android:textColor="@color/white"
-            android:textSize="25sp" />
-
-        <Button
-            android:id="@+id/btn_cancel_2"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_cancel_selector"
-            android:text="BACK"
-            android:textColor="@color/white"
-            android:textSize="25sp" />
-    </LinearLayout>
 </RelativeLayout>
