@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.creative.roboticcameraapp.R;
+import com.creative.roboticcameraapp.appdata.AppConstant;
 import com.creative.roboticcameraapp.appdata.AppController;
 import com.creative.roboticcameraapp.model.SingleRow;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -79,6 +80,9 @@ public class SingleRowAdapter extends BaseAdapter {
             viewHolder.btn_delete = (ImageView) convertView
                     .findViewById(R.id.btn_delete);
 
+            viewHolder.btn_duplicate = (ImageView) convertView
+                    .findViewById(R.id.btn_duplicate);
+
 
             convertView.setTag(viewHolder);
         } else {
@@ -108,9 +112,19 @@ public class SingleRowAdapter extends BaseAdapter {
                     }
                 }
             });
+
+            viewHolder.btn_duplicate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    dialogShowWarningForDuplicate(singleRow.getId(), position);
+
+                }
+            });
         }else{
             viewHolder.btn_delete.setVisibility(View.GONE);
             viewHolder.btn_edit.setVisibility(View.GONE);
+            viewHolder.btn_duplicate.setVisibility(View.GONE);
         }
 
 
@@ -127,6 +141,7 @@ public class SingleRowAdapter extends BaseAdapter {
         private TextView single_row_name;
         private ImageView btn_edit;
         private ImageView btn_delete;
+        private ImageView btn_duplicate;
 
     }
 
@@ -140,6 +155,31 @@ public class SingleRowAdapter extends BaseAdapter {
 
     public interface OnEditActionListener {
         void onEdit(int id, int position);
+    }
+
+
+    public void sort(int sort_type){
+        switch (sort_type){
+            case AppConstant.ASENDING:
+
+                Collections.sort(Displayedplaces, new SingleRow.NameComparatorAsending());
+                notifyDataSetChanged();
+
+                break;
+            case AppConstant.DESENDING:
+
+                Collections.sort(Displayedplaces, new SingleRow.NameComparatorDesending());
+                notifyDataSetChanged();
+
+                break;
+            case AppConstant.DATE:
+
+                Collections.sort(Displayedplaces, new SingleRow.DateComparatorAsending());
+                notifyDataSetChanged();
+
+                break;
+        }
+
     }
 
     private void dialogShowWarning(final int id, final int position) {
@@ -162,6 +202,53 @@ public class SingleRowAdapter extends BaseAdapter {
 
                 AppController.getInstance().getsqliteDbInstance().deleteSingleRow(id);
                 Displayedplaces.remove(position);
+                notifyDataSetChanged();
+                dialog.dismiss();
+
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+    }
+
+
+    private void dialogShowWarningForDuplicate(final int id, final int position) {
+
+        final Dialog dialog = new Dialog(activity,
+                android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dialog_setting);
+
+        TextView tv_warning = (TextView) dialog.findViewById(R.id.tv_warning);
+        tv_warning.setText("Are you sure you want to Duplicate this profile?");
+
+        Button btn_delete = (Button) dialog.findViewById(R.id.btn_delete);
+        btn_delete.setBackgroundResource(R.drawable.btn_save_selector);
+        btn_delete.setText("Yes");
+
+        Button btn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SingleRow singleRow = AppController.getInstance().getsqliteDbInstance().getSingleRow(id);
+
+
+                singleRow.setId(singleRow.getId() + 1);
+
+                singleRow.setSigleRowName("copy_" + singleRow.getSingleRowName());
+
+                AppController.getInstance().getsqliteDbInstance().addSingleRow(singleRow);
+
+                Displayedplaces.add(singleRow);
                 notifyDataSetChanged();
                 dialog.dismiss();
 

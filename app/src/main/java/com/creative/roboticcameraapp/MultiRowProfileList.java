@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +30,7 @@ import java.util.List;
  */
 public class MultiRowProfileList extends AppCompatActivity implements MultiRowAdapter.OnEditActionListener {
 
-    private FloatingActionButton addMultiRowProfile;
+    private FloatingActionButton addMultiRowProfile, sortProfile;
 
     private ListView list_multi_row;
 
@@ -62,12 +63,9 @@ public class MultiRowProfileList extends AppCompatActivity implements MultiRowAd
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                    if (AppConstant.mSmoothBluetooth != null) {
-                        if (AppConstant.mSmoothBluetooth.isConnected()) {
-                            showSendDataDialog(multiRows.get(i));
-                        } else {
-                            showDialogWarning();
-                        }
+
+                    if (MainActivity.isConnected()) {
+                        showSendDataDialog(multiRows.get(i));
                     } else {
                         showDialogWarning();
                     }
@@ -76,7 +74,7 @@ public class MultiRowProfileList extends AppCompatActivity implements MultiRowAd
                 }
             });
 
-            addMultiRowProfile.setVisibility(View.GONE);
+            addMultiRowProfile.setBackgroundTintList(this.getResources().getColorStateList(R.color.red));
 
         } else {
             multiRowAdapter = new MultiRowAdapter(this, AppController.getInstance().getsqliteDbInstance().getAllMultiRow(), IS_FROM_HOME);
@@ -85,7 +83,7 @@ public class MultiRowProfileList extends AppCompatActivity implements MultiRowAd
             list_multi_row.setAdapter(multiRowAdapter);
         }
 
-
+        multiRowAdapter.sort(AppController.getInstance().getPrefManger().getSortOrderMultiRow());
     }
 
     private void init() {
@@ -97,8 +95,27 @@ public class MultiRowProfileList extends AppCompatActivity implements MultiRowAd
         addMultiRowProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MultiRowProfileList.this, MultiRowAddUpdateProfile.class);
-                startActivityForResult(intent, 0);
+                if (IS_FROM_HOME) {
+
+                    showPauseResumeDialog();
+
+                } else {
+                    Intent intent = new Intent(MultiRowProfileList.this, MultiRowAddUpdateProfile.class);
+                    startActivityForResult(intent, 0);
+                }
+
+            }
+        });
+
+        sortProfile = (FloatingActionButton) findViewById(R.id.sort_profile);
+
+
+        sortProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                showDialogForSort();
+
             }
         });
     }
@@ -152,14 +169,14 @@ public class MultiRowProfileList extends AppCompatActivity implements MultiRowAd
 
                 //singleRow.getSendString();
 
-                AppConstant.mSmoothBluetooth.send(multiRow.getSendString());
+                MainActivity.sendCommand(multiRow.getSendString());
 
 
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        AppConstant.mSmoothBluetooth.send(multiRow.getSendStringRowInformation());
+                        MainActivity.sendCommand(multiRow.getSendStringRowInformation());
                     }
                 }, 1000);
 
@@ -196,6 +213,112 @@ public class MultiRowProfileList extends AppCompatActivity implements MultiRowAd
                 dialog.dismiss();
             }
         });
+
+
+        dialog.show();
+    }
+
+    private void showPauseResumeDialog() {
+        final Dialog dialog = new Dialog(MultiRowProfileList.this,
+                android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dialog_pause_resume);
+
+        LinearLayout btn_pause_resume = (LinearLayout) dialog.findViewById(R.id.btn_pause_resume);
+
+
+        LinearLayout btn_cancel = (LinearLayout) dialog.findViewById(R.id.btn_cancel);
+
+
+        btn_pause_resume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (MainActivity.isConnected()) {
+                    // if (AppConstant.mSmoothBluetooth.isConnected()) {
+                    MainActivity.sendCommand("dataStart|610|dataEnd");
+                    // } else {
+                    //     showDialogWarning();
+                    // }
+                } else {
+                    showDialogWarning();
+                }
+
+            }
+        });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (MainActivity.isConnected()) {
+                    // if (AppConstant.mSmoothBluetooth.isConnected()) {
+                    MainActivity.sendCommand("dataStart|620|dataEnd");
+                    // } else {
+                    //     showDialogWarning();
+                    // }
+                } else {
+                    showDialogWarning();
+                }
+
+
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+    }
+
+    private void showDialogForSort() {
+        final Dialog dialog = new Dialog(MultiRowProfileList.this,
+                android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dialog_for_sort);
+
+
+        Button btn_aes = (Button) dialog.findViewById(R.id.btn_aes);
+
+        Button btn_des = (Button) dialog.findViewById(R.id.btn_disending);
+
+        Button btn_date = (Button) dialog.findViewById(R.id.btn_date);
+
+        btn_aes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                multiRowAdapter.sort(AppConstant.ASENDING);
+                AppController.getInstance().getPrefManger().setSortOrderForMultiRow(AppConstant.ASENDING);
+
+                dialog.dismiss();
+            }
+        });
+
+        btn_des.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                multiRowAdapter.sort(AppConstant.DESENDING);
+                AppController.getInstance().getPrefManger().setSortOrderForMultiRow(AppConstant.DESENDING);
+
+                dialog.dismiss();
+            }
+        });
+
+        btn_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                multiRowAdapter.sort(AppConstant.DATE);
+                AppController.getInstance().getPrefManger().setSortOrderForMultiRow(AppConstant.DATE);
+
+                dialog.dismiss();
+            }
+        });
+
 
 
         dialog.show();

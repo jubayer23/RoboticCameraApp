@@ -27,14 +27,13 @@ import java.util.List;
 /**
  * Created by comsol on 02-Jun-16.
  */
-public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implements View.OnFocusChangeListener{
+public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implements View.OnFocusChangeListener {
 
     private EditText ed_profile_name, ed_overlap, ed_num_of_bracketed_shot,
             ed_after_shot_delay, ed_startup_delay, ed_focus_delay, ed_before_shot_delay, ed_speed, ed_acceleration, ed_max_frame_rate,
-            ed_num_of_panoramas, ed_delay_between_panoramas, ed_shutter_length, ed_focus_signal_length, ed_camera_wakeup_signal_length, ed_camera_wakeup_delay,
-            ed_speed_divider;
+            ed_num_of_panoramas, ed_delay_between_panoramas, ed_shutter_length, ed_focus_signal_length, ed_camera_wakeup_signal_length, ed_camera_wakeup_delay;
 
-    private Switch sw_camera_wakeup, sw_continuous_rotation;
+    private Switch sw_camera_wakeup, sw_continuous_rotation, sw_return_to_start;
 
     private Button btn_save, btn_cancel;
 
@@ -42,11 +41,11 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
 
     private Partial currentCamera; //Only be available if update is triggered
 
-    private Spinner sp_camera_name,sp_lens_name,sp_bracketing_style, sp_direction;
+    private Spinner sp_camera_name, sp_lens_name, sp_bracketing_style, sp_direction, sp_continuos_rotation_shutter_release;
 
-    private List<String> list_camera,list_lens,list_bracketing_style, list_direction;
+    private List<String> list_camera, list_lens, list_bracketing_style, list_direction, list_continuos_rotation_shutter_release;
 
-    private ArrayAdapter<String> dataAdapterCamera,dataAdapterLens,dataAdapterBracketingStyle, dataAdapterDirection;
+    private ArrayAdapter<String> dataAdapterCamera, dataAdapterLens, dataAdapterBracketingStyle, dataAdapterDirection, dataAdapterContinuosRotationShutter;
 
     private EditText edError;
 
@@ -72,7 +71,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
             list_camera.add(currentCamera.getCameraName());
             List<Camera> cameras = AppController.getInstance().getsqliteDbInstance().getAllCamera();
             for (int i = 0; i < cameras.size(); i++) {
-                if (list_camera.contains(cameras.get(i).getCameraName()))continue;
+                if (list_camera.contains(cameras.get(i).getCameraName())) continue;
                 list_camera.add(cameras.get(i).getCameraName());
             }
             dataAdapterCamera.notifyDataSetChanged();
@@ -81,7 +80,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
             list_lens.add(currentCamera.getLensName());
             List<Lens> lens = AppController.getInstance().getsqliteDbInstance().getAllLenses();
             for (int i = 0; i < lens.size(); i++) {
-                if (list_lens.contains(lens.get(i).getLensName()))continue;
+                if (list_lens.contains(lens.get(i).getLensName())) continue;
                 list_lens.add(lens.get(i).getLensName());
             }
             dataAdapterLens.notifyDataSetChanged();
@@ -89,6 +88,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
 
             ed_overlap.setText(currentCamera.getOverlap() + "");
             sw_continuous_rotation.setChecked(currentCamera.getContinuous_rotation() == 0 ? false : true);
+            sw_return_to_start.setChecked(currentCamera.getReturn_to_start() == 0 ? false : true);
             ed_num_of_bracketed_shot.setText(currentCamera.getNum_of_bracketed_shot() + "");
 
             list_bracketing_style.add(currentCamera.getBracketed_style());
@@ -111,6 +111,14 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
             }
             dataAdapterDirection.notifyDataSetChanged();
 
+            list_continuos_rotation_shutter_release.add(currentCamera.getContinuosRotationShutter());
+            for (int i = 0; i < AppConstant.contuNiousRotationShutterRelease.length; i++) {
+                if (list_continuos_rotation_shutter_release.contains(AppConstant.contuNiousRotationShutterRelease[i]))
+                    continue;
+                list_continuos_rotation_shutter_release.add(AppConstant.contuNiousRotationShutterRelease[i]);
+            }
+            dataAdapterContinuosRotationShutter.notifyDataSetChanged();
+
             ed_speed.setText(currentCamera.getSpeed() + "");
             ed_acceleration.setText(currentCamera.getAcceleration() + "");
             ed_max_frame_rate.setText(currentCamera.getMax_frame_rate() + "");
@@ -121,7 +129,6 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
             sw_camera_wakeup.setChecked(currentCamera.getCamera_wakeup() == 0 ? false : true);
             ed_camera_wakeup_signal_length.setText(currentCamera.getCamera_wakeup_signal_length() + "");
             ed_camera_wakeup_delay.setText(currentCamera.getCamera_wakeup_delay() + "");
-            ed_speed_divider.setText(currentCamera.getSpeed_divider() + "");
 
         } else {
             //txtTitle.setText("Add Camera Profile");
@@ -149,6 +156,11 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
             }
             dataAdapterDirection.notifyDataSetChanged();
 
+            for (int i = 0; i < AppConstant.contuNiousRotationShutterRelease.length; i++) {
+                list_continuos_rotation_shutter_release.add(AppConstant.contuNiousRotationShutterRelease[i]);
+            }
+            dataAdapterContinuosRotationShutter.notifyDataSetChanged();
+
 
         }
 
@@ -165,6 +177,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
                     currentCamera.setOverlap(Integer.parseInt(ed_overlap.getText().toString()));
 
                     currentCamera.setContinuous_rotation(sw_continuous_rotation.isChecked() ? 1 : 0);
+                    currentCamera.setReturn_to_start(sw_return_to_start.isChecked() ? 1 : 0);
                     currentCamera.setBracketed_style(sp_bracketing_style.getSelectedItem().toString());
                     if (ed_num_of_bracketed_shot.getText().toString().isEmpty()) {
                         currentCamera.setNum_of_bracketed_shot(AppConstant.DEFAULT_NUM_OF_BRACKETED_SHOTS);
@@ -193,6 +206,9 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
                     }
 
                     currentCamera.setDirection(sp_direction.getSelectedItem().toString());
+
+                    currentCamera.setContinuosRotationShutter(sp_continuos_rotation_shutter_release.getSelectedItem().toString());
+
 
                     if (ed_speed.getText().toString().isEmpty()) {
                         currentCamera.setSpeed(AppConstant.DEFAULT_SPEED);
@@ -242,11 +258,6 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
                         currentCamera.setCamera_wakeup_delay(AppConstant.DEFAULT_CAMERA_WAKEUP_DELAY);
                     } else {
                         currentCamera.setCamera_wakeup_delay(Integer.parseInt(ed_camera_wakeup_delay.getText().toString()));
-                    }
-                    if (ed_speed_divider.getText().toString().isEmpty()) {
-                        currentCamera.setSpeed_divider(AppConstant.DEFAULT_SPEED_DIVIDER);
-                    } else {
-                        currentCamera.setSpeed_divider(Integer.parseInt(ed_speed_divider.getText().toString()));
                     }
                     if (shouldUpdate) {
                         AppController.getInstance().getsqliteDbInstance().updatePartialGigapixel(currentCamera);
@@ -306,13 +317,13 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
         ed_camera_wakeup_signal_length.setOnFocusChangeListener(this);
         ed_camera_wakeup_delay = (EditText) findViewById(R.id.ed_camera_wakeup_delay);
         ed_camera_wakeup_delay.setOnFocusChangeListener(this);
-        ed_speed_divider = (EditText) findViewById(R.id.ed_speed_divider);
-        ed_speed_divider.setOnFocusChangeListener(this);
 
         sw_continuous_rotation = (Switch) findViewById(R.id.sw_continious_rotation);
-        if(AppConstant.DEFAULT_CONTINUOUS_ROTATION)sw_continuous_rotation.setChecked(true);
+        if (AppConstant.DEFAULT_CONTINUOUS_ROTATION) sw_continuous_rotation.setChecked(true);
         sw_camera_wakeup = (Switch) findViewById(R.id.sw_camera_wakeup);
-        if(AppConstant.DEFAULT_CAMERA_WAKEUP)sw_camera_wakeup.setChecked(true);
+        if (AppConstant.DEFAULT_CAMERA_WAKEUP) sw_camera_wakeup.setChecked(true);
+        sw_return_to_start = (Switch) findViewById(R.id.sw_return_to_start);
+        if (AppConstant.DEFAULT_RETURN_TO_START) sw_return_to_start.setChecked(true);
 
         btn_save = (Button) findViewById(R.id.btn_save);
         btn_cancel = (Button) findViewById(R.id.btn_cancel);
@@ -345,22 +356,19 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
 
         sp_direction.setAdapter(dataAdapterDirection);
 
+        sp_continuos_rotation_shutter_release = (Spinner) findViewById(R.id.sp_continuos_rotation_shutter_release);
+        list_continuos_rotation_shutter_release = new ArrayList<>();
+        dataAdapterContinuosRotationShutter = new ArrayAdapter<String>
+                (this, R.layout.spinner_item, list_continuos_rotation_shutter_release);
+
+        sp_continuos_rotation_shutter_release.setAdapter(dataAdapterContinuosRotationShutter);
+
     }
 
     public boolean showWarningDialog() {
 
         boolean valid = true;
 
-        if (!ed_speed_divider.getText().toString().isEmpty()) {
-            long value = Long.parseLong(ed_speed_divider.getText().toString());
-            if (value < 1 || value > 32000) {
-                ed_speed_divider.setError("Invalid input");
-                ed_speed_divider.requestFocus();
-                valid = false;
-            } else {
-                ed_speed_divider.setError(null);
-            }
-        }
         if (!ed_camera_wakeup_delay.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_camera_wakeup_delay.getText().toString());
             if (value < 100 || value > 5000) {
@@ -384,7 +392,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
         }
         if (!ed_focus_signal_length.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_focus_signal_length.getText().toString());
-            if (value < 100 || value > 500) {
+            if (value < 100 || value > 1000) {
                 ed_focus_signal_length.setError("Invalid input");
                 ed_focus_signal_length.requestFocus();
                 valid = false;
@@ -394,7 +402,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
         }
         if (!ed_shutter_length.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_shutter_length.getText().toString());
-            if (value < 100 || value > 500) {
+            if (value < 100 || value > 1000) {
                 ed_shutter_length.setError("Invalid input");
                 ed_shutter_length.requestFocus();
                 valid = false;
@@ -405,7 +413,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
 
         if (!ed_delay_between_panoramas.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_delay_between_panoramas.getText().toString());
-            if (value < 0 || value > 32000) {
+            if (value < 0 || value > 64000) {
                 ed_delay_between_panoramas.setError("Invalid input");
                 ed_delay_between_panoramas.requestFocus();
                 valid = false;
@@ -415,7 +423,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
         }
         if (!ed_num_of_panoramas.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_num_of_panoramas.getText().toString());
-            if (value < 1 || value > 32000) {
+            if (value < 0 || value > 64000) {
                 ed_num_of_panoramas.setError("Invalid input");
                 ed_num_of_panoramas.requestFocus();
                 valid = false;
@@ -435,7 +443,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
         }
         if (!ed_acceleration.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_acceleration.getText().toString());
-            if (value < 100 || value > 4000) {
+            if (value < 0 || value > 10000) {
                 ed_acceleration.setError("Invalid input");
                 ed_acceleration.requestFocus();
                 valid = false;
@@ -445,7 +453,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
         }
         if (!ed_speed.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_speed.getText().toString());
-            if (value < 0 || value > 30) {
+            if (value < 1 || value > 64000) {
                 ed_speed.setError("Invalid input");
                 ed_speed.requestFocus();
                 valid = false;
@@ -463,9 +471,10 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
                 ed_before_shot_delay.setError(null);
             }
         }
+
         if (!ed_focus_delay.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_focus_delay.getText().toString());
-            if (value < 0 || value > 32000) {
+            if (value < 0 || value > 64000) {
                 ed_focus_delay.setError("Invalid input");
                 ed_focus_delay.requestFocus();
                 valid = false;
@@ -475,7 +484,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
         }
         if (!ed_startup_delay.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_startup_delay.getText().toString());
-            if (value < 0 || value > 32000) {
+            if (value < 0 || value > 64000) {
                 ed_startup_delay.setError("Invalid input");
                 ed_startup_delay.requestFocus();
                 valid = false;
@@ -483,7 +492,6 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
                 ed_startup_delay.setError(null);
             }
         }
-
         if (!ed_after_shot_delay.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_after_shot_delay.getText().toString());
             if (value < -1 || value > 32000) {
@@ -515,7 +523,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
             } else {
                 ed_overlap.setError(null);
             }
-        }else {
+        } else {
             ed_overlap.setError("Required");
             ed_overlap.requestFocus();
             valid = false;
@@ -531,12 +539,12 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
         }
 
 
-        if(AppController.getInstance().getsqliteDbInstance().getAllCamera().size() <= 0){
+        if (AppController.getInstance().getsqliteDbInstance().getAllCamera().size() <= 0) {
             valid = false;
-            Toast.makeText(this,"There is no camera profile!!",Toast.LENGTH_LONG).show();
-        }else if(AppController.getInstance().getsqliteDbInstance().getAllLenses().size() <= 0){
+            Toast.makeText(this, "There is no camera profile!!", Toast.LENGTH_LONG).show();
+        } else if (AppController.getInstance().getsqliteDbInstance().getAllLenses().size() <= 0) {
             valid = false;
-            Toast.makeText(this,"There is no Lens profile!!",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "There is no Lens profile!!", Toast.LENGTH_LONG).show();
         }
 
         return valid;
@@ -549,6 +557,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
             //Toast.makeText(getApplicationContext(), "lost the focus", Toast.LENGTH_LONG).show();
 
             switch (id) {
+
                 case R.id.ed_overlap:
                     if (!ed_overlap.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_overlap.getText().toString());
@@ -591,7 +600,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
                 case R.id.ed_startup_delay:
                     if (!ed_startup_delay.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_startup_delay.getText().toString());
-                        if (value < 0 || value > 32000) {
+                        if (value < 0 || value > 64000) {
                             ed_startup_delay.setError("Invalid input");
                             // ed_startup_delay.requestFocus();
                             edError = ed_startup_delay;
@@ -604,7 +613,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
                 case R.id.ed_focus_delay:
                     if (!ed_focus_delay.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_focus_delay.getText().toString());
-                        if (value < 0 || value > 32000) {
+                        if (value < 0 || value > 64000) {
                             ed_focus_delay.setError("Invalid input");
                             // ed_focus_delay.requestFocus();
                             edError = ed_focus_delay;
@@ -630,7 +639,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
                 case R.id.ed_speed:
                     if (!ed_speed.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_speed.getText().toString());
-                        if (value < 0 || value > 30) {
+                        if (value < 1 || value > 64000) {
                             ed_speed.setError("Invalid input");
                             // ed_speed.requestFocus();
                             edError = ed_speed;
@@ -643,10 +652,10 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
                 case R.id.ed_acceleration:
                     if (!ed_acceleration.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_acceleration.getText().toString());
-                        if (value < 100 || value > 4000) {
+                        if (value < 0 || value > 10000) {
                             ed_acceleration.setError("Invalid input");
                             // ed_acceleration.requestFocus();
-                            edError =ed_acceleration;
+                            edError = ed_acceleration;
                         } else {
                             edError = null;
                             ed_acceleration.setError(null);
@@ -671,7 +680,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
 
                     if (!ed_num_of_panoramas.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_num_of_panoramas.getText().toString());
-                        if (value < 1 || value > 32000) {
+                        if (value < 0 || value > 64000) {
                             ed_num_of_panoramas.setError("Invalid input");
                             //  ed_num_of_panoramas.requestFocus();
                             edError = ed_num_of_panoramas;
@@ -684,7 +693,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
                 case R.id.ed_delay_between_panoramas:
                     if (!ed_delay_between_panoramas.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_delay_between_panoramas.getText().toString());
-                        if (value < 0 || value > 32000) {
+                        if (value < 0 || value > 64000) {
                             ed_delay_between_panoramas.setError("Invalid input");
                             //   ed_delay_between_panoramas.requestFocus();
                             edError = ed_delay_between_panoramas;
@@ -697,7 +706,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
                 case R.id.ed_shutter_signal_length:
                     if (!ed_shutter_length.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_shutter_length.getText().toString());
-                        if (value < 100 || value > 500) {
+                        if (value < 100 || value > 1000) {
                             ed_shutter_length.setError("Invalid input");
                             //  ed_shutter_length.requestFocus();
                             edError = ed_shutter_length;
@@ -710,7 +719,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
                 case R.id.ed_focus_signal_length:
                     if (!ed_focus_signal_length.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_focus_signal_length.getText().toString());
-                        if (value < 100 || value > 500) {
+                        if (value < 100 || value > 1000) {
                             ed_focus_signal_length.setError("Invalid input");
                             //   ed_focus_signal_length.requestFocus();
                             edError = ed_focus_signal_length;
@@ -747,20 +756,7 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
                     }
 
                     break;
-                case R.id.ed_speed_divider:
-                    if (!ed_speed_divider.getText().toString().isEmpty()) {
-                        long value = Long.parseLong(ed_speed_divider.getText().toString());
-                        if (value < 1 || value > 32000) {
-                            ed_speed_divider.setError("Invalid input");
-                            //   ed_speed_divider.requestFocus();
-                            edError = ed_speed_divider;
-                        } else {
-                            edError = null;
-                            ed_speed_divider.setError(null);
-                        }
-                    }
 
-                    break;
 
             }
         }//else{
@@ -772,9 +768,8 @@ public class PartialGigapixelAddUpdateProfile extends AppCompatActivity implemen
 
     }
 
-    public static void hideSoftKeyboard (Activity activity, View view)
-    {
-        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+    public static void hideSoftKeyboard(Activity activity, View view) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 }

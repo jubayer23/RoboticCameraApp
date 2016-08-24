@@ -4,6 +4,8 @@ package com.creative.roboticcameraapp.database;
  * Created by comsol on 02-Jun-16.
  */
 public class DbConfig {
+    public static String DB_PATH = "";
+
     public static final String DB_NAME = "robotic_camera_database.db";
     public static final int DB_VERSION = 1; //{1, 200 201, 202}
 
@@ -32,8 +34,12 @@ public class DbConfig {
 
     public static final String SINGLE_ROW_NAME = "single_row_name";
     public static final String NUMBER_OF_SHOOTING_POSITION = "number_of_shooting_position";
+
     public static final String CONTINUOUS_ROTATION = "continuos_rotation";
     public static final String NUMBER_OF_BRACKETED_SHOT = "number_of_bracketed_shots";
+    public static final String TILT_ARM_ELEVATION = "tilt_arm_elevation";
+    public static final String RETURN_TO_START = "return_to_start";
+    public static final String CONTINOUS_ROTATION_SHUTTER = "continuous_rotation_shutter";
     public static final String BRACKETING_STYLE = "bracketing_style";
     public static final String AFTER_SHOT_DELAY = "after_shot_delay";
     public static final String STARTUP_DELAY = "start_up_delay";
@@ -51,16 +57,20 @@ public class DbConfig {
     public static final String CAMERA_WAKEUP_SIGNAL_LENGTH = "camera_wakeup_signal_length";
     public static final String CAMERA_WAKEUP_DELAY = "camera_wakeup_delay";
     public static final String SPEED_DIVIDER = "speed_divider";
+    public static final String PANORAMA_WIDTH = "panorama_width";
+    public static final String CREATED_AT = "created_at";
     public static final String[] SingleRowColumnName = {ID, SINGLE_ROW_NAME, NUMBER_OF_SHOOTING_POSITION,
             CONTINUOUS_ROTATION, NUMBER_OF_BRACKETED_SHOT, BRACKETING_STYLE, AFTER_SHOT_DELAY, STARTUP_DELAY,
             FOCUS_DELAY, BEFORE_SHOT_DELAY, DIRECTION, SPEED, ACCELERATION, MAX_FRAME_RATE, NUM_OF_PANORAMAS,
             DELAY_BETWEEN_PANORAMAS, SHUTTER_SIGNAL_LENGTH, FOCUS_SIGNAL_LENGTH, CAMERA_WAKEUP,
-            CAMERA_WAKEUP_SIGNAL_LENGTH, CAMERA_WAKEUP_DELAY, SPEED_DIVIDER};
+            CAMERA_WAKEUP_SIGNAL_LENGTH, CAMERA_WAKEUP_DELAY,
+            SPEED_DIVIDER,TILT_ARM_ELEVATION,RETURN_TO_START,
+            CONTINOUS_ROTATION_SHUTTER,PANORAMA_WIDTH,CREATED_AT};
     public static final String[] SingleRowColumnType = {
             "INTEGER", "TEXT", "INTEGER", "INTEGER", "INTEGER", "TEXT", "INTEGER", "INTEGER", "INTEGER",
-            "INTEGER", "TEXT", "INTEGER", "INTEGER", "INTEGER", "INTEGER", "INTEGER", "INTEGER", "INTEGER",
-            "INTEGER", "INTEGER", "INTEGER", "INTEGER"};
-    public static final String[] SingleRowColumnProperty = {" PRIMARY KEY autoincrement", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
+            "INTEGER", "TEXT", "INTEGER", "INTEGER", "REAL", "INTEGER", "INTEGER", "INTEGER", "INTEGER",
+            "INTEGER", "INTEGER", "INTEGER", "INTEGER","REAL","TEXT","TEXT","INTEGER","DATETIME"};
+    public static final String[] SingleRowColumnProperty = {" PRIMARY KEY autoincrement", "","", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "","","",""," DEFAULT CURRENT_TIMESTAMP"};
 
 
     public static final String TABLE_MULTI_ROW = "multi_row_threesixty";
@@ -69,12 +79,14 @@ public class DbConfig {
     public static final String NUMBER_OF_ROWS = "number_of_rows";
     public static final String ELEVATIOn = "elevation";
     public static final String POSITION = "position";
-    //public static final String DIRECTION = "direction";
+    //public static final String PANORAMA_WIDTH = "panorama_width";
     //public static final String CONTINUOUS_ROTATION = "continuos_rotation";
     // public static final String NUMBER_OF_BRACKETED_SHOT = "number_of_bracketed_shot";
     // public static final String BRACKETING_STYLE = "bracketing_style";
     //public static final String AFTER_SHOT_DELAY = "after_shot_delay";
     // public static final String STARTUP_DELAY = "start_up_delay";
+    //public static final String RETURN_TO_START = "return_to_start";
+    //public static final String CONTINOUS_ROTATION_SHUTTER = "continuous_rotation_shutter";
 
     public static final String[] MultiRowColumnName = {
             ID,
@@ -86,7 +98,8 @@ public class DbConfig {
             CONTINUOUS_ROTATION,
             NUMBER_OF_BRACKETED_SHOT,
             BRACKETING_STYLE,
-            AFTER_SHOT_DELAY, STARTUP_DELAY,
+            AFTER_SHOT_DELAY,
+            STARTUP_DELAY,
             FOCUS_DELAY,
             BEFORE_SHOT_DELAY,
             SPEED,
@@ -99,12 +112,42 @@ public class DbConfig {
             CAMERA_WAKEUP,
             CAMERA_WAKEUP_SIGNAL_LENGTH,
             CAMERA_WAKEUP_DELAY,
-            SPEED_DIVIDER};
-    public static final String[] MultiRowColumnType = {"INTEGER", "TEXT", "INTEGER", "TEXT",
-            "TEXT", "TEXT", "INTEGER", "INTEGER", "TEXT", "INTEGER", "INTEGER", "INTEGER",
-            "INTEGER", "INTEGER", "INTEGER", "INTEGER", "INTEGER", "INTEGER", "INTEGER", "INTEGER",
-            "INTEGER", "INTEGER", "INTEGER", "INTEGER"};
-    public static final String[] MultiRowColumnProperty = {" PRIMARY KEY autoincrement", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
+            SPEED_DIVIDER,
+            PANORAMA_WIDTH,
+            RETURN_TO_START,
+            CONTINOUS_ROTATION_SHUTTER,
+            CREATED_AT};
+    public static final String[] MultiRowColumnType = {
+            "INTEGER",
+            "TEXT",
+            "INTEGER",
+            "TEXT",
+            "TEXT",
+            "TEXT",
+            "INTEGER",
+            "INTEGER",
+            "TEXT",
+            "INTEGER",
+            "INTEGER",
+            "INTEGER",
+            "INTEGER",
+            "INTEGER",
+            "INTEGER",
+            "INTEGER",
+            "REAL",
+            "INTEGER",
+            "INTEGER",
+            "INTEGER",
+            "INTEGER",
+            "INTEGER",
+            "INTEGER",
+            "INTEGER",
+            "INTEGER",
+            "TEXT",
+            "TEXT",
+            "DATETIME"};
+    public static final String[] MultiRowColumnProperty = {" PRIMARY KEY autoincrement",
+            "", "","","", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""," DEFAULT CURRENT_TIMESTAMP"};
 
 
     public static final String TABLE_PARTIAL_ROW = "partial_gigapixel";
@@ -117,11 +160,12 @@ public class DbConfig {
             NUMBER_OF_BRACKETED_SHOT, BRACKETING_STYLE, AFTER_SHOT_DELAY, STARTUP_DELAY,
             FOCUS_DELAY, BEFORE_SHOT_DELAY, DIRECTION, SPEED, ACCELERATION, MAX_FRAME_RATE, NUM_OF_PANORAMAS,
             DELAY_BETWEEN_PANORAMAS, SHUTTER_SIGNAL_LENGTH, FOCUS_SIGNAL_LENGTH, CAMERA_WAKEUP,
-            CAMERA_WAKEUP_SIGNAL_LENGTH, CAMERA_WAKEUP_DELAY, SPEED_DIVIDER};
+            CAMERA_WAKEUP_SIGNAL_LENGTH, CAMERA_WAKEUP_DELAY, SPEED_DIVIDER,RETURN_TO_START,
+            CONTINOUS_ROTATION_SHUTTER,CREATED_AT};
     public static final String[] PartialColumnType = {"INTEGER", "TEXT", "TEXT", "TEXT", "INTEGER","INTEGER", "INTEGER", "TEXT", "INTEGER", "INTEGER", "INTEGER",
             "INTEGER", "TEXT", "INTEGER", "INTEGER", "INTEGER", "INTEGER", "INTEGER", "INTEGER", "INTEGER",
-            "INTEGER", "INTEGER", "INTEGER", "INTEGER"};
-    public static final String[] PartialColumnProperty = {" PRIMARY KEY autoincrement", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
+            "INTEGER", "INTEGER", "INTEGER", "INTEGER","INTEGER", "TEXT","DATETIME"};
+    public static final String[] PartialColumnProperty = {" PRIMARY KEY autoincrement", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "","", ""," DEFAULT CURRENT_TIMESTAMP"};
 
 
     public static final String[] TABLE_NAMES = {TABLE_CAMERA, TABLE_LENS, TABLE_SINGLE_ROW, TABLE_MULTI_ROW, TABLE_PARTIAL_ROW};

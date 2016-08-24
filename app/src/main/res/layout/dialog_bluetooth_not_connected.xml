@@ -42,6 +42,18 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btn_ok"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_save_selector"
+                android:text="Ok"
+                android:visibility="gone"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <Button
                 android:id="@+id/btn_cancel"
                 android:layout_width="0dp"
                 android:layout_height="40dp"

@@ -44,6 +44,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/btn_selector"
             android:text="Cameras"
+            android:visibility="gone"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="25sp" />
@@ -57,6 +58,20 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/btn_selector"
             android:text="Lenses"
+            android:visibility="gone"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
+
+        <Button
+            android:id="@+id/btn_shut_down"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_selector"
+            android:text="Shutdown"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="25sp" />

@@ -18,9 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:orientation="vertical">
-
-
-            <!--  Password Label -->
+            <!--  Number of bracketed shots -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -43,32 +41,16 @@
 
             </android.support.design.widget.TextInputLayout>
 
-
-            <Switch
-                android:id="@+id/sw_continious_rotation"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/rounded_edittext"
-                android:paddingLeft="10dp"
-                android:text="Continuous Rotation"
-                android:textColor="@color/white"
-                android:textOff="No"
-                android:textOn="Yes"
-                android:textSize="20sp" />
-
-
+            <!--  Bracketing style -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="20sp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
-                android:text="Bracketing style"/>
+                android:text="Bracketing style"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
 
 
             <RelativeLayout
@@ -97,30 +79,7 @@
             </RelativeLayout>
 
 
-            <!--  Password Label -->
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="20dp">
-
-                <EditText
-                    android:id="@+id/ed_after_delay_shot"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/rounded_edittext"
-                    android:hint="After shot delay(ms, -1 to 32000)"
-                    android:inputType="numberSigned"
-                    android:maxLines="1"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/white">
-
-                </EditText>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <!--  Password Label -->
+            <!--  Startup delay -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -133,7 +92,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_edittext"
-                    android:hint="Startup delay(sec, 0 to 32000)"
+                    android:hint="Startup delay(sec, 0 to 64000)"
                     android:inputType="number"
                     android:maxLines="1"
                     android:paddingLeft="10dp"
@@ -143,7 +102,7 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <!--  Password Label -->
+            <!--  Focus delay -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -156,7 +115,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_edittext"
-                    android:hint="Focus delay(ms, 0 to 32000)"
+                    android:hint="Focus delay(ms, 0 to 64000)"
                     android:inputType="number"
                     android:maxLines="1"
                     android:paddingLeft="10dp"
@@ -166,7 +125,7 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <!--  Password Label -->
+            <!--  Before shot delay -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -189,9 +148,30 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <!--  After shot delay -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp">
 
+                <EditText
+                    android:id="@+id/ed_after_delay_shot"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:hint="After shot delay(ms, -1 to 32000)"
+                    android:inputType="numberSigned"
+                    android:maxLines="1"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/white">
 
-            <!--  Password Label -->
+                </EditText>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--  Speed -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -204,7 +184,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_edittext"
-                    android:hint="Speed(rpm, 0 to 30)"
+                    android:hint="Speed(rpm, 1 to 64000)"
                     android:inputType="number"
                     android:maxLines="1"
                     android:paddingLeft="10dp"
@@ -214,7 +194,7 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <!--  Password Label -->
+            <!--  Acceleration -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -227,7 +207,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_edittext"
-                    android:hint="Acceleration(100 to 4000)"
+                    android:hint="Acceleration(100 to 10000)"
                     android:inputType="number"
                     android:maxLines="1"
                     android:paddingLeft="10dp"
@@ -237,30 +217,63 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <!--  Password Label -->
-            <android.support.design.widget.TextInputLayout
+
+
+
+            <!--  Continuous Rotation -->
+            <Switch
+                android:id="@+id/sw_continious_rotation"
                 android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rounded_edittext"
+                android:paddingLeft="10dp"
+                android:text="Continuous Rotation"
+                android:textColor="@color/white"
+                android:textOff="No"
+                android:textOn="Yes"
+                android:textSize="20sp" />
+
+            <!-- 15. Continuous Rotation Shutter Release [Dropdown list] -->
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="20dp"
+                android:text="Continuous Rotation Shutter Release"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
 
-                <EditText
-                    android:id="@+id/ed_max_frame_rate"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_edittext">
+
+                <Spinner
+                    android:id="@+id/sp_continuos_rotation_shutter_release"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/rounded_edittext"
-                    android:hint="Max Frame Rate(fps, 0 to 20)"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/white">
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:popupBackground="@color/colorPrimary"
+                    android:textSize="25sp" />
 
-                </EditText>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="5dp"
+                    android:src="@drawable/spinner_arrow" />
+            </RelativeLayout>
 
-            </android.support.design.widget.TextInputLayout>
 
-            <!--  Password Label -->
+            <!--  16. Number of Panoramas -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -273,7 +286,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_edittext"
-                    android:hint="Number of panoramas(1 to 32000)"
+                    android:hint="Number of panoramas(1 to 64000)"
                     android:inputType="number"
                     android:maxLines="1"
                     android:paddingLeft="10dp"
@@ -283,7 +296,7 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <!--  Password Label -->
+            <!--  17. Delay Between Panoramas -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -296,7 +309,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_edittext"
-                    android:hint="Delay between panoramas(sec, 0 to 32000)"
+                    android:hint="Delay between panoramas(sec, 0 to 64000)"
                     android:inputType="number"
                     android:maxLines="1"
                     android:paddingLeft="10dp"
@@ -307,7 +320,44 @@
             </android.support.design.widget.TextInputLayout>
 
 
-            <!--  Password Label -->
+            <!-- 18. Return to Start [Yes/No, default=No] -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:text="Return to start"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_edittext">
+
+                <Spinner
+                    android:id="@+id/sp_return_to_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:popupBackground="@color/colorPrimary"
+                    android:textSize="25sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="5dp"
+                    android:src="@drawable/spinner_arrow" />
+            </RelativeLayout>
+
+
+            <!--  19. Shutter Signal Length (ms -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -320,7 +370,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_edittext"
-                    android:hint="Shutter signal length(ms, 100 to 500)"
+                    android:hint="Shutter signal length(ms, 100 to 1000)"
                     android:inputType="number"
                     android:maxLines="1"
                     android:paddingLeft="10dp"
@@ -329,7 +379,7 @@
                 </EditText>
 
             </android.support.design.widget.TextInputLayout>
-            <!--  Password Label -->
+            <!--  20. Focus Signal Length (ms)  -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -342,7 +392,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_edittext"
-                    android:hint="Focus signal length(ms, 100 to 500)"
+                    android:hint="Focus signal length(ms, 100 to 1000)"
                     android:inputType="number"
                     android:maxLines="1"
                     android:paddingLeft="10dp"
@@ -352,7 +402,7 @@
 
             </android.support.design.widget.TextInputLayout>
 
-
+            <!--21. Camera WakeUp-->
             <Switch
                 android:id="@+id/sw_camera_wakeup"
                 android:layout_width="match_parent"
@@ -363,12 +413,12 @@
                 android:background="@drawable/rounded_edittext"
                 android:paddingLeft="10dp"
                 android:text="Camera wakeup"
+                android:textColor="@color/white"
                 android:textOff="No"
                 android:textOn="Yes"
-                android:textColor="@color/white"
                 android:textSize="20sp" />
 
-            <!--  Password Label -->
+            <!--  22. WakeUp Signal Length (ms) -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -390,7 +440,7 @@
                 </EditText>
 
             </android.support.design.widget.TextInputLayout>
-            <!--  Password Label -->
+            <!--  23. WakeUp Delay  -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -413,7 +463,7 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <!--  Password Label -->
+            <!--  Max Frame Rate -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -422,12 +472,12 @@
                 android:layout_marginTop="20dp">
 
                 <EditText
-                    android:id="@+id/ed_speed_divider"
+                    android:id="@+id/ed_max_frame_rate"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@drawable/rounded_edittext"
-                    android:hint="Speed divider(1 to 32000)"
-                    android:inputType="number"
+                    android:hint="Max Frame Rate(fps, 0 to 20)"
+                    android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:paddingLeft="10dp"
                     android:textColor="@color/white">

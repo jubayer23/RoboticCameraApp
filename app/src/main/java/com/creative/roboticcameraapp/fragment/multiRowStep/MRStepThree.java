@@ -32,12 +32,11 @@ import java.util.List;
 public class MRStepThree extends Fragment implements View.OnClickListener,View.OnFocusChangeListener{
 
     private EditText ed_num_of_bracketed_shot, ed_after_shot_delay, ed_startup_delay, ed_focus_delay, ed_before_shot_delay, ed_speed, ed_acceleration, ed_max_frame_rate,
-            ed_num_of_panoramas, ed_delay_between_panoramas, ed_shutter_length, ed_focus_signal_length, ed_camera_wakeup_signal_length, ed_camera_wakeup_delay,
-            ed_speed_divider;
+            ed_num_of_panoramas, ed_delay_between_panoramas, ed_shutter_length, ed_focus_signal_length, ed_camera_wakeup_signal_length, ed_camera_wakeup_delay;
 
     private Switch sw_camera_wakeup, sw_continuous_rotation;
 
-    private Spinner sp_bracketing_style;
+    private Spinner sp_bracketing_style,sp_continuos_rotation_shutter_release,sp_return_to_start;
 
     private Button btn_save, btn_cancel;
 
@@ -47,13 +46,13 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
     //onCreate->onCreateView->onActivityCreated
 
 
-    private List<String> list_bracketing_style;
+    private List<String> list_bracketing_style,list_continuos_rotation_shutter_release,list_return_to_start;
 
-    private ArrayAdapter<String> dataAdapterBracketingStyle;
+    private ArrayAdapter<String> dataAdapterBracketingStyle,dataAdapterContinuosRotationShutter,dataAdapterReturnToStart;
 
     private boolean shouldUpdate;
 
-    private int num_of_rows, num_of_bracketed_shot, after_shot_delay, startup_delay;
+    private int num_of_rows,panoramaWidth, num_of_bracketed_shot, after_shot_delay, startup_delay;
 
     private String profile_name, elevation, position, direction;
 
@@ -66,6 +65,7 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
         super.onCreate(savedInstanceState);
         profile_name = getArguments().getString(MultiRowAddUpdateProfile.KEY_PROFILE_NAME);
         num_of_rows = getArguments().getInt(MultiRowAddUpdateProfile.KEY_NUM_OF_ROWS);
+        panoramaWidth = getArguments().getInt(MultiRowAddUpdateProfile.KEY_PANORAMA_WIDTH);
         elevation = getArguments().getString(MultiRowAddUpdateProfile.KEY_ELEVATION);
         position = getArguments().getString(MultiRowAddUpdateProfile.KEY_POSITION);
         direction = getArguments().getString(MultiRowAddUpdateProfile.KEY_DIRECTION);
@@ -99,6 +99,20 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                 }
                 dataAdapterBracketingStyle.notifyDataSetChanged();
 
+                list_continuos_rotation_shutter_release.add(multiRow.getContinuosRotationShutter());
+                for (int i = 0; i < AppConstant.contuNiousRotationShutterRelease.length; i++) {
+                    if (list_continuos_rotation_shutter_release.contains(AppConstant.contuNiousRotationShutterRelease[i])) continue;
+                    list_continuos_rotation_shutter_release.add(AppConstant.contuNiousRotationShutterRelease[i]);
+                }
+                dataAdapterContinuosRotationShutter.notifyDataSetChanged();
+
+                list_return_to_start.add(multiRow.getReturn_to_start());
+                for (int i = 0; i < AppConstant.return_to_start.length; i++) {
+                    if (list_return_to_start.contains(AppConstant.return_to_start[i])) continue;
+                    list_return_to_start.add(AppConstant.return_to_start[i]);
+                }
+                dataAdapterReturnToStart.notifyDataSetChanged();
+
                 ed_after_shot_delay.setText(String.valueOf(multiRow.getAfter_shot_delay()));
                 ed_startup_delay.setText(String.valueOf(multiRow.getStartup_delay()));
                 ed_focus_delay.setText(multiRow.getFocus_delay() + "");
@@ -113,7 +127,6 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                 sw_camera_wakeup.setChecked(multiRow.getCamera_wakeup() == 0 ? false : true);
                 ed_camera_wakeup_signal_length.setText(multiRow.getCamera_wakeup_signal_length() + "");
                 ed_camera_wakeup_delay.setText(multiRow.getCamera_wakeup_delay() + "");
-                ed_speed_divider.setText(multiRow.getSpeed_divider() + "");
 
 
             } else {
@@ -121,6 +134,16 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                     list_bracketing_style.add(AppConstant.bracketing_style[i]);
                 }
                 dataAdapterBracketingStyle.notifyDataSetChanged();
+
+                for (int i = 0; i < AppConstant.contuNiousRotationShutterRelease.length; i++) {
+                    list_continuos_rotation_shutter_release.add(AppConstant.contuNiousRotationShutterRelease[i]);
+                }
+                dataAdapterContinuosRotationShutter.notifyDataSetChanged();
+
+                for (int i = 0; i < AppConstant.return_to_start.length; i++) {
+                    list_return_to_start.add(AppConstant.return_to_start[i]);
+                }
+                dataAdapterReturnToStart.notifyDataSetChanged();
 
                 multiRow = new MultiRow();
             }
@@ -163,8 +186,6 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
         ed_camera_wakeup_signal_length.setOnFocusChangeListener(this);
         ed_camera_wakeup_delay = (EditText) getActivity().findViewById(R.id.ed_camera_wakeup_delay);
         ed_camera_wakeup_delay.setOnFocusChangeListener(this);
-        ed_speed_divider = (EditText) getActivity().findViewById(R.id.ed_speed_divider);
-        ed_speed_divider.setOnFocusChangeListener(this);
 
 
         sw_continuous_rotation = (Switch) getActivity().findViewById(R.id.sw_continious_rotation);
@@ -184,6 +205,20 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
         dataAdapterBracketingStyle = new ArrayAdapter<String>
                 (getActivity(), R.layout.spinner_item, list_bracketing_style);
         sp_bracketing_style.setAdapter(dataAdapterBracketingStyle);
+
+        sp_continuos_rotation_shutter_release = (Spinner) getActivity().findViewById(R.id.sp_continuos_rotation_shutter_release);
+        list_continuos_rotation_shutter_release = new ArrayList<>();
+        dataAdapterContinuosRotationShutter = new ArrayAdapter<String>
+                (getActivity(), R.layout.spinner_item, list_continuos_rotation_shutter_release);
+
+        sp_continuos_rotation_shutter_release.setAdapter(dataAdapterContinuosRotationShutter);
+
+        sp_return_to_start = (Spinner) getActivity().findViewById(R.id.sp_return_to_start);
+        list_return_to_start = new ArrayList<>();
+        dataAdapterReturnToStart = new ArrayAdapter<String>
+                (getActivity(), R.layout.spinner_item, list_return_to_start);
+
+        sp_return_to_start.setAdapter(dataAdapterReturnToStart);
 
 
     }
@@ -215,10 +250,13 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                 multiRow.setElevation(elevation);
                 multiRow.setPosition(position);
                 multiRow.setDirection(direction);
+                multiRow.setPanorama_width(panoramaWidth);
 
                 multiRow.setContinuous_rotation(sw_continuous_rotation.isChecked() ? 1 : 0);
+                multiRow.setReturn_to_start(sp_return_to_start.getSelectedItem().toString());
 
                 multiRow.setBracketed_style(sp_bracketing_style.getSelectedItem().toString());
+                multiRow.setContinuosRotationShutter(sp_continuos_rotation_shutter_release.getSelectedItem().toString());
 
                 if (ed_num_of_bracketed_shot.getText().toString().isEmpty()) {
                     multiRow.setNum_of_bracketed_shot(AppConstant.DEFAULT_NUM_OF_BRACKETED_SHOTS);
@@ -260,7 +298,7 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                 if (ed_max_frame_rate.getText().toString().isEmpty()) {
                     multiRow.setMax_frame_rate(AppConstant.DEFAULT_MAX_FRAME_RATE);
                 } else {
-                    multiRow.setMax_frame_rate(Integer.parseInt(ed_max_frame_rate.getText().toString()));
+                    multiRow.setMax_frame_rate(Float.parseFloat(ed_max_frame_rate.getText().toString()));
                 }
                 if (ed_num_of_panoramas.getText().toString().isEmpty()) {
                     multiRow.setNum_of_panoramas(AppConstant.DEFAULT_NUM_OF_PANORAMAS);
@@ -296,11 +334,6 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                 } else {
                     multiRow.setCamera_wakeup_delay(Integer.parseInt(ed_camera_wakeup_delay.getText().toString()));
                 }
-                if (ed_speed_divider.getText().toString().isEmpty()) {
-                    multiRow.setSpeed_divider(AppConstant.DEFAULT_SPEED_DIVIDER);
-                } else {
-                    multiRow.setSpeed_divider(Integer.parseInt(ed_speed_divider.getText().toString()));
-                }
 
                 if (shouldUpdate) {
 
@@ -331,16 +364,6 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
 
         boolean valid = true;
 
-        if (!ed_speed_divider.getText().toString().isEmpty()) {
-            long value = Long.parseLong(ed_speed_divider.getText().toString());
-            if (value < 1 || value > 32000) {
-                ed_speed_divider.setError("Invalid input");
-                ed_speed_divider.requestFocus();
-                valid = false;
-            } else {
-                ed_speed_divider.setError(null);
-            }
-        }
         if (!ed_camera_wakeup_delay.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_camera_wakeup_delay.getText().toString());
             if (value < 100 || value > 5000) {
@@ -364,7 +387,7 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
         }
         if (!ed_focus_signal_length.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_focus_signal_length.getText().toString());
-            if (value < 100 || value > 500) {
+            if (value < 100 || value > 1000) {
                 ed_focus_signal_length.setError("Invalid input");
                 ed_focus_signal_length.requestFocus();
                 valid = false;
@@ -374,7 +397,7 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
         }
         if (!ed_shutter_length.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_shutter_length.getText().toString());
-            if (value < 100 || value > 500) {
+            if (value < 100 || value > 1000) {
                 ed_shutter_length.setError("Invalid input");
                 ed_shutter_length.requestFocus();
                 valid = false;
@@ -385,7 +408,7 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
 
         if (!ed_delay_between_panoramas.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_delay_between_panoramas.getText().toString());
-            if (value < 0 || value > 32000) {
+            if (value < 0 || value > 64000) {
                 ed_delay_between_panoramas.setError("Invalid input");
                 ed_delay_between_panoramas.requestFocus();
                 valid = false;
@@ -395,7 +418,7 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
         }
         if (!ed_num_of_panoramas.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_num_of_panoramas.getText().toString());
-            if (value < 1 || value > 32000) {
+            if (value < 0 || value > 64000) {
                 ed_num_of_panoramas.setError("Invalid input");
                 ed_num_of_panoramas.requestFocus();
                 valid = false;
@@ -404,18 +427,28 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
             }
         }
         if (!ed_max_frame_rate.getText().toString().isEmpty()) {
-            long value = Long.parseLong(ed_max_frame_rate.getText().toString());
-            if (value < 0 || value > 20) {
+            double value = Double.parseDouble(ed_max_frame_rate.getText().toString());
+            String temp = "12";
+            if (String.valueOf(value).contains(".")) {
+                temp = String.valueOf(value).substring(String.valueOf(value).indexOf(".") + 1);
+            }
+            if (temp.length() > 2) {
                 ed_max_frame_rate.setError("Invalid input");
                 ed_max_frame_rate.requestFocus();
                 valid = false;
             } else {
-                ed_max_frame_rate.setError(null);
+                if (value < 0 || value > 20) {
+                    ed_max_frame_rate.setError("Invalid input");
+                    ed_max_frame_rate.requestFocus();
+                    valid = false;
+                } else {
+                    ed_max_frame_rate.setError(null);
+                }
             }
         }
         if (!ed_acceleration.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_acceleration.getText().toString());
-            if (value < 100 || value > 4000) {
+            if (value < 0 || value > 10000) {
                 ed_acceleration.setError("Invalid input");
                 ed_acceleration.requestFocus();
                 valid = false;
@@ -425,7 +458,7 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
         }
         if (!ed_speed.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_speed.getText().toString());
-            if (value < 0 || value > 30) {
+            if (value < 1 || value > 64000) {
                 ed_speed.setError("Invalid input");
                 ed_speed.requestFocus();
                 valid = false;
@@ -443,9 +476,10 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                 ed_before_shot_delay.setError(null);
             }
         }
+
         if (!ed_focus_delay.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_focus_delay.getText().toString());
-            if (value < 0 || value > 32000) {
+            if (value < 0 || value > 64000) {
                 ed_focus_delay.setError("Invalid input");
                 ed_focus_delay.requestFocus();
                 valid = false;
@@ -455,7 +489,7 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
         }
         if (!ed_startup_delay.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_startup_delay.getText().toString());
-            if (value < 0 || value > 32000) {
+            if (value < 0 || value > 64000) {
                 ed_startup_delay.setError("Invalid input");
                 ed_startup_delay.requestFocus();
                 valid = false;
@@ -463,7 +497,6 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                 ed_startup_delay.setError(null);
             }
         }
-
         if (!ed_after_shot_delay.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_after_shot_delay.getText().toString());
             if (value < -1 || value > 32000) {
@@ -526,7 +559,7 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                 case R.id.ed_startup_delay:
                     if (!ed_startup_delay.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_startup_delay.getText().toString());
-                        if (value < 0 || value > 32000) {
+                        if (value < 0 || value > 64000) {
                             ed_startup_delay.setError("Invalid input");
                             // ed_startup_delay.requestFocus();
                             edError = ed_startup_delay;
@@ -539,7 +572,7 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                 case R.id.ed_focus_delay:
                     if (!ed_focus_delay.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_focus_delay.getText().toString());
-                        if (value < 0 || value > 32000) {
+                        if (value < 0 || value > 64000) {
                             ed_focus_delay.setError("Invalid input");
                             // ed_focus_delay.requestFocus();
                             edError = ed_focus_delay;
@@ -565,7 +598,7 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                 case R.id.ed_speed:
                     if (!ed_speed.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_speed.getText().toString());
-                        if (value < 0 || value > 30) {
+                        if (value < 1 || value > 64000) {
                             ed_speed.setError("Invalid input");
                             // ed_speed.requestFocus();
                             edError = ed_speed;
@@ -578,7 +611,7 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                 case R.id.ed_acceleration:
                     if (!ed_acceleration.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_acceleration.getText().toString());
-                        if (value < 100 || value > 4000) {
+                        if (value < 0 || value > 10000) {
                             ed_acceleration.setError("Invalid input");
                             // ed_acceleration.requestFocus();
                             edError =ed_acceleration;
@@ -590,14 +623,24 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                     break;
                 case R.id.ed_max_frame_rate:
                     if (!ed_max_frame_rate.getText().toString().isEmpty()) {
-                        long value = Long.parseLong(ed_max_frame_rate.getText().toString());
-                        if (value < 0 || value > 20) {
+                        double value = Double.parseDouble(ed_max_frame_rate.getText().toString());
+                        String temp = "12";
+                        if (String.valueOf(value).contains(".")) {
+                            temp = String.valueOf(value).substring(String.valueOf(value).indexOf(".") + 1);
+                        }
+                        if (temp.length() > 2) {
                             ed_max_frame_rate.setError("Invalid input");
                             //  ed_max_frame_rate.requestFocus();
                             edError = ed_max_frame_rate;
                         } else {
-                            edError = null;
-                            ed_max_frame_rate.setError(null);
+                            if (value < 0 || value > 20) {
+                                ed_max_frame_rate.setError("Invalid input");
+                                //  ed_max_frame_rate.requestFocus();
+                                edError = ed_max_frame_rate;
+                            } else {
+                                edError = null;
+                                ed_max_frame_rate.setError(null);
+                            }
                         }
                     }
                     break;
@@ -606,7 +649,7 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
 
                     if (!ed_num_of_panoramas.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_num_of_panoramas.getText().toString());
-                        if (value < 1 || value > 32000) {
+                        if (value < 0 || value > 64000) {
                             ed_num_of_panoramas.setError("Invalid input");
                             //  ed_num_of_panoramas.requestFocus();
                             edError = ed_num_of_panoramas;
@@ -619,7 +662,7 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                 case R.id.ed_delay_between_panoramas:
                     if (!ed_delay_between_panoramas.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_delay_between_panoramas.getText().toString());
-                        if (value < 0 || value > 32000) {
+                        if (value < 0 || value > 64000) {
                             ed_delay_between_panoramas.setError("Invalid input");
                             //   ed_delay_between_panoramas.requestFocus();
                             edError = ed_delay_between_panoramas;
@@ -632,7 +675,7 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                 case R.id.ed_shutter_signal_length:
                     if (!ed_shutter_length.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_shutter_length.getText().toString());
-                        if (value < 100 || value > 500) {
+                        if (value < 100 || value > 1000) {
                             ed_shutter_length.setError("Invalid input");
                             //  ed_shutter_length.requestFocus();
                             edError = ed_shutter_length;
@@ -645,7 +688,7 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                 case R.id.ed_focus_signal_length:
                     if (!ed_focus_signal_length.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_focus_signal_length.getText().toString());
-                        if (value < 100 || value > 500) {
+                        if (value < 100 || value > 1000) {
                             ed_focus_signal_length.setError("Invalid input");
                             //   ed_focus_signal_length.requestFocus();
                             edError = ed_focus_signal_length;
@@ -678,20 +721,6 @@ public class MRStepThree extends Fragment implements View.OnClickListener,View.O
                         } else {
                             edError = null;
                             ed_camera_wakeup_delay.setError(null);
-                        }
-                    }
-
-                    break;
-                case R.id.ed_speed_divider:
-                    if (!ed_speed_divider.getText().toString().isEmpty()) {
-                        long value = Long.parseLong(ed_speed_divider.getText().toString());
-                        if (value < 1 || value > 32000) {
-                            ed_speed_divider.setError("Invalid input");
-                            //   ed_speed_divider.requestFocus();
-                            edError = ed_speed_divider;
-                        } else {
-                            edError = null;
-                            ed_speed_divider.setError(null);
                         }
                     }
 

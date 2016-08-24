@@ -20,4 +20,8 @@
     <string name="partialGigapixelAddProfile">Add profile - Partial/Gigapixel</string>
     <string name="PartialGigapixelSteps">Partial / Gigapixel</string>
     <string name="adhocinitialize"><![CDATA[Initialize & Adhoc Move & Shoot]]></string>
+
+    <string name="no_bt_support">Your device doesn\'t support bluetooth.</string>
+
+    <string name="empty_device_name">&lt;New device&gt;</string>
 </resources>

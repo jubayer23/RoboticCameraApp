@@ -17,7 +17,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginRight="10dp"
         android:src="@drawable/ic_plus_white_48dp" />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/sort_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/add_profile"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:src="@drawable/icon_sort" />
 
 </RelativeLayout>

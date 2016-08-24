@@ -33,6 +33,8 @@ public class AppController extends Application {
 
         pref = new PrefManager(this);
 
+
+
         sqliteDbInstance = new SqliteDb(this);
         sqliteDbInstance.open();
 
@@ -49,6 +51,16 @@ public class AppController extends Application {
             AppConstant.direction_map.put(AppConstant.direction[i],i+1);
         }
 
+        for(int i =0;i< AppConstant.contuNiousRotationShutterRelease.length;i++)
+        {
+            AppConstant.continuos_rotation_shutter_release_map.put
+                    (AppConstant.contuNiousRotationShutterRelease[i],i+1);
+        }
+
+        for(int i =0;i< AppConstant.return_to_start.length;i++)
+        {
+            AppConstant.return_to_start_map.put(AppConstant.return_to_start[i],i+1);
+        }
         // FacebookSdk.sdkInitialize(getApplicationContext());
 
     }

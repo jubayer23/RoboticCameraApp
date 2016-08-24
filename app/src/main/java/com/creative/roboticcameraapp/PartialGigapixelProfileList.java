@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,7 +63,7 @@ public class PartialGigapixelProfileList extends AppCompatActivity implements Pa
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                    if (AppConstant.mSmoothBluetooth != null && AppConstant.mSmoothBluetooth.isConnected()) {
+                    if (MainActivity.isConnected()) {
 
                         showSendDataDialog(partials.get(i));
 
@@ -74,7 +75,7 @@ public class PartialGigapixelProfileList extends AppCompatActivity implements Pa
                 }
             });
 
-            addPartialGigapixel.setVisibility(View.GONE);
+            addPartialGigapixel.setBackgroundTintList(this.getResources().getColorStateList(R.color.red));
 
         } else {
             partialGigapixelAdapter = new PartialGigapixelAdapter(this, AppController.getInstance().getsqliteDbInstance().getAllPartialGigapixel(), IS_FROM_HOME);
@@ -93,8 +94,16 @@ public class PartialGigapixelProfileList extends AppCompatActivity implements Pa
         addPartialGigapixel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PartialGigapixelProfileList.this, PartialGigapixelAddUpdateProfile.class);
-                startActivityForResult(intent, 0);
+
+                if (IS_FROM_HOME) {
+
+                    showPauseResumeDialog();
+
+                } else {
+                    Intent intent = new Intent(PartialGigapixelProfileList.this, PartialGigapixelAddUpdateProfile.class);
+                    startActivityForResult(intent, 0);
+                }
+
             }
         });
     }
@@ -147,7 +156,7 @@ public class PartialGigapixelProfileList extends AppCompatActivity implements Pa
 
                 //singleRow.getSendString();
 
-                AppConstant.mSmoothBluetooth.send(partial.getSendString());
+                MainActivity.sendCommand(partial.getSendString());
 
                 //TODO
                 dialog.dismiss();
@@ -182,6 +191,58 @@ public class PartialGigapixelProfileList extends AppCompatActivity implements Pa
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+    }
+
+    private void showPauseResumeDialog() {
+        final Dialog dialog = new Dialog(PartialGigapixelProfileList.this,
+                android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dialog_pause_resume);
+
+        LinearLayout btn_pause_resume = (LinearLayout) dialog.findViewById(R.id.btn_pause_resume);
+
+
+        LinearLayout btn_cancel = (LinearLayout) dialog.findViewById(R.id.btn_cancel);
+
+
+        btn_pause_resume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (MainActivity.isConnected()) {
+                    // if (AppConstant.mSmoothBluetooth.isConnected()) {
+                    MainActivity.sendCommand("dataStart|610|dataEnd");
+                    // } else {
+                    //     showDialogWarning();
+                    // }
+                } else {
+                    showDialogWarning();
+                }
+
+            }
+        });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (MainActivity.isConnected()) {
+                    // if (AppConstant.mSmoothBluetooth.isConnected()) {
+                    MainActivity.sendCommand("dataStart|620|dataEnd");
+                    // } else {
+                    //     showDialogWarning();
+                    // }
+                } else {
+                    showDialogWarning();
+                }
+
+
                 dialog.dismiss();
             }
         });

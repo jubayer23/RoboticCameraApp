@@ -6,103 +6,138 @@
     android:orientation="vertical">
 
 
-    <RelativeLayout
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+    <LinearLayout
+        android:id="@+id/btn_shoot"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
         android:layout_centerInParent="true"
-        android:background="@drawable/background_circle_ash_color">
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/btn_shoot_selector"
+        android:gravity="center">
 
-        <RelativeLayout
-            android:id="@+id/btn_shoot"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_centerInParent="true"
-            android:layout_margin="10dp"
-            android:background="@drawable/btn_shoot_selector"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Shoot"
-                android:textColor="@color/white"
-                android:textSize="30sp" />
-        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shoot"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+    </LinearLayout>
 
 
-        <RelativeLayout
-            android:id="@+id/btn_top"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_above="@+id/btn_shoot"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/background_square"
-            android:clickable="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center">
+    <LinearLayout
+        android:id="@+id/btn_top"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_above="@+id/btn_shoot"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_top" />
-        </RelativeLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_right" />
 
-        <RelativeLayout
-            android:id="@+id/btn_right"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/btn_shoot"
-            android:background="@drawable/background_square"
-            android:clickable="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="CW"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_right" />
-        </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/btn_right"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/btn_shoot"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/btn_bottom"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_below="@+id/btn_shoot"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/background_square"
-            android:clickable="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_bottom" />
-        </RelativeLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/arrow_right" />
 
 
-        <RelativeLayout
-            android:id="@+id/btn_left"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/btn_shoot"
-            android:background="@drawable/background_square"
-            android:clickable="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="CW"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_left" />
-        </RelativeLayout>
-    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/btn_bottom"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/btn_shoot"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_left" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="CCW"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/btn_left"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/btn_shoot"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/arrow_left" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="CCW"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -119,7 +154,7 @@
             android:layout_height="60dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_save_selector"
+            android:background="@drawable/btn_initilize_selector"
             android:text="Initialize"
             android:textColor="@color/white"
             android:textSize="25sp" />

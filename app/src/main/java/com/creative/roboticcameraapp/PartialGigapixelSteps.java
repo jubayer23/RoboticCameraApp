@@ -75,11 +75,11 @@ public class PartialGigapixelSteps extends AppCompatActivity implements View.OnC
 
         if (id == R.id.btn_set) {
 
-            if (AppConstant.mSmoothBluetooth != null && AppConstant.mSmoothBluetooth.isConnected()) {
+            if (MainActivity.isConnected()) {
 
                 if (!isSet) {
                     isSet = true;
-                    AppConstant.mSmoothBluetooth.send(getSetButtonString(isStepOne));
+                    MainActivity.sendCommand(getSetButtonString(isStepOne));
                     showDialogWarning(SUCCESSFULLY_SET);
                 }
 
@@ -101,10 +101,10 @@ public class PartialGigapixelSteps extends AppCompatActivity implements View.OnC
                     btn_submit.setText("Start");
                 } else {
 
-                    if (AppConstant.mSmoothBluetooth != null && AppConstant.mSmoothBluetooth.isConnected()) {
+                    if (MainActivity.isConnected()) {
 
                         isSet = true;
-                        AppConstant.mSmoothBluetooth.send(getStartButtonString());
+                        MainActivity.sendCommand(getStartButtonString());
 
                     } else {
                         showDialogWarning(ERROR_BLUETOOTH);
@@ -118,9 +118,9 @@ public class PartialGigapixelSteps extends AppCompatActivity implements View.OnC
 
         }
         if (id == R.id.btn_cancel) {
-            if (AppConstant.mSmoothBluetooth != null && AppConstant.mSmoothBluetooth.isConnected()) {
+            if (MainActivity.isConnected()) {
 
-                AppConstant.mSmoothBluetooth.send(getCancelButtonString());
+                MainActivity.sendCommand(getCancelButtonString());
 
                 finish();
 
@@ -141,23 +141,23 @@ public class PartialGigapixelSteps extends AppCompatActivity implements View.OnC
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
 
-                if (AppConstant.mSmoothBluetooth != null && AppConstant.mSmoothBluetooth.isConnected()) {
+                if (MainActivity.isConnected()) {
                     if (id == R.id.btn_top) {
 
-                        AppConstant.mSmoothBluetooth.send(arrowClickString(AppConstant.TOP, AppConstant.ONCLICK));
+                        MainActivity.sendCommand(arrowClickString(AppConstant.TOP, AppConstant.ONCLICK));
                         // Log.d("DEBUG", "press");
                     }
 
                     if (id == R.id.btn_bottom) {
-                        AppConstant.mSmoothBluetooth.send(arrowClickString(AppConstant.BOTTOM, AppConstant.ONCLICK));
+                        MainActivity.sendCommand(arrowClickString(AppConstant.BOTTOM, AppConstant.ONCLICK));
                     }
 
                     if (id == R.id.btn_right) {
-                        AppConstant.mSmoothBluetooth.send(arrowClickString(AppConstant.RIGHT, AppConstant.ONCLICK));
+                        MainActivity.sendCommand(arrowClickString(AppConstant.RIGHT, AppConstant.ONCLICK));
                     }
 
                     if (id == R.id.btn_left) {
-                        AppConstant.mSmoothBluetooth.send(arrowClickString(AppConstant.LEFT, AppConstant.ONCLICK));
+                        MainActivity.sendCommand(arrowClickString(AppConstant.LEFT, AppConstant.ONCLICK));
 
                     }
                 } else {
@@ -169,23 +169,23 @@ public class PartialGigapixelSteps extends AppCompatActivity implements View.OnC
                 return false; // if you want to handle the touch event
             case MotionEvent.ACTION_UP:
 
-                if (AppConstant.mSmoothBluetooth != null && AppConstant.mSmoothBluetooth.isConnected()) {
+                if (MainActivity.isConnected()) {
                     if (id == R.id.btn_top) {
 
-                        AppConstant.mSmoothBluetooth.send(arrowClickString(AppConstant.TOP, AppConstant.ONRELEASE));
+                        MainActivity.sendCommand(arrowClickString(AppConstant.TOP, AppConstant.ONRELEASE));
                         // Log.d("DEBUG", "release");
                     }
 
                     if (id == R.id.btn_bottom) {
-                        AppConstant.mSmoothBluetooth.send(arrowClickString(AppConstant.BOTTOM, AppConstant.ONRELEASE));
+                        MainActivity.sendCommand(arrowClickString(AppConstant.BOTTOM, AppConstant.ONRELEASE));
                     }
 
                     if (id == R.id.btn_right) {
-                        AppConstant.mSmoothBluetooth.send(arrowClickString(AppConstant.RIGHT, AppConstant.ONRELEASE));
+                        MainActivity.sendCommand(arrowClickString(AppConstant.RIGHT, AppConstant.ONRELEASE));
                     }
 
                     if (id == R.id.btn_left) {
-                        AppConstant.mSmoothBluetooth.send(arrowClickString(AppConstant.LEFT, AppConstant.ONRELEASE));
+                        MainActivity.sendCommand(arrowClickString(AppConstant.LEFT, AppConstant.ONRELEASE));
 
                     }
                 } else {

@@ -55,6 +55,30 @@
             </EditText>
 
         </android.support.design.widget.TextInputLayout>
+
+
+        <!--  Password Label -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp">
+
+            <EditText
+                android:id="@+id/ed_panorama_width"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/rounded_edittext"
+                android:hint="Panorama Width(1 to 360)"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:textColor="@color/white">
+
+            </EditText>
+
+        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
 

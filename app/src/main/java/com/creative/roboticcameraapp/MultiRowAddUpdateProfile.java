@@ -25,6 +25,8 @@ public class MultiRowAddUpdateProfile extends AppCompatActivity implements MRSte
     public static final String KEY_ELEVATION = "elevation";
     public static final String KEY_POSITION = "position";
     public static final String KEY_DIRECTION = "direction";
+    public static final String KEY_PANORAMA_WIDTH = "panorama_width";
+
 
     private FragmentTransaction transaction;
     private Fragment fragment_step_one, fragment_step_two, fragment_step_three;
@@ -61,12 +63,13 @@ public class MultiRowAddUpdateProfile extends AppCompatActivity implements MRSte
     }
 
     @Override
-    public void onDataPass(String profileName, int numOfRows) {
+    public void onDataPass(String profileName, int numOfRows, int panoramaWidth) {
 
 
         Bundle bundle = new Bundle();
         bundle.putString(MultiRowAddUpdateProfile.KEY_PROFILE_NAME, profileName);
         bundle.putInt(MultiRowAddUpdateProfile.KEY_NUM_OF_ROWS, numOfRows);
+        bundle.putInt(MultiRowAddUpdateProfile.KEY_PANORAMA_WIDTH, panoramaWidth);
 
         fragment_step_two = new MRStepTwo();
         fragment_step_two.setArguments(bundle);
@@ -94,10 +97,11 @@ public class MultiRowAddUpdateProfile extends AppCompatActivity implements MRSte
     }
 
     @Override
-    public void onDataPassStepTow(String profileName, int numOfRows, String elevation, String position, String direction) {
+    public void onDataPassStepTow(String profileName, int numOfRows,int panoramaWidth, String elevation, String position, String direction) {
         Bundle bundle = new Bundle();
         bundle.putString(MultiRowAddUpdateProfile.KEY_PROFILE_NAME, profileName);
         bundle.putInt(MultiRowAddUpdateProfile.KEY_NUM_OF_ROWS, numOfRows);
+        bundle.putInt(MultiRowAddUpdateProfile.KEY_PANORAMA_WIDTH, panoramaWidth);
         bundle.putString(MultiRowAddUpdateProfile.KEY_ELEVATION, elevation);
         bundle.putString(MultiRowAddUpdateProfile.KEY_POSITION, position);
         bundle.putString(MultiRowAddUpdateProfile.KEY_DIRECTION, direction);

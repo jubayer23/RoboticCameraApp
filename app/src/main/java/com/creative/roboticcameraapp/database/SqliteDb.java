@@ -3,8 +3,10 @@ package com.creative.roboticcameraapp.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 
 import com.creative.roboticcameraapp.model.Camera;
@@ -13,6 +15,11 @@ import com.creative.roboticcameraapp.model.MultiRow;
 import com.creative.roboticcameraapp.model.Partial;
 import com.creative.roboticcameraapp.model.SingleRow;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +31,19 @@ public class SqliteDb extends SQLiteOpenHelper {
 
     SQLiteDatabase db;
 
+    private final Context mContext;
+
+
     public SqliteDb(Context context) {
         super(context, DbConfig.DB_NAME, null, DbConfig.DB_VERSION);
+
+        if (android.os.Build.VERSION.SDK_INT >= 17) {
+            DbConfig.DB_PATH = context.getApplicationInfo().dataDir + "/databases/";
+        } else {
+            DbConfig.DB_PATH = "/data/data/" + context.getPackageName() + "/databases/";
+        }
+
+        this.mContext = context;
 
     }
 
@@ -39,9 +57,60 @@ public class SqliteDb extends SQLiteOpenHelper {
 
     }
 
+    public void createDataBase() throws IOException {
+        //If the database does not exist, copy it from the assets.
+
+        boolean mDataBaseExist = checkDataBase();
+        if (!mDataBaseExist) {
+            this.getReadableDatabase();
+            this.close();
+            try {
+                //Copy the database from assests
+                copyDataBase();
+                Log.e("DEBUG", "createDatabase database created");
+            } catch (IOException mIOException) {
+                throw new Error("ErrorCopyingDataBase");
+            }
+        }
+    }
+
+    //Check that the database exists here: /data/data/your package/databases/Da Name
+    private boolean checkDataBase() {
+        File dbFile = new File(DbConfig.DB_PATH + DbConfig.DB_NAME);
+        //Log.v("dbFile", dbFile + "   "+ dbFile.exists());
+        return dbFile.exists();
+    }
+
+    //Copy the database from assets
+    private void copyDataBase() throws IOException {
+        InputStream mInput = mContext.getAssets().open(DbConfig.DB_NAME);
+        String outFileName = DbConfig.DB_PATH + DbConfig.DB_NAME;
+        OutputStream mOutput = new FileOutputStream(outFileName);
+        byte[] mBuffer = new byte[1024];
+        int mLength;
+        while ((mLength = mInput.read(mBuffer)) > 0) {
+            mOutput.write(mBuffer, 0, mLength);
+        }
+        mOutput.flush();
+        mOutput.close();
+        mInput.close();
+    }
+
 
     public void open() {
         db = this.getWritableDatabase();
+    }
+
+    //Open the database, so we can query it
+    public void openDataBaseAfterCopy() throws SQLException {
+        String mPath = DbConfig.DB_PATH + DbConfig.DB_NAME;
+        //Log.v("mPath", mPath);
+        SQLiteDatabase temp = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.CREATE_IF_NECESSARY);
+
+        temp.close();
+        //mDataBase.close();
+        //mDataBase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.NO_LOCALIZED_COLLATORS);
+        //mDataBase = this.getWritableDatabase();
     }
 
     public void executeQuery(String query) {
@@ -215,7 +284,10 @@ public class SqliteDb extends SQLiteOpenHelper {
         values.put(DbConfig.CAMERA_WAKEUP, singleRow.getCamera_wakeup());
         values.put(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH, singleRow.getCamera_wakeup_signal_length());
         values.put(DbConfig.CAMERA_WAKEUP_DELAY, singleRow.getCamera_wakeup_delay());
-        values.put(DbConfig.SPEED_DIVIDER, singleRow.getSpeed_divider());
+        values.put(DbConfig.TILT_ARM_ELEVATION, singleRow.getTilt_arm_elevation());
+        values.put(DbConfig.CONTINOUS_ROTATION_SHUTTER, singleRow.getContinuosRotationShutter());
+        values.put(DbConfig.RETURN_TO_START, singleRow.getReturn_to_start());
+        values.put(DbConfig.PANORAMA_WIDTH, singleRow.getPanorama_width());
 
         db.insert(DbConfig.TABLE_SINGLE_ROW, null, values);
     }
@@ -245,7 +317,10 @@ public class SqliteDb extends SQLiteOpenHelper {
         values.put(DbConfig.CAMERA_WAKEUP, singleRow.getCamera_wakeup());
         values.put(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH, singleRow.getCamera_wakeup_signal_length());
         values.put(DbConfig.CAMERA_WAKEUP_DELAY, singleRow.getCamera_wakeup_delay());
-        values.put(DbConfig.SPEED_DIVIDER, singleRow.getSpeed_divider());
+        values.put(DbConfig.TILT_ARM_ELEVATION, singleRow.getTilt_arm_elevation());
+        values.put(DbConfig.CONTINOUS_ROTATION_SHUTTER, singleRow.getContinuosRotationShutter());
+        values.put(DbConfig.RETURN_TO_START, singleRow.getReturn_to_start());
+        values.put(DbConfig.PANORAMA_WIDTH, singleRow.getPanorama_width());
         db.update(DbConfig.TABLE_SINGLE_ROW, values, "id=" + singleRow.getId(), null);
     }
 
@@ -272,7 +347,7 @@ public class SqliteDb extends SQLiteOpenHelper {
             singleRow.setDirection(c.getString(c.getColumnIndex(DbConfig.DIRECTION)));
             singleRow.setSpeed(c.getInt(c.getColumnIndex(DbConfig.SPEED)));
             singleRow.setAcceleration(c.getInt(c.getColumnIndex(DbConfig.ACCELERATION)));
-            singleRow.setMax_frame_rate(c.getInt(c.getColumnIndex(DbConfig.MAX_FRAME_RATE)));
+            singleRow.setMax_frame_rate(c.getFloat(c.getColumnIndex(DbConfig.MAX_FRAME_RATE)));
             singleRow.setNum_of_panoramas(c.getInt(c.getColumnIndex(DbConfig.NUM_OF_PANORAMAS)));
             singleRow.setDelay_between_panoramas(c.getInt(c.getColumnIndex(DbConfig.DELAY_BETWEEN_PANORAMAS)));
             singleRow.setShutter_signal_length(c.getInt(c.getColumnIndex(DbConfig.SHUTTER_SIGNAL_LENGTH)));
@@ -280,9 +355,13 @@ public class SqliteDb extends SQLiteOpenHelper {
             singleRow.setCamera_wakeup(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP)));
             singleRow.setCamera_wakeup_signal_length(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH)));
             singleRow.setCamera_wakeup_delay(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP_DELAY)));
-            singleRow.setSpeed_divider(c.getInt(c.getColumnIndex(DbConfig.SPEED_DIVIDER)));
+            singleRow.setTilt_arm_elevation(c.getFloat(c.getColumnIndex(DbConfig.TILT_ARM_ELEVATION)));
+            singleRow.setReturn_to_start(c.getString(c.getColumnIndex(DbConfig.RETURN_TO_START)));
+            singleRow.setContinuosRotationShutter(c.getString(c.getColumnIndex(DbConfig.CONTINOUS_ROTATION_SHUTTER)));
+            singleRow.setPanorama_width(c.getInt(c.getColumnIndex(DbConfig.PANORAMA_WIDTH)));
+            singleRow.setCreated_at(c.getString(c.getColumnIndex(DbConfig.CREATED_AT)));
 
-
+            Log.d("DEBUG",c.getString(c.getColumnIndex(DbConfig.CREATED_AT)));
         }
         return singleRow;
     }
@@ -325,7 +404,6 @@ public class SqliteDb extends SQLiteOpenHelper {
         values.put(DbConfig.NUMBER_OF_ROWS, multiRow.getNum_of_rows());
         values.put(DbConfig.ELEVATIOn, multiRow.getElevation());
         values.put(DbConfig.POSITION, multiRow.getPosition());
-        values.put(DbConfig.DIRECTION, multiRow.getDirection());
         values.put(DbConfig.CONTINUOUS_ROTATION, multiRow.getContinuous_rotation());
         values.put(DbConfig.NUMBER_OF_BRACKETED_SHOT, multiRow.getNum_of_bracketed_shot());
         values.put(DbConfig.BRACKETING_STYLE, multiRow.getBracketed_style());
@@ -344,7 +422,9 @@ public class SqliteDb extends SQLiteOpenHelper {
         values.put(DbConfig.CAMERA_WAKEUP, multiRow.getCamera_wakeup());
         values.put(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH, multiRow.getCamera_wakeup_signal_length());
         values.put(DbConfig.CAMERA_WAKEUP_DELAY, multiRow.getCamera_wakeup_delay());
-        values.put(DbConfig.SPEED_DIVIDER, multiRow.getSpeed_divider());
+        values.put(DbConfig.PANORAMA_WIDTH, multiRow.getPanorama_width());
+        values.put(DbConfig.RETURN_TO_START, multiRow.getReturn_to_start());
+        values.put(DbConfig.CONTINOUS_ROTATION_SHUTTER, multiRow.getContinuosRotationShutter());
         db.insert(DbConfig.TABLE_MULTI_ROW, null, values);
     }
 
@@ -358,7 +438,6 @@ public class SqliteDb extends SQLiteOpenHelper {
         values.put(DbConfig.NUMBER_OF_ROWS, multiRow.getNum_of_rows());
         values.put(DbConfig.ELEVATIOn, multiRow.getElevation());
         values.put(DbConfig.POSITION, multiRow.getPosition());
-        values.put(DbConfig.DIRECTION, multiRow.getDirection());
         values.put(DbConfig.CONTINUOUS_ROTATION, multiRow.getContinuous_rotation());
         values.put(DbConfig.NUMBER_OF_BRACKETED_SHOT, multiRow.getNum_of_bracketed_shot());
         values.put(DbConfig.BRACKETING_STYLE, multiRow.getBracketed_style());
@@ -366,6 +445,7 @@ public class SqliteDb extends SQLiteOpenHelper {
         values.put(DbConfig.STARTUP_DELAY, multiRow.getStartup_delay());
         values.put(DbConfig.FOCUS_DELAY, multiRow.getFocus_delay());
         values.put(DbConfig.BEFORE_SHOT_DELAY, multiRow.getBefore_shot_delay());
+        values.put(DbConfig.DIRECTION, multiRow.getDirection());
         values.put(DbConfig.SPEED, multiRow.getSpeed());
         values.put(DbConfig.ACCELERATION, multiRow.getAcceleration());
         values.put(DbConfig.MAX_FRAME_RATE, multiRow.getMax_frame_rate());
@@ -376,7 +456,9 @@ public class SqliteDb extends SQLiteOpenHelper {
         values.put(DbConfig.CAMERA_WAKEUP, multiRow.getCamera_wakeup());
         values.put(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH, multiRow.getCamera_wakeup_signal_length());
         values.put(DbConfig.CAMERA_WAKEUP_DELAY, multiRow.getCamera_wakeup_delay());
-        values.put(DbConfig.SPEED_DIVIDER, multiRow.getSpeed_divider());
+        values.put(DbConfig.PANORAMA_WIDTH, multiRow.getPanorama_width());
+        values.put(DbConfig.RETURN_TO_START, multiRow.getReturn_to_start());
+        values.put(DbConfig.CONTINOUS_ROTATION_SHUTTER, multiRow.getContinuosRotationShutter());
         db.update(DbConfig.TABLE_MULTI_ROW, values, "id=" + multiRow.getId(), null);
     }
 
@@ -395,7 +477,6 @@ public class SqliteDb extends SQLiteOpenHelper {
             multiRow.setNum_of_rows(c.getInt(c.getColumnIndex(DbConfig.NUMBER_OF_ROWS)));
             multiRow.setElevation(c.getString(c.getColumnIndex(DbConfig.ELEVATIOn)));
             multiRow.setPosition(c.getString(c.getColumnIndex(DbConfig.POSITION)));
-            multiRow.setDirection(c.getString(c.getColumnIndex(DbConfig.DIRECTION)));
             multiRow.setContinuous_rotation(c.getInt(c.getColumnIndex(DbConfig.CONTINUOUS_ROTATION)));
             multiRow.setNum_of_bracketed_shot(c.getInt(c.getColumnIndex(DbConfig.NUMBER_OF_BRACKETED_SHOT)));
             multiRow.setBracketed_style(c.getString(c.getColumnIndex(DbConfig.BRACKETING_STYLE)));
@@ -403,9 +484,10 @@ public class SqliteDb extends SQLiteOpenHelper {
             multiRow.setStartup_delay(c.getInt(c.getColumnIndex(DbConfig.STARTUP_DELAY)));
             multiRow.setFocus_delay(c.getInt(c.getColumnIndex(DbConfig.FOCUS_DELAY)));
             multiRow.setBefore_shot_delay(c.getInt(c.getColumnIndex(DbConfig.BEFORE_SHOT_DELAY)));
+            multiRow.setDirection(c.getString(c.getColumnIndex(DbConfig.DIRECTION)));
             multiRow.setSpeed(c.getInt(c.getColumnIndex(DbConfig.SPEED)));
             multiRow.setAcceleration(c.getInt(c.getColumnIndex(DbConfig.ACCELERATION)));
-            multiRow.setMax_frame_rate(c.getInt(c.getColumnIndex(DbConfig.MAX_FRAME_RATE)));
+            multiRow.setMax_frame_rate(c.getFloat(c.getColumnIndex(DbConfig.MAX_FRAME_RATE)));
             multiRow.setNum_of_panoramas(c.getInt(c.getColumnIndex(DbConfig.NUM_OF_PANORAMAS)));
             multiRow.setDelay_between_panoramas(c.getInt(c.getColumnIndex(DbConfig.DELAY_BETWEEN_PANORAMAS)));
             multiRow.setShutter_signal_length(c.getInt(c.getColumnIndex(DbConfig.SHUTTER_SIGNAL_LENGTH)));
@@ -413,7 +495,12 @@ public class SqliteDb extends SQLiteOpenHelper {
             multiRow.setCamera_wakeup(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP)));
             multiRow.setCamera_wakeup_signal_length(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH)));
             multiRow.setCamera_wakeup_delay(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP_DELAY)));
-            multiRow.setSpeed_divider(c.getInt(c.getColumnIndex(DbConfig.SPEED_DIVIDER)));
+            multiRow.setReturn_to_start(c.getString(c.getColumnIndex(DbConfig.RETURN_TO_START)));
+            multiRow.setPanorama_width(c.getInt(c.getColumnIndex(DbConfig.PANORAMA_WIDTH)));
+            multiRow.setContinuosRotationShutter(c.getString(c.getColumnIndex(DbConfig.CONTINOUS_ROTATION_SHUTTER)));
+            multiRow.setCreated_at(c.getString(c.getColumnIndex(DbConfig.CREATED_AT)));
+
+            Log.d("DEBUG",c.getString(c.getColumnIndex(DbConfig.CREATED_AT)));
         }
         return multiRow;
     }
@@ -473,7 +560,9 @@ public class SqliteDb extends SQLiteOpenHelper {
         values.put(DbConfig.CAMERA_WAKEUP, partial.getCamera_wakeup());
         values.put(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH, partial.getCamera_wakeup_signal_length());
         values.put(DbConfig.CAMERA_WAKEUP_DELAY, partial.getCamera_wakeup_delay());
-        values.put(DbConfig.SPEED_DIVIDER, partial.getSpeed_divider());
+
+        values.put(DbConfig.RETURN_TO_START, partial.getReturn_to_start());
+        values.put(DbConfig.CONTINOUS_ROTATION_SHUTTER, partial.getContinuosRotationShutter());
         db.insert(DbConfig.TABLE_PARTIAL_ROW, null, values);
     }
 
@@ -504,7 +593,8 @@ public class SqliteDb extends SQLiteOpenHelper {
         values.put(DbConfig.CAMERA_WAKEUP, partial.getCamera_wakeup());
         values.put(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH, partial.getCamera_wakeup_signal_length());
         values.put(DbConfig.CAMERA_WAKEUP_DELAY, partial.getCamera_wakeup_delay());
-        values.put(DbConfig.SPEED_DIVIDER, partial.getSpeed_divider());
+        values.put(DbConfig.RETURN_TO_START, partial.getReturn_to_start());
+        values.put(DbConfig.CONTINOUS_ROTATION_SHUTTER, partial.getContinuosRotationShutter());
         db.update(DbConfig.TABLE_PARTIAL_ROW, values, "id=" + partial.getId(), null);
     }
 
@@ -541,7 +631,8 @@ public class SqliteDb extends SQLiteOpenHelper {
             partial.setCamera_wakeup(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP)));
             partial.setCamera_wakeup_signal_length(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP_SIGNAL_LENGTH)));
             partial.setCamera_wakeup_delay(c.getInt(c.getColumnIndex(DbConfig.CAMERA_WAKEUP_DELAY)));
-            partial.setSpeed_divider(c.getInt(c.getColumnIndex(DbConfig.SPEED_DIVIDER)));
+            partial.setReturn_to_start(c.getInt(c.getColumnIndex(DbConfig.RETURN_TO_START)));
+            partial.setContinuosRotationShutter(c.getString(c.getColumnIndex(DbConfig.CONTINOUS_ROTATION_SHUTTER)));
         }
         return partial;
     }

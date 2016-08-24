@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Single Row 360"
+                android:text="Single Row"
                 android:textColor="@color/white"
                 android:textSize="25sp" />
         </LinearLayout>
@@ -55,7 +55,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Multi Row 360"
+                android:text="Multi Row"
                 android:textColor="@color/white"
                 android:textSize="25sp" />
         </LinearLayout>
@@ -67,6 +67,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
+            android:visibility="gone"
             android:background="@drawable/btn_partial"
             android:gravity="center"
             android:orientation="horizontal">
@@ -135,17 +136,32 @@
         </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/tv_connected_device"
+        <LinearLayout
+            android:id="@+id/btn_export_import"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
-            android:textColor="@color/white"
+            android:background="@drawable/btn_cancel_without_red_selector"
             android:gravity="center"
-            android:textSize="20sp"
-            android:text="No device connected"/>
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_connect" />
+
+            <TextView
+                android:id="@+id/tv_export_import"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Export/Import Database"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+        </LinearLayout>
+
+
 
 
     </LinearLayout>

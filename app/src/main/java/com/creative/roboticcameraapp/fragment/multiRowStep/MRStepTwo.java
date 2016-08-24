@@ -42,7 +42,7 @@ public class MRStepTwo extends Fragment implements View.OnClickListener, View.On
 
     private Button btn_next, btn_cancel;
 
-    private int num_of_rows;
+    private int num_of_rows,panorama_width;
 
     private String profile_name;
 
@@ -68,6 +68,7 @@ public class MRStepTwo extends Fragment implements View.OnClickListener, View.On
         super.onCreate(savedInstanceState);
         profile_name = getArguments().getString(MultiRowAddUpdateProfile.KEY_PROFILE_NAME);
         num_of_rows = getArguments().getInt(MultiRowAddUpdateProfile.KEY_NUM_OF_ROWS);
+        panorama_width = getArguments().getInt(MultiRowAddUpdateProfile.KEY_PANORAMA_WIDTH);
         shouldUpdate = getActivity().getIntent().getBooleanExtra(MultiRowProfileList.KEY_SHOULD_UPDATE, false);
 
     }
@@ -342,7 +343,7 @@ public class MRStepTwo extends Fragment implements View.OnClickListener, View.On
                     direction = direction + " " + sp_list_direction.get(i).getSelectedItem().toString();
                 }
 
-                dataPasser.onDataPassStepTow(profile_name, num_of_rows, elevation, position, direction);
+                dataPasser.onDataPassStepTow(profile_name, num_of_rows,panorama_width, elevation, position, direction);
 
 
             } else {
@@ -383,7 +384,7 @@ public class MRStepTwo extends Fragment implements View.OnClickListener, View.On
     }
 
     public interface OnDataPassStepTow {
-        public void onDataPassStepTow(String profileName, int numOfRows, String elevation, String position, String direction);
+        public void onDataPassStepTow(String profileName, int numOfRows, int panoramaWidth,String elevation, String position, String direction);
 
         public void onBackPressedAtStepTwo();
 

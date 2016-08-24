@@ -29,8 +29,8 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
 
     private EditText ed_single_row_name, ed_sr_num_of_shooting_position, ed_sr_num_of_bracketed_shot,
             ed_after_shot_delay, ed_startup_delay, ed_focus_delay, ed_before_shot_delay, ed_speed, ed_acceleration, ed_max_frame_rate,
-            ed_num_of_panoramas, ed_delay_between_panoramas, ed_shutter_length, ed_focus_signal_length, ed_camera_wakeup_signal_length, ed_camera_wakeup_delay,
-            ed_speed_divider;
+            ed_num_of_panoramas, ed_delay_between_panoramas, ed_shutter_length, ed_focus_signal_length, ed_camera_wakeup_signal_length, ed_camera_wakeup_delay, ed_tilt_arm_elevation, ed_panorama_width;
+
     private Switch sw_camera_wakeup, sw_continuous_rotation;
 
 
@@ -40,11 +40,11 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
 
     private SingleRow currentCamera; //Only be available if update is triggered
 
-    private Spinner sp_bracketing_style, sp_direction;
+    private Spinner sp_bracketing_style, sp_direction, sp_continuos_rotation_shutter_release,sp_return_to_start;
 
-    private List<String> list_bracketing_style, list_direction;
+    private List<String> list_bracketing_style, list_direction, list_continuos_rotation_shutter_release,list_return_to_start;
 
-    private ArrayAdapter<String> dataAdapterBracketingStyle, dataAdapterDirection;
+    private ArrayAdapter<String> dataAdapterBracketingStyle, dataAdapterDirection, dataAdapterContinuosRotationShutter,dataAdapterReturnToStart;
 
     private EditText edError;
 
@@ -68,6 +68,8 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
             ed_sr_num_of_shooting_position.setText(currentCamera.getNumber_of_shooting_position() + "");
             sw_continuous_rotation.setChecked(currentCamera.getContinuous_rotation() == 0 ? false : true);
             ed_sr_num_of_bracketed_shot.setText(currentCamera.getNum_of_bracketed_shot() + "");
+            ed_tilt_arm_elevation.setText(currentCamera.getTilt_arm_elevation() + "");
+            ed_panorama_width.setText(currentCamera.getPanorama_width() + "");
 
             list_bracketing_style.add(currentCamera.getBracketed_style());
             for (int i = 0; i < AppConstant.bracketing_style.length; i++) {
@@ -89,6 +91,21 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
             }
             dataAdapterDirection.notifyDataSetChanged();
 
+            list_continuos_rotation_shutter_release.add(currentCamera.getContinuosRotationShutter());
+            for (int i = 0; i < AppConstant.contuNiousRotationShutterRelease.length; i++) {
+                if (list_continuos_rotation_shutter_release.contains(AppConstant.contuNiousRotationShutterRelease[i]))
+                    continue;
+                list_continuos_rotation_shutter_release.add(AppConstant.contuNiousRotationShutterRelease[i]);
+            }
+            dataAdapterContinuosRotationShutter.notifyDataSetChanged();
+
+            list_return_to_start.add(currentCamera.getReturn_to_start());
+            for (int i = 0; i < AppConstant.return_to_start.length; i++) {
+                if (list_return_to_start.contains(AppConstant.return_to_start[i])) continue;
+                list_return_to_start.add(AppConstant.return_to_start[i]);
+            }
+            dataAdapterReturnToStart.notifyDataSetChanged();
+
             ed_speed.setText(currentCamera.getSpeed() + "");
             ed_acceleration.setText(currentCamera.getAcceleration() + "");
             ed_max_frame_rate.setText(currentCamera.getMax_frame_rate() + "");
@@ -99,7 +116,6 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
             sw_camera_wakeup.setChecked(currentCamera.getCamera_wakeup() == 0 ? false : true);
             ed_camera_wakeup_signal_length.setText(currentCamera.getCamera_wakeup_signal_length() + "");
             ed_camera_wakeup_delay.setText(currentCamera.getCamera_wakeup_delay() + "");
-            ed_speed_divider.setText(currentCamera.getSpeed_divider() + "");
 
 
         } else {
@@ -114,6 +130,16 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
                 list_direction.add(AppConstant.direction[i]);
             }
             dataAdapterDirection.notifyDataSetChanged();
+
+            for (int i = 0; i < AppConstant.contuNiousRotationShutterRelease.length; i++) {
+                list_continuos_rotation_shutter_release.add(AppConstant.contuNiousRotationShutterRelease[i]);
+            }
+            dataAdapterContinuosRotationShutter.notifyDataSetChanged();
+
+            for (int i = 0; i < AppConstant.return_to_start.length; i++) {
+                list_return_to_start.add(AppConstant.return_to_start[i]);
+            }
+            dataAdapterReturnToStart.notifyDataSetChanged();
         }
 
         btn_save.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +158,16 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
                         currentCamera.setNum_of_bracketed_shot(AppConstant.DEFAULT_NUM_OF_BRACKETED_SHOTS);
                     } else {
                         currentCamera.setNum_of_bracketed_shot(Integer.parseInt(ed_sr_num_of_bracketed_shot.getText().toString()));
+                    }
+                    if (ed_tilt_arm_elevation.getText().toString().isEmpty()) {
+                        currentCamera.setTilt_arm_elevation(AppConstant.DEFAULT_TILT_ARM_ELEVATION);
+                    } else {
+                        currentCamera.setTilt_arm_elevation(Float.parseFloat(ed_tilt_arm_elevation.getText().toString()));
+                    }
+                    if (ed_panorama_width.getText().toString().isEmpty()) {
+                        currentCamera.setPanorama_width(AppConstant.DEFAULT_PANORAMA_WIDTH);
+                    } else {
+                        currentCamera.setPanorama_width(Integer.parseInt(ed_panorama_width.getText().toString()));
                     }
                     if (ed_after_shot_delay.getText().toString().isEmpty()) {
                         currentCamera.setAfter_shot_delay(AppConstant.DEFAULT_AFTER_SHOT_DELAY);
@@ -156,6 +192,10 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
 
                     currentCamera.setDirection(sp_direction.getSelectedItem().toString());
 
+                    currentCamera.setContinuosRotationShutter(sp_continuos_rotation_shutter_release.getSelectedItem().toString());
+
+                    currentCamera.setReturn_to_start(sp_return_to_start.getSelectedItem().toString());
+
                     if (ed_speed.getText().toString().isEmpty()) {
                         currentCamera.setSpeed(AppConstant.DEFAULT_SPEED);
                     } else {
@@ -169,7 +209,7 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
                     if (ed_max_frame_rate.getText().toString().isEmpty()) {
                         currentCamera.setMax_frame_rate(AppConstant.DEFAULT_MAX_FRAME_RATE);
                     } else {
-                        currentCamera.setMax_frame_rate(Integer.parseInt(ed_max_frame_rate.getText().toString()));
+                        currentCamera.setMax_frame_rate(Float.parseFloat(ed_max_frame_rate.getText().toString()));
                     }
                     if (ed_num_of_panoramas.getText().toString().isEmpty()) {
                         currentCamera.setNum_of_panoramas(AppConstant.DEFAULT_NUM_OF_PANORAMAS);
@@ -204,11 +244,6 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
                         currentCamera.setCamera_wakeup_delay(AppConstant.DEFAULT_CAMERA_WAKEUP_DELAY);
                     } else {
                         currentCamera.setCamera_wakeup_delay(Integer.parseInt(ed_camera_wakeup_delay.getText().toString()));
-                    }
-                    if (ed_speed_divider.getText().toString().isEmpty()) {
-                        currentCamera.setSpeed_divider(AppConstant.DEFAULT_SPEED_DIVIDER);
-                    } else {
-                        currentCamera.setSpeed_divider(Integer.parseInt(ed_speed_divider.getText().toString()));
                     }
 
 
@@ -272,8 +307,12 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
         ed_camera_wakeup_signal_length.setOnFocusChangeListener(this);
         ed_camera_wakeup_delay = (EditText) findViewById(R.id.ed_camera_wakeup_delay);
         ed_camera_wakeup_delay.setOnFocusChangeListener(this);
-        ed_speed_divider = (EditText) findViewById(R.id.ed_speed_divider);
-        ed_speed_divider.setOnFocusChangeListener(this);
+
+        ed_tilt_arm_elevation = (EditText) findViewById(R.id.ed_tilt_arm_elevation);
+        ed_tilt_arm_elevation.setOnFocusChangeListener(this);
+
+        ed_panorama_width = (EditText) findViewById(R.id.ed_panorama_width);
+        ed_panorama_width.setOnFocusChangeListener(this);
 
 
         sw_continuous_rotation = (Switch) findViewById(R.id.sw_continious_rotation);
@@ -299,6 +338,22 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
         sp_direction.setAdapter(dataAdapterDirection);
 
 
+        sp_continuos_rotation_shutter_release = (Spinner) findViewById(R.id.sp_continuos_rotation_shutter_release);
+        list_continuos_rotation_shutter_release = new ArrayList<>();
+        dataAdapterContinuosRotationShutter = new ArrayAdapter<String>
+                (this, R.layout.spinner_item, list_continuos_rotation_shutter_release);
+
+        sp_continuos_rotation_shutter_release.setAdapter(dataAdapterContinuosRotationShutter);
+
+
+        sp_return_to_start = (Spinner) findViewById(R.id.sp_return_to_start);
+        list_return_to_start = new ArrayList<>();
+        dataAdapterReturnToStart = new ArrayAdapter<String>
+                (this, R.layout.spinner_item, list_return_to_start);
+
+        sp_return_to_start.setAdapter(dataAdapterReturnToStart);
+
+
     }
 
     public boolean showWarningDialog() {
@@ -306,16 +361,6 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
         boolean valid = true;
 
 
-        if (!ed_speed_divider.getText().toString().isEmpty()) {
-            long value = Long.parseLong(ed_speed_divider.getText().toString());
-            if (value < 1 || value > 32000) {
-                ed_speed_divider.setError("Invalid input");
-                ed_speed_divider.requestFocus();
-                valid = false;
-            } else {
-                ed_speed_divider.setError(null);
-            }
-        }
         if (!ed_camera_wakeup_delay.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_camera_wakeup_delay.getText().toString());
             if (value < 100 || value > 5000) {
@@ -339,7 +384,7 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
         }
         if (!ed_focus_signal_length.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_focus_signal_length.getText().toString());
-            if (value < 100 || value > 500) {
+            if (value < 100 || value > 1000) {
                 ed_focus_signal_length.setError("Invalid input");
                 ed_focus_signal_length.requestFocus();
                 valid = false;
@@ -349,7 +394,7 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
         }
         if (!ed_shutter_length.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_shutter_length.getText().toString());
-            if (value < 100 || value > 500) {
+            if (value < 100 || value > 1000) {
                 ed_shutter_length.setError("Invalid input");
                 ed_shutter_length.requestFocus();
                 valid = false;
@@ -360,7 +405,7 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
 
         if (!ed_delay_between_panoramas.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_delay_between_panoramas.getText().toString());
-            if (value < 0 || value > 32000) {
+            if (value < 0 || value > 64000) {
                 ed_delay_between_panoramas.setError("Invalid input");
                 ed_delay_between_panoramas.requestFocus();
                 valid = false;
@@ -370,7 +415,7 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
         }
         if (!ed_num_of_panoramas.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_num_of_panoramas.getText().toString());
-            if (value < 1 || value > 32000) {
+            if (value < 0 || value > 64000) {
                 ed_num_of_panoramas.setError("Invalid input");
                 ed_num_of_panoramas.requestFocus();
                 valid = false;
@@ -379,18 +424,29 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
             }
         }
         if (!ed_max_frame_rate.getText().toString().isEmpty()) {
-            long value = Long.parseLong(ed_max_frame_rate.getText().toString());
-            if (value < 0 || value > 20) {
+
+            double value = Double.parseDouble(ed_max_frame_rate.getText().toString());
+            String temp = "12";
+            if (String.valueOf(value).contains(".")) {
+                temp = String.valueOf(value).substring(String.valueOf(value).indexOf(".") + 1);
+            }
+            if (temp.length() > 2) {
                 ed_max_frame_rate.setError("Invalid input");
                 ed_max_frame_rate.requestFocus();
                 valid = false;
             } else {
-                ed_max_frame_rate.setError(null);
+                if (value < 0 || value > 20) {
+                    ed_max_frame_rate.setError("Invalid input");
+                    ed_max_frame_rate.requestFocus();
+                    valid = false;
+                } else {
+                    ed_max_frame_rate.setError(null);
+                }
             }
         }
         if (!ed_acceleration.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_acceleration.getText().toString());
-            if (value < 100 || value > 4000) {
+            if (value < 0 || value > 10000) {
                 ed_acceleration.setError("Invalid input");
                 ed_acceleration.requestFocus();
                 valid = false;
@@ -400,7 +456,7 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
         }
         if (!ed_speed.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_speed.getText().toString());
-            if (value < 0 || value > 30) {
+            if (value < 1 || value > 64000) {
                 ed_speed.setError("Invalid input");
                 ed_speed.requestFocus();
                 valid = false;
@@ -420,7 +476,7 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
         }
         if (!ed_focus_delay.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_focus_delay.getText().toString());
-            if (value < 0 || value > 32000) {
+            if (value < 0 || value > 64000) {
                 ed_focus_delay.setError("Invalid input");
                 ed_focus_delay.requestFocus();
                 valid = false;
@@ -430,7 +486,7 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
         }
         if (!ed_startup_delay.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_startup_delay.getText().toString());
-            if (value < 0 || value > 32000) {
+            if (value < 0 || value > 64000) {
                 ed_startup_delay.setError("Invalid input");
                 ed_startup_delay.requestFocus();
                 valid = false;
@@ -460,9 +516,41 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
             }
         }
 
+        if (!ed_tilt_arm_elevation.getText().toString().isEmpty()) {
+            Double value = Double.parseDouble(ed_tilt_arm_elevation.getText().toString());
+            String temp = "12";
+            if (String.valueOf(value).contains(".")) {
+                temp = String.valueOf(value).substring(String.valueOf(value).indexOf(".") + 1);
+            }
+            if (temp.length() > 2) {
+                ed_tilt_arm_elevation.setError("Invalid input");
+                ed_tilt_arm_elevation.requestFocus();
+                valid = false;
+            } else {
+                if (value < -91 || value > 90) {
+                    ed_tilt_arm_elevation.setError("Invalid input");
+                    ed_tilt_arm_elevation.requestFocus();
+                    valid = false;
+                } else {
+                    ed_tilt_arm_elevation.setError(null);
+                }
+            }
+
+        }
+        if (!ed_panorama_width.getText().toString().isEmpty()) {
+            long value = Long.parseLong(ed_panorama_width.getText().toString());
+            if (value < 1 || value > 64000) {
+                ed_panorama_width.setError("Invalid input");
+                ed_panorama_width.requestFocus();
+                valid = false;
+            } else {
+                ed_panorama_width.setError(null);
+            }
+        }
+
         if (!ed_sr_num_of_shooting_position.getText().toString().isEmpty()) {
             long value = Long.parseLong(ed_sr_num_of_shooting_position.getText().toString());
-            if (value < 0 || value > 4000) {
+            if (value < 1 || value > 64000) {
                 ed_sr_num_of_shooting_position.setError("Invalid input");
                 ed_sr_num_of_shooting_position.requestFocus();
                 valid = false;
@@ -498,7 +586,7 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
                 case R.id.ed_num_of_shooting_position:
                     if (!ed_sr_num_of_shooting_position.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_sr_num_of_shooting_position.getText().toString());
-                        if (value < 0 || value > 4000) {
+                        if (value < 1 || value > 64000) {
                             ed_sr_num_of_shooting_position.setError("Invalid input");
                             //ed_sr_num_of_shooting_position.requestFocus();
                             edError = ed_sr_num_of_shooting_position;
@@ -521,6 +609,44 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
                         }
                     }
                     break;
+                case R.id.ed_tilt_arm_elevation:
+                    if (!ed_tilt_arm_elevation.getText().toString().isEmpty()) {
+
+
+                        Double value = Double.parseDouble(ed_tilt_arm_elevation.getText().toString());
+                        String temp = "12";
+                        if (String.valueOf(value).contains(".")) {
+                            temp = String.valueOf(value).substring(String.valueOf(value).indexOf(".") + 1);
+                        }
+                        if (temp.length() > 2) {
+                            ed_tilt_arm_elevation.setError("Invalid input");
+                            //ed_tilt_arm_elevation.requestFocus();
+                            edError = ed_tilt_arm_elevation;
+                        } else {
+                            if (value < -91 || value > 90) {
+                                ed_tilt_arm_elevation.setError("Invalid input");
+                                //ed_tilt_arm_elevation.requestFocus();
+                                edError = ed_tilt_arm_elevation;
+                            } else {
+                                edError = null;
+                                ed_tilt_arm_elevation.setError(null);
+                            }
+                        }
+                    }
+                    break;
+                case R.id.ed_panorama_width:
+                    if (!ed_panorama_width.getText().toString().isEmpty()) {
+                        long value = Long.parseLong(ed_panorama_width.getText().toString());
+                        if (value < 1 || value > 64000) {
+                            ed_panorama_width.setError("Invalid input");
+                            //ed_tilt_arm_elevation.requestFocus();
+                            edError = ed_panorama_width;
+                        } else {
+                            edError = null;
+                            ed_panorama_width.setError(null);
+                        }
+                    }
+                    break;
                 case R.id.ed_after_delay_shot:
                     if (!ed_after_shot_delay.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_after_shot_delay.getText().toString());
@@ -537,7 +663,7 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
                 case R.id.ed_startup_delay:
                     if (!ed_startup_delay.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_startup_delay.getText().toString());
-                        if (value < 0 || value > 32000) {
+                        if (value < 0 || value > 64000) {
                             ed_startup_delay.setError("Invalid input");
                             // ed_startup_delay.requestFocus();
                             edError = ed_startup_delay;
@@ -550,7 +676,7 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
                 case R.id.ed_focus_delay:
                     if (!ed_focus_delay.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_focus_delay.getText().toString());
-                        if (value < 0 || value > 32000) {
+                        if (value < 0 || value > 64000) {
                             ed_focus_delay.setError("Invalid input");
                             // ed_focus_delay.requestFocus();
                             edError = ed_focus_delay;
@@ -576,7 +702,7 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
                 case R.id.ed_speed:
                     if (!ed_speed.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_speed.getText().toString());
-                        if (value < 0 || value > 30) {
+                        if (value < 1 || value > 64000) {
                             ed_speed.setError("Invalid input");
                             // ed_speed.requestFocus();
                             edError = ed_speed;
@@ -589,10 +715,10 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
                 case R.id.ed_acceleration:
                     if (!ed_acceleration.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_acceleration.getText().toString());
-                        if (value < 100 || value > 4000) {
+                        if (value < 0 || value > 10000) {
                             ed_acceleration.setError("Invalid input");
                             // ed_acceleration.requestFocus();
-                            edError =ed_acceleration;
+                            edError = ed_acceleration;
                         } else {
                             edError = null;
                             ed_acceleration.setError(null);
@@ -601,23 +727,34 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
                     break;
                 case R.id.ed_max_frame_rate:
                     if (!ed_max_frame_rate.getText().toString().isEmpty()) {
-                        long value = Long.parseLong(ed_max_frame_rate.getText().toString());
-                        if (value < 0 || value > 20) {
+                        double value = Double.parseDouble(ed_max_frame_rate.getText().toString());
+                        String temp = "12";
+                        if (String.valueOf(value).contains(".")) {
+                            temp = String.valueOf(value).substring(String.valueOf(value).indexOf(".") + 1);
+                        }
+                        if (temp.length() > 2) {
                             ed_max_frame_rate.setError("Invalid input");
                             //  ed_max_frame_rate.requestFocus();
                             edError = ed_max_frame_rate;
                         } else {
-                            edError = null;
-                            ed_max_frame_rate.setError(null);
+                            if (value < 0 || value > 20) {
+                                ed_max_frame_rate.setError("Invalid input");
+                                //  ed_max_frame_rate.requestFocus();
+                                edError = ed_max_frame_rate;
+                            } else {
+                                edError = null;
+                                ed_max_frame_rate.setError(null);
+                            }
                         }
                     }
+
                     break;
                 case R.id.ed_num_of_panoramas:
 
 
                     if (!ed_num_of_panoramas.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_num_of_panoramas.getText().toString());
-                        if (value < 1 || value > 32000) {
+                        if (value < 0 || value > 64000) {
                             ed_num_of_panoramas.setError("Invalid input");
                             //  ed_num_of_panoramas.requestFocus();
                             edError = ed_num_of_panoramas;
@@ -630,7 +767,7 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
                 case R.id.ed_delay_between_panoramas:
                     if (!ed_delay_between_panoramas.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_delay_between_panoramas.getText().toString());
-                        if (value < 0 || value > 32000) {
+                        if (value < 0 || value > 64000) {
                             ed_delay_between_panoramas.setError("Invalid input");
                             //   ed_delay_between_panoramas.requestFocus();
                             edError = ed_delay_between_panoramas;
@@ -643,7 +780,7 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
                 case R.id.ed_shutter_signal_length:
                     if (!ed_shutter_length.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_shutter_length.getText().toString());
-                        if (value < 100 || value > 500) {
+                        if (value < 100 || value > 1000) {
                             ed_shutter_length.setError("Invalid input");
                             //  ed_shutter_length.requestFocus();
                             edError = ed_shutter_length;
@@ -656,7 +793,7 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
                 case R.id.ed_focus_signal_length:
                     if (!ed_focus_signal_length.getText().toString().isEmpty()) {
                         long value = Long.parseLong(ed_focus_signal_length.getText().toString());
-                        if (value < 100 || value > 500) {
+                        if (value < 100 || value > 1000) {
                             ed_focus_signal_length.setError("Invalid input");
                             //   ed_focus_signal_length.requestFocus();
                             edError = ed_focus_signal_length;
@@ -693,34 +830,19 @@ public class SingleRowAddUpdateProfile extends AppCompatActivity implements View
                     }
 
                     break;
-                case R.id.ed_speed_divider:
-                    if (!ed_speed_divider.getText().toString().isEmpty()) {
-                        long value = Long.parseLong(ed_speed_divider.getText().toString());
-                        if (value < 1 || value > 32000) {
-                            ed_speed_divider.setError("Invalid input");
-                            //   ed_speed_divider.requestFocus();
-                            edError = ed_speed_divider;
-                        } else {
-                            edError = null;
-                            ed_speed_divider.setError(null);
-                        }
-                    }
-
-                    break;
 
             }
         }//else{
-         //   if(edError != null){
-         //       hideSoftKeyboard(SingleRowAddUpdateProfile.this, view);
-         //       edError.requestFocus();
+        //   if(edError != null){
+        //       hideSoftKeyboard(SingleRowAddUpdateProfile.this, view);
+        //       edError.requestFocus();
         //    }
-       // }
+        // }
 
     }
 
-    public static void hideSoftKeyboard (Activity activity, View view)
-    {
-        InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+    public static void hideSoftKeyboard(Activity activity, View view) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 }

@@ -21,7 +21,7 @@ public class Partial {
     String direction;
     int speed;
     int acceleration;
-    int max_frame_rate;
+    float max_frame_rate;
     int num_of_panoramas;
     int delay_between_panoramas;
     int shutter_signal_length;
@@ -30,6 +30,25 @@ public class Partial {
     int camera_wakeup_signal_length;
     int camera_wakeup_delay;
     int speed_divider;
+
+    int return_to_start;
+    String continuosRotationShutter;
+
+    public int getReturn_to_start() {
+        return return_to_start;
+    }
+
+    public void setReturn_to_start(int return_to_start) {
+        this.return_to_start = return_to_start;
+    }
+
+    public String getContinuosRotationShutter() {
+        return continuosRotationShutter;
+    }
+
+    public void setContinuosRotationShutter(String continuosRotationShutter) {
+        this.continuosRotationShutter = continuosRotationShutter;
+    }
 
     public int getId() {
         return id;
@@ -152,11 +171,11 @@ public class Partial {
         this.acceleration = acceleration;
     }
 
-    public int getMax_frame_rate() {
+    public float getMax_frame_rate() {
         return max_frame_rate;
     }
 
-    public void setMax_frame_rate(int max_frame_rate) {
+    public void setMax_frame_rate(float max_frame_rate) {
         this.max_frame_rate = max_frame_rate;
     }
 

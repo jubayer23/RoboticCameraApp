@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.creative.roboticcameraapp.appdata.AppConstant;
+
 
 public class PrefManager {
     private static final String TAG = PrefManager.class.getSimpleName();
@@ -26,6 +28,10 @@ public class PrefManager {
 
     private static final String KEY_LOGIN_TYPE = "login_type";
 
+    private static final String KEY_SORT_ORDER_FOR_SINGLE_ROW = "sort_order_for_single_row";
+
+    private static final String KEY_SORT_ORDER_FOR_MULTI_ROW = "sort_order_for_multi_row";
+
 
     public PrefManager(Context context) {
         this._context = context;
@@ -46,5 +52,31 @@ public class PrefManager {
         return pref.getString(KEY_LOGIN_TYPE, "");
     }
 
+
+    public void setSortOrderForSingleRow(int type) {
+        editor = pref.edit();
+
+        editor.putInt(KEY_SORT_ORDER_FOR_SINGLE_ROW, type);
+
+        // commit changes
+        editor.commit();
+    }
+
+    public int getSortOrderForSingleRow() {
+        return pref.getInt(KEY_SORT_ORDER_FOR_SINGLE_ROW, AppConstant.ASENDING);
+    }
+
+    public void setSortOrderForMultiRow(int type) {
+        editor = pref.edit();
+
+        editor.putInt(KEY_SORT_ORDER_FOR_MULTI_ROW, type);
+
+        // commit changes
+        editor.commit();
+    }
+
+    public int getSortOrderMultiRow() {
+        return pref.getInt(KEY_SORT_ORDER_FOR_MULTI_ROW, AppConstant.ASENDING);
+    }
 
 }

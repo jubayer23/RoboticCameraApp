@@ -13,9 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.creative.roboticcameraapp.R;
+import com.creative.roboticcameraapp.appdata.AppConstant;
 import com.creative.roboticcameraapp.appdata.AppController;
 import com.creative.roboticcameraapp.model.MultiRow;
+import com.creative.roboticcameraapp.model.SingleRow;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -139,6 +142,31 @@ public class MultiRowAdapter extends BaseAdapter {
 
     public interface OnEditActionListener {
         void onEdit(int id, int position);
+    }
+
+
+
+    public void sort(int sort_type){
+        switch (sort_type){
+            case AppConstant.ASENDING:
+
+                Collections.sort(Displayedplaces, new MultiRow.NameComparatorAsending());
+                notifyDataSetChanged();
+
+                break;
+            case AppConstant.DESENDING:
+
+                Collections.sort(Displayedplaces, new MultiRow.NameComparatorDesending());
+                notifyDataSetChanged();
+
+                break;
+            case AppConstant.DATE:
+
+                Collections.sort(Displayedplaces, new MultiRow.DateComparatorAsending());
+                notifyDataSetChanged();
+                break;
+        }
+
     }
 
     private void dialogShowWarning(final int id, final int position) {

@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.creative.roboticcameraapp">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
+    </uses-permission>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
@@ -91,8 +91,7 @@
         </activity>
 
 
-        /***************************************SINGLE ROW
-        360**************************************/
+        /***************************************SINGLE ROW 360**************************************/
 
         <activity
             android:name=".SingleRowProfileList"
@@ -187,6 +186,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+
+
+
+        /***************************************BLUETOOTH DEVICE LIST**************************************/
+
+        <activity android:name=".bluetooth.BluetoothDeviceListActivity" />
+
+
     </application>
 
 </manifest>

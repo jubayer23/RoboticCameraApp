@@ -2,6 +2,10 @@ package com.creative.roboticcameraapp.model;
 
 import com.creative.roboticcameraapp.appdata.AppConstant;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
+
 /**
  * Created by comsol on 05-Jun-16.
  */
@@ -11,6 +15,7 @@ public class SingleRow {
     int id;
     String singleRowName;
     int number_of_shooting_position;
+    int panorama_width;
     int continuous_rotation;
     int num_of_bracketed_shot;
     String bracketed_style;
@@ -21,7 +26,7 @@ public class SingleRow {
     String direction;
     int speed;
     int acceleration;
-    int max_frame_rate;
+    float max_frame_rate;
     int num_of_panoramas;
     int delay_between_panoramas;
     int shutter_signal_length;
@@ -30,7 +35,50 @@ public class SingleRow {
     int camera_wakeup_signal_length;
     int camera_wakeup_delay;
     int speed_divider;
+    float tilt_arm_elevation;
+    String return_to_start;
+    String continuosRotationShutter;
+    String created_at;
 
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public int getPanorama_width() {
+        return panorama_width;
+    }
+
+    public void setPanorama_width(int panorama_width) {
+        this.panorama_width = panorama_width;
+    }
+
+    public float getTilt_arm_elevation() {
+        return tilt_arm_elevation;
+    }
+
+    public void setTilt_arm_elevation(float tilt_arm_elevation) {
+        this.tilt_arm_elevation = tilt_arm_elevation;
+    }
+
+    public String getReturn_to_start() {
+        return return_to_start;
+    }
+
+    public void setReturn_to_start(String return_to_start) {
+        this.return_to_start = return_to_start;
+    }
+
+    public String getContinuosRotationShutter() {
+        return continuosRotationShutter;
+    }
+
+    public void setContinuosRotationShutter(String continuosRotationShutter) {
+        this.continuosRotationShutter = continuosRotationShutter;
+    }
 
     public SingleRow() {
     }
@@ -143,11 +191,11 @@ public class SingleRow {
         this.acceleration = acceleration;
     }
 
-    public int getMax_frame_rate() {
+    public float getMax_frame_rate() {
         return max_frame_rate;
     }
 
-    public void setMax_frame_rate(int max_frame_rate) {
+    public void setMax_frame_rate(float max_frame_rate) {
         this.max_frame_rate = max_frame_rate;
     }
 
@@ -215,14 +263,87 @@ public class SingleRow {
         this.speed_divider = speed_divider;
     }
 
-    public String getSendString(){
-        String string = "dataStart|100|"+ getSingleRowName() + "|" + getNumber_of_shooting_position() + "|" +
-                getContinuous_rotation() + "|" + getNum_of_bracketed_shot() + "|" + AppConstant.bracketing_style_map.get(getBracketed_style())
-                + "|" + getAfter_shot_delay() + "|" + getStartup_delay() + "|" + getFocus_delay() + "|" +
-                getBefore_shot_delay() + "|" + AppConstant.direction_map.get(getDirection()) + "|" + getSpeed() + "|" + getAcceleration() + "|" +
-                getMax_frame_rate() + "|" + getNum_of_panoramas() + "|" + getDelay_between_panoramas()  + "|" +
-                getShutter_signal_length() + "|" + getFocus_signal_length() + "|" + getCamera_wakeup() + "|" +
-                getCamera_wakeup_signal_length() + "|" + getCamera_wakeup_delay() + "|" + getSpeed_divider() + "|dataEnd" ;
-        return string.replaceAll("\\s+","");
+    public String getSendString() {
+        String string = "dataStart|100|"
+                + getSingleRowName().replaceAll("\\s+", "_") + "|"
+                + getPanorama_width() + "|"
+                + getNumber_of_shooting_position() + "|"
+                + getTilt_arm_elevation() + "|"
+
+                + getNum_of_bracketed_shot() + "|"
+                + AppConstant.bracketing_style_map.get(getBracketed_style()) + "|"
+                + getStartup_delay() + "|"
+                + getFocus_delay() + "|"
+                + getBefore_shot_delay() + "|"
+                + getAfter_shot_delay() + "|"
+                + getSpeed() + "|"
+                + getAcceleration() + "|"
+                + AppConstant.direction_map.get(getDirection()) + "|"
+                + getContinuous_rotation() + "|"
+                + getContinuosRotationShutter() + "|"
+                + getNum_of_panoramas() + "|"
+                + getDelay_between_panoramas() + "|"
+                + AppConstant.return_to_start_map.get(getReturn_to_start()) + "|"
+                + getShutter_signal_length() + "|"
+                + getFocus_signal_length() + "|"
+                + getCamera_wakeup() + "|"
+                + getCamera_wakeup_signal_length() + "|"
+                + getCamera_wakeup_delay() + "|"
+                + getMax_frame_rate()
+                + "|dataEnd";
+        return string.replaceAll("\\s+", "");
     }
+
+
+
+   public static class NameComparatorAsending implements Comparator {
+        @Override
+        public int compare(Object o1, Object o2) {
+            if (!(o1 instanceof SingleRow) || !(o2 instanceof SingleRow))
+                throw new ClassCastException();
+
+            SingleRow e1 = (SingleRow) o1;
+            SingleRow e2 = (SingleRow) o2;
+
+            return e1.getSingleRowName().compareTo(e2.getSingleRowName());
+
+        }
+    }
+
+    public static class NameComparatorDesending implements Comparator {
+        @Override
+        public int compare(Object o1, Object o2) {
+            if (!(o1 instanceof SingleRow) || !(o2 instanceof SingleRow))
+                throw new ClassCastException();
+
+            SingleRow e1 = (SingleRow) o1;
+            SingleRow e2 = (SingleRow) o2;
+
+            return e2.getSingleRowName().compareTo(e1.getSingleRowName());
+
+        }
+    }
+
+    public static class DateComparatorAsending implements Comparator {
+        @Override
+        public int compare(Object o1, Object o2) {
+            if (!(o1 instanceof SingleRow) || !(o2 instanceof SingleRow))
+                throw new ClassCastException();
+
+            SingleRow e1 = (SingleRow) o1;
+            SingleRow e2 = (SingleRow) o2;
+
+            try
+            {
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                return format.parse(e1.getCreated_at()).compareTo(format.parse(e2.getCreated_at()));
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+
+        }
+    }
+
 }
