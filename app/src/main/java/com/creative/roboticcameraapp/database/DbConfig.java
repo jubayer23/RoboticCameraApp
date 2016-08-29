@@ -7,6 +7,7 @@ public class DbConfig {
     public static String DB_PATH = "";
 
     public static final String DB_NAME = "robotic_camera_database.db";
+    public static final String DB_NAME_2 = "maestro_data";
     public static final int DB_VERSION = 1; //{1, 200 201, 202}
 
 

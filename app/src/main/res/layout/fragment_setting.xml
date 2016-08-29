@@ -76,6 +76,19 @@
             android:textColor="@color/white"
             android:textSize="25sp" />
 
+        <Button
+            android:id="@+id/btn_export_import"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_selector"
+            android:text="Export/Import Database"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
+
 
     </LinearLayout>
 

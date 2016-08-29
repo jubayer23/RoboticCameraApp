@@ -81,6 +81,9 @@ public class MultiRowAdapter extends BaseAdapter {
             viewHolder.btn_delete = (ImageView) convertView
                     .findViewById(R.id.btn_delete);
 
+            viewHolder.btn_duplicate = (ImageView) convertView
+                    .findViewById(R.id.btn_duplicate);
+
 
             convertView.setTag(viewHolder);
         } else {
@@ -110,9 +113,19 @@ public class MultiRowAdapter extends BaseAdapter {
                     }
                 }
             });
+
+            viewHolder.btn_duplicate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    dialogShowWarningForDuplicate(multiRow.getId(), position);
+
+                }
+            });
         } else {
             viewHolder.btn_delete.setVisibility(View.GONE);
             viewHolder.btn_edit.setVisibility(View.GONE);
+            viewHolder.btn_duplicate.setVisibility(View.GONE);
         }
 
 
@@ -129,6 +142,7 @@ public class MultiRowAdapter extends BaseAdapter {
         private TextView multi_row_name;
         private ImageView btn_edit;
         private ImageView btn_delete;
+        private ImageView btn_duplicate;
 
     }
 
@@ -189,6 +203,52 @@ public class MultiRowAdapter extends BaseAdapter {
 
                 AppController.getInstance().getsqliteDbInstance().deleteMultiRow(id);
                 Displayedplaces.remove(position);
+                notifyDataSetChanged();
+                dialog.dismiss();
+
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+    }
+
+    private void dialogShowWarningForDuplicate(final int id, final int position) {
+
+        final Dialog dialog = new Dialog(activity,
+                android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dialog_setting);
+
+        TextView tv_warning = (TextView) dialog.findViewById(R.id.tv_warning);
+        tv_warning.setText("Are you sure you want to Duplicate this profile?");
+
+        Button btn_delete = (Button) dialog.findViewById(R.id.btn_delete);
+        btn_delete.setBackgroundResource(R.drawable.btn_save_selector);
+        btn_delete.setText("Yes");
+
+        Button btn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                MultiRow multiRow = AppController.getInstance().getsqliteDbInstance().getMultiRow(id);
+
+
+                multiRow.setId(multiRow.getId() + 1);
+
+                multiRow.setMultiRowName("copy_" + multiRow.getMultiRowName());
+
+                AppController.getInstance().getsqliteDbInstance().addMultiRow(multiRow);
+
+                Displayedplaces.add(multiRow);
                 notifyDataSetChanged();
                 dialog.dismiss();
 

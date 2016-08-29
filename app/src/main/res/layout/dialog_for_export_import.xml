@@ -46,7 +46,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/btn_save_selector"
+                android:background="@drawable/btn_initilize_selector"
                 android:text="Export"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
@@ -57,7 +57,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/btn_save_selector"
+                android:background="@drawable/btn_initilize_selector"
                 android:text="Import"
                 android:textColor="@color/white"
                 android:textSize="20sp" />

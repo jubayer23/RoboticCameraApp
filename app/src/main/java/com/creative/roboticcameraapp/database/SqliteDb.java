@@ -375,6 +375,7 @@ public class SqliteDb extends SQLiteOpenHelper {
         if (c != null && c.moveToFirst()) {
             do {
                 SingleRow singleRow = getSingleRow(c.getInt(c.getColumnIndex(DbConfig.ID)));
+                //Log.d("DEBUG",singleRow.getCreated_at());
                 list.add(singleRow);
             } while (c.moveToNext());
         }

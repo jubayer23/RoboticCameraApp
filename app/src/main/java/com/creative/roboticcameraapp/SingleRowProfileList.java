@@ -83,6 +83,7 @@ public class SingleRowProfileList extends AppCompatActivity implements SingleRow
         }
 
 
+        sortProfile.setBackgroundTintList(this.getResources().getColorStateList(R.color.blue_initializze));
         singleRowAdapter.sort(AppController.getInstance().getPrefManger().getSortOrderForSingleRow());
 
     }

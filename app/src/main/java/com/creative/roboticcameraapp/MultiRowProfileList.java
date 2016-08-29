@@ -83,6 +83,7 @@ public class MultiRowProfileList extends AppCompatActivity implements MultiRowAd
             list_multi_row.setAdapter(multiRowAdapter);
         }
 
+        sortProfile.setBackgroundTintList(this.getResources().getColorStateList(R.color.blue_initializze));
         multiRowAdapter.sort(AppController.getInstance().getPrefManger().getSortOrderMultiRow());
     }
 
